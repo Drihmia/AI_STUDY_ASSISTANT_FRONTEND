@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import formatMessage from "./messageformated";
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -6,25 +7,45 @@ const Chat = () => {
   const [prev_key, setPrevKey] = useState("");
   const [question_form_id, setQuestionFormId] = useState("");
   const messagesEndRef = useRef(null);
-  const formRef = useRef(null);
 
   const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
 
   const loadChatHistory = async () => {
-    const response = await fetch("http://127.0.0.1:5000/api/history");
-    console.log('response', response);
-    const data = await response.json();
-    console.log('data', data);
-    const history = data.history;
-    console.log('from loadChatHistory data.form_id', data);
+    const response = await fetch("/api/history");
+    let data = await response.json();
+    let history = data.history;
+
+    // If no chat history exists, initiate a conversation
+    if (!data.history.length) {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: "Salam" }),
+      });
+
+      data = await response.json();
+
+      history = [
+        { role: "user", parts: 'salam' },
+        { role: "model", parts: formatMessage({ parts: data.response, role: 'mode' }) },
+      ];
+
+    }
+
+    const formattedHistory = history.map((msg) => {
+      return {
+        role: msg.role,
+        parts: formatMessage(msg),
+      };
+    });
     setQuestionFormId(data.form_id);
-    console.log('data.history', history);
-    setMessages(history || []);
+    setMessages(formattedHistory.length ? formattedHistory : [
+      { 'role': 'ai', 'parts': 'Hello! How can I help you today?' },
+    ]);
   };
 
   // Function to handle form submission
   const handleFormSubmit = (event) => {
-    console.log('inside handleFormSubmit');
     event.preventDefault();
     const form = event.target;
     const formData = new FormData(form);
@@ -36,8 +57,7 @@ const Chat = () => {
 
     const jsonData = JSON.stringify(formObject);
 
-    console.log('before fetching /api/answers jsonData:', jsonData);
-    fetch('http://127.0.0.1:5000/api/answers', {
+    fetch("/api/answers", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: jsonData,
@@ -48,7 +68,6 @@ const Chat = () => {
       })
       .catch(error => console.error('Error:', error));
 
-    console.log('after fetching /api/answers');
     // Keep the latest message in view
     const messagesDiv = document.getElementById('messages');
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
@@ -62,8 +81,6 @@ const Chat = () => {
     const scrollToBottom = () => {
       if (messagesEndRef.current) {
         messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
-        console.log('messagesEndRef.current.scrollTop', messagesEndRef.current.scrollTop);
-        console.log('messagesEndRef.current.scrollHeight', messagesEndRef.current.scrollHeight);
       }
     };
     setTimeout(scrollToBottom, 1); // Delay scroll adjustment for DOM updates
@@ -71,31 +88,27 @@ const Chat = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://127.0.0.1:5000/api/chat", {
+    const response = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message }),
     });
 
     const data = await response.json();
-    console.log('data-----', data);
     if (data) {
       setMessages([
         ...messages,
-        { role: "user", parts: message },
-        { role: "ai", parts: data.response },
+        { role: "user", parts: formatMessage({ parts: message, role: 'user' }) },
+        { role: "model", parts: formatMessage({ parts: data.response, role: 'mode' }) },
       ]);
       setMessage("");
-      console.log('from handleSubmit data.form_id', data.form_id);
       setQuestionFormId(data.form_id);
     }
 
   };
 
   useEffect(() => {
-    console.log('inside useEffect question_form_id:', question_form_id);
     const question_form = document.getElementById(question_form_id);
-    console.log('question_form', question_form);
     if (question_form) {
       question_form.style.display = "block";
       question_form.addEventListener('submit', handleFormSubmit);
@@ -124,17 +137,13 @@ const Chat = () => {
               <div
                 key={index}
                 className={`mb-4 ${
-                  msg.role === "user" ? "text-right" : "text-left"
+                  direction === "ltr" ? "text-left" : "text-right"
                 }`}
                 dir={direction}
               >
                 <strong>{msg.role === "user" ? "You" : "AI"}:</strong>
                 <div
-                  dangerouslySetInnerHTML={{
-                    __html: msg.role === "user"
-                      ? msg.parts.replace("\n", "<br>")
-                      : msg.parts,
-                  }}
+                  dangerouslySetInnerHTML={{ __html: msg.parts }}
                 />
               </div>
             );
@@ -164,6 +173,7 @@ const Chat = () => {
             }}
             className="w-full p-2 border rounded-md"
             placeholder="Type your message here..."
+            maxLength="500"
             required
           />
           <button
