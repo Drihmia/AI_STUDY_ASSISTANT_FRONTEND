@@ -6,48 +6,55 @@ const Chat = () => {
   const [message, setMessage] = useState("");
   const [prev_key, setPrevKey] = useState("");
   const [question_form_id, setQuestionFormId] = useState("");
-  const messagesEndRef = useRef(null);
+  
+  const messagesEndRef = useRef(null); // Ref for the last message container
 
   const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
 
+  // Load chat history
   const loadChatHistory = async () => {
-    const response = await fetch("/api/history");
-    let data = await response.json();
-    let history = data.history;
+    try {
+      const response = await fetch("/api/history");
+      if (!response.ok) throw new Error("Failed to load history");
+      const data = await response.json();
+      let history = data.history;
 
-    // If no chat history exists, initiate a conversation
-    if (!data.history.length) {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: "Salam" }),
-      });
+      // If no chat history exists, initiate a conversation
+      if (!history.length) {
+        const initResponse = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: "Salam" }),
+        });
 
-      data = await response.json();
+        if (!initResponse.ok) throw new Error("Failed to initiate chat");
+        const initData = await initResponse.json();
 
-      history = [
-        { role: "user", parts: 'salam' },
-        { role: "model", parts: formatMessage({ parts: data.response, role: 'mode' }) },
-      ];
+        history = [
+          { role: "user", parts: "Salam" },
+          { role: "model", parts: formatMessage({ parts: initData.response, role: "model" }) },
+        ];
+      }
 
-    }
-
-    const formattedHistory = history.map((msg) => {
-      return {
+      // Format the message history
+      const formattedHistory = history.map((msg) => ({
         role: msg.role,
         parts: formatMessage(msg),
-      };
-    });
-    setQuestionFormId(data.form_id);
-    setMessages(formattedHistory.length ? formattedHistory : [
-      { 'role': 'ai', 'parts': 'Hello! How can I help you today?' },
-    ]);
+      }));
+
+      setQuestionFormId(data.form_id);
+      setMessages(formattedHistory.length ? formattedHistory : [
+        { role: 'ai', parts: 'Hello! How can I help you today?' },
+      ]);
+    } catch (error) {
+      console.error("Error loading chat history:", error);
+    }
   };
 
-  // Function to handle form submission
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-    const form = event.target;
+  // Consolidated form submit handler
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
     const formData = new FormData(form);
     const formObject = {};
 
@@ -57,64 +64,69 @@ const Chat = () => {
 
     const jsonData = JSON.stringify(formObject);
 
-    fetch("/api/answers", {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: jsonData,
-    })
-      .then(response => response.json())
-      .then(data => {
-        loadChatHistory(); // Refresh the chat history after form submission
-      })
-      .catch(error => console.error('Error:', error));
+    try {
+      const response = await fetch("/api/answers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: jsonData,
+      });
 
-    // Keep the latest message in view
-    const messagesDiv = document.getElementById('messages');
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-  }
+      if (!response.ok) throw new Error("Failed to submit the answer");
+
+      // Reload the chat history after form submission
+      await loadChatHistory();
+
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
+
+  // Handle message submission
+  const handleMessageSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message }),
+      });
+
+      if (!response.ok) throw new Error("Failed to send message");
+
+      const data = await response.json();
+      setMessages([
+        ...messages,
+        { role: "user", parts: formatMessage({ parts: message, role: "user" }) },
+        { role: "model", parts: formatMessage({ parts: data.response, role: "model" }) },
+      ]);
+      setMessage("");
+      setQuestionFormId(data.form_id);
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  };
 
   useEffect(() => {
     loadChatHistory();
   }, []);
 
   useEffect(() => {
+    // Function to scroll to the last message
     const scrollToBottom = () => {
       if (messagesEndRef.current) {
-        messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+        messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
       }
     };
-    setTimeout(scrollToBottom, 1); // Delay scroll adjustment for DOM updates
-  }, [messages]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const response = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message }),
-    });
-
-    const data = await response.json();
-    if (data) {
-      setMessages([
-        ...messages,
-        { role: "user", parts: formatMessage({ parts: message, role: 'user' }) },
-        { role: "model", parts: formatMessage({ parts: data.response, role: 'mode' }) },
-      ]);
-      setMessage("");
-      setQuestionFormId(data.form_id);
-    }
-
-  };
+    scrollToBottom();
+  }, [messages]); // Trigger the scroll after the messages state is updated
 
   useEffect(() => {
     const question_form = document.getElementById(question_form_id);
     if (question_form) {
       question_form.style.display = "block";
-      question_form.addEventListener('submit', handleFormSubmit);
+      question_form.addEventListener("submit", handleSubmit);
     }
   }, [question_form_id]);
-
 
   return (
     <div className="flex flex-col h-screen bg-gray-100">
@@ -127,7 +139,6 @@ const Chat = () => {
       <div className="flex overflow-y-auto flex-col flex-1 w-full max-w-lg mx-auto bg-white shadow-md rounded-lg">
         {/* Messages */}
         <div
-          ref={messagesEndRef}
           id="messages"
           className="flex-1 overflow-y-auto p-4 bg-gray-50 rounded-t-md"
         >
@@ -148,11 +159,13 @@ const Chat = () => {
               </div>
             );
           })}
+          {/* Reference to the last message */}
+          <div ref={messagesEndRef} />
         </div>
 
         {/* Form */}
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleMessageSubmit}
           className="flex items-center space-x-2 p-2 bg-gray-100"
         >
           <textarea
@@ -167,7 +180,7 @@ const Chat = () => {
               }
               if (e.key === "Enter" && prev_key !== "Shift") {
                 e.preventDefault();
-                handleSubmit(e); // Triggers the submit function
+                handleMessageSubmit(e); // Triggers the submit function
               }
               setPrevKey(e.key);
             }}
