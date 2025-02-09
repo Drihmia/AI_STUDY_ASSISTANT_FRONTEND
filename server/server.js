@@ -1,10 +1,19 @@
 const express = require('express');
+const compression = require('compression');
 const path = require('path');
+
+// Create an Express app
 const app = express();
-const port = process.env.PORT || 5000;
+const port = 3001 || process.env.PORT || 3001;
+
+// Compress all HTTP responses
+app.use(compression());
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../build')));
+app.use(express.static(path.join(__dirname, '../build'), {
+  maxAge: '1y',  // Cache for 1 year
+  immutable: true
+}));
 
 // Handle all requests by sending index.html (single-page app behavior)
 app.get('*', (req, res) => {
