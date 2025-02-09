@@ -1,13 +1,16 @@
 import React, { useEffect, useState, useRef } from "react";
 import formatMessage from "./messageformated";
+import Loading from "./Loading";
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
-  const [prev_key, setPrevKey] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const [question_form_id, setQuestionFormId] = useState("");
-  
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
   const messagesEndRef = useRef(null); // Ref for the last message container
+  const textAreaRef = useRef(null); // Ref for the text area
 
   const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
 
@@ -46,6 +49,7 @@ const Chat = () => {
       setMessages(formattedHistory.length ? formattedHistory : [
         { role: 'ai', parts: 'Hello! How can I help you today?' },
       ]);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error loading chat history:", error);
     }
@@ -84,6 +88,20 @@ const Chat = () => {
   // Handle message submission
   const handleMessageSubmit = async (e) => {
     e.preventDefault();
+
+    // Disables the button to prevent multiple submissions
+    setIsButtonDisabled(true);
+
+    // Clears the message input
+    setMessage("");
+
+    // Add the user message to the chat
+    setMessages([
+      ...messages,
+      { role: "user", parts: formatMessage({ parts: message, role: "user" }) },
+    ]);
+
+    // Fetch the response from the server
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -94,13 +112,19 @@ const Chat = () => {
       if (!response.ok) throw new Error("Failed to send message");
 
       const data = await response.json();
+
+      // Add the model response to the chat
       setMessages([
         ...messages,
         { role: "user", parts: formatMessage({ parts: message, role: "user" }) },
         { role: "model", parts: formatMessage({ parts: data.response, role: "model" }) },
       ]);
-      setMessage("");
+
+      // Set the form ID if it exists
       setQuestionFormId(data.form_id);
+
+      // Release the button - enable it
+      setIsButtonDisabled(false);
     } catch (error) {
       console.error("Error sending message:", error);
     }
@@ -128,13 +152,12 @@ const Chat = () => {
     }
   }, [question_form_id]);
 
-  return (
-    <div className="flex flex-col h-screen bg-gray-100">
-      {/* Header */}
-      <header className="bg-white shadow-md w-full text-center py-4">
-        <h1 className="text-3xl font-bold">🌟 AI Study Assistant 🌟</h1>
-      </header>
+  if (isLoading) {
+    return <Loading location="/chat" />;
+  }
 
+  return (
+    <>
       {/* Main Chat Section */}
       <div className="flex overflow-y-auto flex-col flex-1 w-full max-w-lg mx-auto bg-white shadow-md rounded-lg">
         {/* Messages */}
@@ -170,19 +193,20 @@ const Chat = () => {
         >
           <textarea
             id="message"
+            ref={textAreaRef}
             name="message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter" && prev_key === "Shift") {
-                e.preventDefault(); // Prevents adding a new line
-                setMessage((message) => `${message}\n`);
-              }
-              if (e.key === "Enter" && prev_key !== "Shift") {
-                e.preventDefault();
-                handleMessageSubmit(e); // Triggers the submit function
-              }
-              setPrevKey(e.key);
+              //if (e.key === "Enter" && prev_key === "Shift") {
+              //e.preventDefault(); // Prevents adding a new line
+              //setMessage((message) => `${message}\n`);
+              //}
+              //if (e.key === "Enter" && prev_key !== "Shift") {
+              //e.preventDefault();
+              //handleMessageSubmit(e); // Triggers the submit function
+              //}
+              //setPrevKey(e.key);
             }}
             className="w-full p-2 border rounded-md"
             placeholder="Type your message here..."
@@ -191,20 +215,14 @@ const Chat = () => {
           />
           <button
             type="submit"
-            className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+            disabled={isButtonDisabled}
+            className="bg-green-700 text-gray-100 px-4 py-2 rounded-md hover:bg-blue-600"
           >
             Send
           </button>
         </form>
       </div>
-
-      {/* Footer */}
-      <footer className="bg-white text-center py-4">
-        <p className="text-sm text-gray-600">
-          Powered by DRIHMIA AI | Your Personal Study Assistant
-        </p>
-      </footer>
-    </div>
+    </>
   );
 };
 
