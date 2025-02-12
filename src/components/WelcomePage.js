@@ -23,14 +23,15 @@ const WelcomePage = () => {
     localStorage.setItem("lang", lang);
   };
 
+  const languageSelector = [ { 'en': '🇬🇧 EN' }, { 'fr': '🇫🇷 FR' }, { 'ar': '🇲🇦 AR' } ];
   return (
     <div dir={direction} className={`flex justify-center items-center bg-gray-100 p-4 ${orientation}`}>
       <div className="max-w-3xl w-full bg-white p-8 rounded-2xl shadow-lg">
         {/* Language Selector */}
-        <div className="flex justify-end space-x-2 mb-4 center">
-          <button onClick={() => changeLanguage("en")} className="px-3 py-1 bg-gray-200 rounded-md">🇬🇧 EN</button>
-          <button onClick={() => changeLanguage("fr")} className="px-3 py-1 bg-gray-200 rounded-md">🇫🇷 FR</button>
-          <button onClick={() => changeLanguage("ar")} className="px-3 py-1 bg-gray-200 rounded-md">🇲🇦  AR</button>
+        <div className="flex justify-center space-x-2 mb-4 center">
+          { languageSelector.map((lang) => (
+            <button onClick={() => changeLanguage(Object.keys(lang)[0])} className="px-3 py-1 bg-gray-200 rounded-md ml-3">{Object.values(lang)[0]}</button>
+          ))}
         </div>
 
         {/* Title */}
@@ -54,6 +55,15 @@ const WelcomePage = () => {
         <h2 className="text-xl font-semibold text-gray-800 mt-6 mb-3">{t.lessons}</h2>
 
         <div className="space-y-6">
+          <div>
+            <h3 className="text-lg font-semibold text-blue-600">{t.physics_tcs}</h3>
+            <ul className={`list-disc text-gray-700 ${orientation}`}>
+              { t.lessons_list.physics_tcs.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
+          </div>
+
           <div>
             <h3 className="text-lg font-semibold text-blue-600">{t.chemistry_tcs}</h3>
             <ul className={`list-disc text-gray-700 ${orientation}`}>

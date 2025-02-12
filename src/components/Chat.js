@@ -163,16 +163,17 @@ const Chat = () => {
         {/* Messages */}
         <div
           id="messages"
-          className="flex-1 overflow-y-auto p-4 bg-gray-50 rounded-t-md"
+          className="flex-1 overflow-y-auto p-4 bg-gray-100 rounded-t-md"
         >
           {messages.map((msg, index) => {
             const direction = arabicRegex.test(msg.parts) ? "rtl" : "ltr";
+            const divStyleRole = msg.role === "user" ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-900";
             return (
               <div
                 key={index}
                 className={`mb-4 ${
                   direction === "ltr" ? "text-left" : "text-right"
-                }`}
+                } ${divStyleRole} p-2 rounded-md`}
                 dir={direction}
               >
                 <strong>{msg.role === "user" ? "You" : "AI"}:</strong>
@@ -208,7 +209,7 @@ const Chat = () => {
               //}
               //setPrevKey(e.key);
             }}
-            className="w-full p-2 border rounded-md"
+            className="w-full p-2 border-gray-300 rounded-md bg-white"
             placeholder="Type your message here..."
             maxLength="500"
             required
@@ -216,7 +217,7 @@ const Chat = () => {
           <button
             type="submit"
             disabled={isButtonDisabled}
-            className="bg-green-700 text-gray-100 px-4 py-2 rounded-md hover:bg-blue-600"
+            className="bg-orange-500 text-gray-100 px-4 py-2 rounded-md hover:bg-orange-600"
           >
             Send
           </button>

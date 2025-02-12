@@ -42,8 +42,6 @@ const App = () => {
 const LocationFallback = () => {
   const location = useLocation(); // Access location inside the fallback
 
-  console.log('LocationFallback', location);
-
   return <Loading location={location.pathname} />;
 };
 

@@ -2,7 +2,6 @@ import React from "react";
 
 const Loading = ({ location = '/'} ) => {
 
-  console.log('Loading location:', location);
   if (location === "chatSubmitMessage") {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30">
