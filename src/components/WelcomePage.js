@@ -1,33 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import translations from "../locales/translations";
 
-const WelcomePage = () => {
-  // Detect user's language (default to English)
-  const [language, setLanguage] = useState(localStorage.getItem("lang") || "en");
-
+const WelcomePage = ({ language }) => {
   const direction = language === "ar" ? "rtl" : "ltr";
   const orientation = language === "ar" ? "pr-6 text-right" : "pl-6 text-left";
 
   // Get text based on selected language
-  const t = translations[language];
+  const t = translations[language || 'en'];
 
   // Function to change language
-  const changeLanguage = (lang) => {
-    setLanguage(lang);
-    localStorage.setItem("lang", lang);
-  };
+  //const changeLanguage = (lang) => {
+    //setLanguage(lang);
+    //localStorage.setItem("lang", lang);
+  //};
 
-  const languageSelector = [ { 'en': '🇬🇧 EN' }, { 'fr': '🇫🇷 FR' }, { 'ar': '🇲🇦 AR' } ];
   return (
     <div dir={direction} className={`flex justify-center items-center bg-gray-100 p-4 ${orientation}`}>
       <div className="max-w-3xl w-full bg-white p-8 rounded-2xl shadow-lg">
-        {/* Language Selector */}
-        <div className="flex justify-center space-x-2 mb-4 center">
-          { languageSelector.map((lang) => (
-            <button onClick={() => changeLanguage(Object.keys(lang)[0])} className="px-3 py-1 bg-gray-200 rounded-md ml-3">{Object.values(lang)[0]}</button>
-          ))}
-        </div>
 
         {/* Title */}
         <h1 className="text-3xl text-center font-bold text-gray-900 mb-6">

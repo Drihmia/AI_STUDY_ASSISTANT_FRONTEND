@@ -1,4 +1,4 @@
-import { React, useEffect, lazy, Suspense } from 'react';
+import { React, useEffect, lazy, Suspense, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 //import Chat from './components/Chat';
 //import WelcomePage from './components/WelcomePage';
@@ -16,6 +16,13 @@ const Chat = lazy(() => import('./components/Chat'));
 
 
 const App = () => {
+  const [language, setLanguage] = useState(localStorage.getItem("lang") || "en");
+
+
+  const handleLanguageChange = (lang) => {
+    setLanguage(lang);
+    localStorage.setItem("lang", lang);
+  };
 
   useEffect(() => {
     document.title = '🌟 AI Study Assistant 🌟';
@@ -23,19 +30,19 @@ const App = () => {
 
   return (
       <div className="flex flex-col h-screen bg-gray-100">
-        <Header />
+        <Header handleLanguageChange={handleLanguageChange} language={language} />
         <GoogleTag />
         <GoogleTagManager />
         <ConsentBanner />
         <Router>
           <Suspense fallback={<LocationFallback />}>
             <Routes>
-              <Route path="/" element={<WelcomePage />} />
-              <Route path="/chat" element={<Chat />} />
+              <Route path="/" element={<WelcomePage language={language} />} />
+              <Route path="/chat" element={<Chat language={language} />} />
             </Routes>
           </Suspense>
         </Router>
-        <Footer />
+        <Footer language={language} />
       </div>
   );
 };

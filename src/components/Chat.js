@@ -2,7 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import formatMessage from "./messageformated";
 import Loading from "./Loading";
 
-const Chat = () => {
+const Chat = ({ language }) => {
+
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
