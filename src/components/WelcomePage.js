@@ -5,14 +5,9 @@ import translations from "../locales/translations";
 const WelcomePage = () => {
   // Detect user's language (default to English)
   const [language, setLanguage] = useState(localStorage.getItem("lang") || "en");
-  const [direction, setDirection] = useState(language === "ar" ? "rtl" : "ltr");
-  const [orientation, setOrientation] = useState(language === "ar" ? "text-right" : "text-left");
 
-  // Change direction based on selected language
-  useEffect(() => {
-    setDirection(language === "ar" ? "rtl" : "ltr");
-    setOrientation(language === "ar" ? "pr-6 text-right" : "pl-6 text-left");
-  }, [language]);
+  const direction = language === "ar" ? "rtl" : "ltr";
+  const orientation = language === "ar" ? "pr-6 text-right" : "pl-6 text-left";
 
   // Get text based on selected language
   const t = translations[language];
