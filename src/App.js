@@ -29,21 +29,21 @@ const App = () => {
   }, []);
 
   return (
+    <Router>
       <div className="flex flex-col h-screen bg-gray-100">
         <Header handleLanguageChange={handleLanguageChange} language={language} />
         <GoogleTag />
         <GoogleTagManager />
         <ConsentBanner />
-        <Router>
-          <Suspense fallback={<LocationFallback />}>
-            <Routes>
-              <Route path="/" element={<WelcomePage language={language} />} />
-              <Route path="/chat" element={<Chat language={language} />} />
-            </Routes>
-          </Suspense>
-        </Router>
+        <Suspense fallback={<LocationFallback />}>
+          <Routes>
+            <Route path="/" element={<WelcomePage language={language} />} />
+            <Route path="/chat" element={<Chat language={language} />} />
+          </Routes>
+        </Suspense>
         <Footer language={language} />
       </div>
+    </Router>
   );
 };
 const LocationFallback = () => {
