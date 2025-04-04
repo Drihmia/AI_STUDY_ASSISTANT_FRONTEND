@@ -4,12 +4,18 @@ import Loading from "./Loading";
 
 const Chat = ({ language }) => {
 
+  document.title = "AI STUDY ASSISTANT - Chat";
+
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
+  const [error_message, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [question_form_id, setQuestionFormId] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [count, setCount] = useState(4);
 
+  // Initialize the chat with a greeting message depending on the user's preferred language
+  const initialMEssage = {'en': 'Hello!', 'ar': 'السلام عليكم', 'fr': 'Bonjour!'};
   const messagesEndRef = useRef(null); // Ref for the last message container
   const textAreaRef = useRef(null); // Ref for the text area
 
@@ -18,6 +24,7 @@ const Chat = ({ language }) => {
   // Load chat history
   const loadChatHistory = async () => {
     try {
+      setError(null);
       const response = await fetch("/api/history");
       if (!response.ok) throw new Error("Failed to load history");
       const data = await response.json();
@@ -28,14 +35,14 @@ const Chat = ({ language }) => {
         const initResponse = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: "Salam" }),
+          body: JSON.stringify({ message: initialMEssage[language] }),
         });
 
         if (!initResponse.ok) throw new Error("Failed to initiate chat");
         const initData = await initResponse.json();
 
         history = [
-          { role: "user", parts: "Salam" },
+          { role: "user", parts: initialMEssage[language] },
           { role: "model", parts: formatMessage({ parts: initData.response, role: "model" }) },
         ];
       }
@@ -52,7 +59,16 @@ const Chat = ({ language }) => {
       ]);
       setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
+      setError(error);
       console.error("Error loading chat history:", error);
+      setTimeout(() => {
+        setError(null);
+        // Reload chat history after 5 seconds
+        setCount(5);
+        loadChatHistory();
+      }
+        , 5000);
     }
   };
 
@@ -61,15 +77,21 @@ const Chat = ({ language }) => {
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
-    const formObject = {};
+    let formObject = {};
 
     formData.forEach((value, key) => {
       formObject[key] = value;
     });
 
-    const jsonData = JSON.stringify(formObject);
+    setIsButtonDisabled(true);
+
+    // Append the language to the form data
+    formObject.language = language;
+    let jsonData = JSON.stringify(formObject);
+
 
     try {
+      setError(null);
       const response = await fetch("/api/answers", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -81,7 +103,10 @@ const Chat = ({ language }) => {
       // Reload the chat history after form submission
       await loadChatHistory();
 
+      setIsButtonDisabled(false);
     } catch (error) {
+      setIsButtonDisabled(false);
+      setError(error);
       console.error("Error submitting form:", error);
     }
   };
@@ -104,6 +129,7 @@ const Chat = ({ language }) => {
 
     // Fetch the response from the server
     try {
+      setError(null);
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -117,7 +143,7 @@ const Chat = ({ language }) => {
       // Add the model response to the chat
       setMessages([
         ...messages,
-        { role: "user", parts: formatMessage({ parts: message, role: "user" }) },
+        { role: "user", parts: formatMessage({ parts: data.user_message, role: "user" }) },
         { role: "model", parts: formatMessage({ parts: data.response, role: "model" }) },
       ]);
 
@@ -127,9 +153,37 @@ const Chat = ({ language }) => {
       // Release the button - enable it
       setIsButtonDisabled(false);
     } catch (error) {
+      setCount(4);
+      // Release the button - enable it
+      setIsButtonDisabled(false);
+
+      // Add an error message to the chat
+      setError(error);
       console.error("Error sending message:", error);
+
+      setIsButtonDisabled(true);
+      // Remove the last message from the chat after one second
+      setTimeout(() => {
+        setMessages([...messages]);
+        setError(null);
+        setIsButtonDisabled(false);
+      }, 4000);
+
+
+    
     }
   };
+
+  useEffect(() => {
+    if (count <= 0) return; // Stop when count reaches 0
+
+    const timer = setInterval(() => {
+      setCount(prev => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer); // Cleanup on unmount or re-run
+  }, [error_message]);
+
 
   useEffect(() => {
     loadChatHistory();
@@ -143,7 +197,7 @@ const Chat = ({ language }) => {
       }
     };
     scrollToBottom();
-  }, [messages]); // Trigger the scroll after the messages state is updated
+  }, [messages, error_message]); // Trigger the scroll after the messages state is updated
 
   useEffect(() => {
     const question_form = document.getElementById(question_form_id);
@@ -153,14 +207,15 @@ const Chat = ({ language }) => {
     }
   }, [question_form_id]);
 
-  if (isLoading) {
+  if (isLoading && !error_message) {
+    setIsLoading(false);
     return <Loading location="/chat" />;
   }
 
   return (
     <>
       {/* Main Chat Section */}
-      <div className="flex overflow-y-auto flex-col flex-1 w-full max-w-lg mx-auto bg-white shadow-md rounded-lg">
+      <div className="flex overflow-y-auto flex-col flex-1 w-full max-w-5xl mx-auto bg-white shadow-md rounded-lg">
         {/* Messages */}
         <div
           id="messages"
@@ -168,13 +223,13 @@ const Chat = ({ language }) => {
         >
           {messages.map((msg, index) => {
             const direction = arabicRegex.test(msg.parts) ? "rtl" : "ltr";
-            const divStyleRole = msg.role === "user" ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-900";
+            //const divStyleRole = msg.role === "user" ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-900";
             return (
               <div
                 key={index}
-                className={`mb-4 ${
+                className={`mb-4 overflow-x-auto ${
                   direction === "ltr" ? "text-left" : "text-right"
-                } ${divStyleRole} p-2 rounded-md`}
+                }  p-2 rounded-md odd:bg-blue-500 odd:text-white even:bg-gray-200 even:text-gray-900`}
                 dir={direction}
               >
                 <strong>{msg.role === "user" ? "You" : "AI"}:</strong>
@@ -185,6 +240,11 @@ const Chat = ({ language }) => {
             );
           })}
           {/* Reference to the last message */}
+          {error_message && (
+            <div className="text-red-500 text-center bg-red-200 p-2 rounded-md">
+              <p>Something went wrong. Please try again later. <strong>{count}</strong></p> 
+            </div>
+          )}
           <div ref={messagesEndRef} />
         </div>
 
@@ -218,9 +278,10 @@ const Chat = ({ language }) => {
           <button
             type="submit"
             disabled={isButtonDisabled}
-            className="bg-orange-500 text-gray-100 px-4 py-2 rounded-md hover:bg-orange-600"
+            className="bg-orange-500 text-gray-100 px-4 py-2 rounded-md hover:bg-orange-600 active:bg-orange-700 flex justify-center items-center w-24 h-10"
           >
-            Send
+            { isButtonDisabled ? <div className="animate-spin rounded-full h-8 w-8 border-t-4 border-orange-300"></div> : "Send" }
+
           </button>
         </form>
       </div>

@@ -15,6 +15,8 @@ const WelcomePage = ({ language }) => {
     //localStorage.setItem("lang", lang);
   //};
 
+  document.title = t.title;
+
   return (
     <div dir={direction} className={`flex justify-center items-center bg-gray-100 p-4 ${orientation}`}>
       <div className="max-w-3xl w-full bg-white p-8 rounded-2xl shadow-lg">
@@ -32,7 +34,7 @@ const WelcomePage = ({ language }) => {
         <ul className={`list-disc text-gray-700 ${orientation}`}>
 
           {t.feature_list.map((item, index) => (
-            <li key={index} direction orientation>{item}</li>
+            <li key={index} className={`${direction} ${orientation}`}>{item}</li>
           ))}
         </ul>
 

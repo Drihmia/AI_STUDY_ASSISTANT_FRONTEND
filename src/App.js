@@ -18,15 +18,76 @@ const Chat = lazy(() => import('./components/Chat'));
 const App = () => {
   const [language, setLanguage] = useState(localStorage.getItem("lang") || "en");
 
+/*  // Enable PWA*/
+  /*const [deferredPrompt, setDeferredPrompt] = useState(null);*/
+  /*const [showInstallBanner, setShowInstallBanner] = useState(localStorage.getItem("installBanner") || false);*/
+
+  /*useEffect(() => {*/
+    /*const handleBeforeInstallPrompt = (event) => {*/
+      /*event.preventDefault();*/
+      /*console.log("beforeinstallprompt fired");*/
+      /*setDeferredPrompt(event);*/
+      /*setShowInstallBanner(true);*/
+    /*};*/
+
+    /*window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);*/
+
+    /*return () => {*/
+      /*window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);*/
+    /*};*/
+  /*}, []);*/
+
+  /*const handleInstallClick = () => {*/
+    /*console.log('inside install click');*/
+    /*if (deferredPrompt) {*/
+      /*console.log('installing app');*/
+      /*deferredPrompt.prompt();*/
+      /*deferredPrompt.userChoice.then((choiceResult) => {*/
+        /*if (choiceResult.outcome === 'accepted') {*/
+          /*console.log('User installed the app');*/
+        /*} else {*/
+          /*console.log('User dismissed the prompt');*/
+        /*}*/
+        /*setDeferredPrompt(null);*/
+        /*setShowInstallBanner(false);*/
+        /*localStorage.setItem("installBanner", true);*/
+      /*});*/
+    /*}*/
+  /*};*/
+
+  /*const handleIgnoreClick = () => {*/
+    /*setShowInstallBanner(false);*/
+    /*localStorage.setItem("installBanner", true);*/
+  /*}*/
+
+        //{showInstallBanner && (
+          //<div className="fixed bottom-0 left-0 w-full bg-green-500 text-white p-4 text-center shadow-lg">
+            //<p className="inline-block mr-4">Install our app for a better experience!</p>
+            //<div className="inline-block flex space-x-4 items-center">
+              //<button
+                //onClick={handleInstallClick}
+                //className="bg-white text-green-600 px-4 py-2 rounded shadow hover:bg-gray-200 transition mr-4"
+              //>
+                //Install
+              //</button>
+              //<button
+                //onClick={handleIgnoreClick}
+              //className="bg-white text-red-600 px-4 py-2 rounded shadow hover:bg-gray-200 transition"
+            //>
+              //Ignore
+            //</button>
+            //</div>
+          //</div>
+        //)}
 
   const handleLanguageChange = (lang) => {
     setLanguage(lang);
     localStorage.setItem("lang", lang);
   };
 
-  useEffect(() => {
-    document.title = '🌟 AI Study Assistant 🌟';
-  }, []);
+  //useEffect(() => {
+  //document.title = '🌟 AI Study Assistant 🌟';
+  //}, []);
 
   return (
     <Router>

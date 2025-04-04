@@ -19,7 +19,7 @@ const Header = ({handleLanguageChange, language}) => {
         rel={dist}
         role="button"
         replace
-        className="text-3xl sm:text-3xl font-bold"
+        className="text-3xl sm:text-3xl font-bold hover:text-orange-500 active:text-orange-400 has-[:active]:text-orange-900"
         onClick={() => setDist((prev) => prev = window.location.pathname === "/chat" ? "/chat" : "/") }
       >
         🌟 AI Study Assistant 🌟
@@ -27,8 +27,8 @@ const Header = ({handleLanguageChange, language}) => {
       </div>
       {/* Language Selector */}
       <div className="sm:flex sm:justify-center sm:space-x-2 center items-center gap-2">
-        { languageSelector.map((lang) => (
-          <button onClick={() => handleLanguageChange(Object.keys(lang)[0])} className="px-1  sm:px-3 sm:py-1 bg-gray-200 rounded-md ml-3 text-sm sm:text-xl">{Object.values(lang)[0]}</button>
+        { languageSelector.map((lang, index) => (
+          <button key={index} onClick={() => handleLanguageChange(Object.keys(lang)[0])} className="px-1 sm:px-3 sm:py-1 bg-gray-200 rounded-md ml-3 text-sm sm:text-xl">{Object.values(lang)[0]}</button>
         ))}
       </div>
     </header>
