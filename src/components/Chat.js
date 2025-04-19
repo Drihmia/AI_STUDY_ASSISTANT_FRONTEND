@@ -1,18 +1,24 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
+import {  SignedOut, SignInButton, } from "@clerk/clerk-react";
+
 import formatMessage from "./messageformated";
 import Loading from "./Loading";
-
+import { useUser } from '@clerk/clerk-react'
 const Chat = ({ language }) => {
 
-  document.title = "AI STUDY ASSISTANT - Chat";
+  const { user, isLoaded, isSignedIn } = useUser();
+  //console.log(isLoaded, useUser());
+  const user_id = user?.id;
 
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [error_message, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingMsg, setIsLoading] = useState(true);
   const [question_form_id, setQuestionFormId] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [count, setCount] = useState(4);
+  const retryTimerRef = useRef(null);
+
 
   // Initialize the chat with a greeting message depending on the user's preferred language
   const initialMEssage = {'en': 'Hello!', 'ar': 'السلام عليكم', 'fr': 'Bonjour!'};
@@ -22,17 +28,18 @@ const Chat = ({ language }) => {
   const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
 
   // Load chat history
-  const loadChatHistory = async () => {
+  const loadChatHistory = useCallback(async () => {
+    //console.log('user id frm inside loadChatHistory', user_id);
     try {
       setError(null);
-      const response = await fetch("/api/history");
+      const response = await fetch(`/api/history?user_id=${user_id}`)
       if (!response.ok) throw new Error("Failed to load history");
       const data = await response.json();
       let history = data.history;
 
       // If no chat history exists, initiate a conversation
       if (!history.length) {
-        const initResponse = await fetch("/api/chat", {
+        const initResponse = await fetch(`/api/chat?user_id=${user_id}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message: initialMEssage[language] }),
@@ -62,7 +69,8 @@ const Chat = ({ language }) => {
       setIsLoading(false);
       setError(error);
       console.error("Error loading chat history:", error);
-      setTimeout(() => {
+      // in loadChatHistory error
+      retryTimerRef.current = setTimeout(() => {
         setError(null);
         // Reload chat history after 5 seconds
         setCount(5);
@@ -70,10 +78,11 @@ const Chat = ({ language }) => {
       }
         , 5000);
     }
-  };
+    // eslint-disable-next-line
+  }, [user_id, language, isSignedIn]);
 
   // Consolidated form submit handler
-  const handleSubmit = async (e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
@@ -92,7 +101,7 @@ const Chat = ({ language }) => {
 
     try {
       setError(null);
-      const response = await fetch("/api/answers", {
+      const response = await fetch(`/api/answers?user_id=${user_id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: jsonData,
@@ -109,10 +118,10 @@ const Chat = ({ language }) => {
       setError(error);
       console.error("Error submitting form:", error);
     }
-  };
+  }, [language, user_id, loadChatHistory]);
 
   // Handle message submission
-  const handleMessageSubmit = async (e) => {
+  const handleMessageSubmit = useCallback(async (e) => {
     e.preventDefault();
 
     // Disables the button to prevent multiple submissions
@@ -130,7 +139,7 @@ const Chat = ({ language }) => {
     // Fetch the response from the server
     try {
       setError(null);
-      const response = await fetch("/api/chat", {
+      const response = await fetch(`/api/chat?user_id=${user_id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message }),
@@ -141,8 +150,8 @@ const Chat = ({ language }) => {
       const data = await response.json();
 
       // Add the model response to the chat
-      setMessages([
-        ...messages,
+      setMessages(prevMes => [
+        ...prevMes.slice(0,-1),
         { role: "user", parts: formatMessage({ parts: data.user_message, role: "user" }) },
         { role: "model", parts: formatMessage({ parts: data.response, role: "model" }) },
       ]);
@@ -164,7 +173,7 @@ const Chat = ({ language }) => {
       setIsButtonDisabled(true);
       // Remove the last message from the chat after one second
       setTimeout(() => {
-        setMessages([...messages]);
+        setMessages(prevMes => [...prevMes]);
         setError(null);
         setIsButtonDisabled(false);
       }, 4000);
@@ -172,7 +181,7 @@ const Chat = ({ language }) => {
 
     
     }
-  };
+  }, [message, user_id, messages]);
 
   useEffect(() => {
     if (count <= 0) return; // Stop when count reaches 0
@@ -182,12 +191,20 @@ const Chat = ({ language }) => {
     }, 1000);
 
     return () => clearInterval(timer); // Cleanup on unmount or re-run
+    // eslint-disable-next-line
   }, [error_message]);
+
+  useEffect(() => {
+    return () => clearTimeout(retryTimerRef.current);
+  }, []);
 
 
   useEffect(() => {
-    loadChatHistory();
-  }, []);
+    if (isLoadingMsg || (isLoaded && isSignedIn)) {
+      loadChatHistory();
+    }
+    // eslint-disable-next-line
+  }, [isLoadingMsg, isLoaded, isSignedIn]);
 
   useEffect(() => {
     // Function to scroll to the last message
@@ -204,13 +221,25 @@ const Chat = ({ language }) => {
     if (question_form) {
       question_form.style.display = "block";
       question_form.addEventListener("submit", handleSubmit);
+      return () => question_form.removeEventListener("submit", handleSubmit);
     }
+    // eslint-disable-next-line
   }, [question_form_id]);
 
-  if (isLoading && !error_message) {
-    setIsLoading(false);
+  useEffect(() => {
+    if ((isLoadingMsg && !error_message) && isLoaded) {
+      setIsLoading(false);
+    }
+  }, [isLoadingMsg, error_message, isLoaded]);
+
+  if ((isLoadingMsg && !error_message) || (!isLoaded)) {
     return <Loading location="/chat" />;
   }
+
+
+  //if (!isLoaded) {
+  //return <Loading location="login" />;
+  //}
 
   return (
     <>

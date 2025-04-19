@@ -1,17 +1,50 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { ClerkProvider } from '@clerk/clerk-react'
+//import { jwtDecode } from 'jwt-decode';
+
 import './index.css';
 import App from './App';
 //import reportWebVitals from './reportWebVitals';
 import Helmet from './Helmet';
+
+// Import your Publishable Key
+const PUBLISHABLE_KEY =  process.env.REACT_APP_VITE_CLERK_PUBLISHABLE_KEY
+//console.log(`Clerk Publishable Key: ${PUBLISHABLE_KEY}`)
+
+if (!PUBLISHABLE_KEY) {
+  throw new Error("Missing Publishable Key")
+}
+
+
+// Accessing cookies for user id for clerk in __session
+// This is a workaround for Clerk's cookie-based authentication
+// and is not recommended for production use.
+//const cookies = Object.fromEntries(
+  //document.cookie.split('; ').map(c => c.split('='))
+//);
+
+//console.log("Cookies:", cookies);
+//console.log("Session:", cookies['__session']);
+//const token = cookies['__session'];
+//if (token) {
+  //const decoded = jwtDecode(token);
+  //console.log("Decoded Session Info:", decoded);
+//}
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY}
+      afterSignOutUrl="/"
+      signInFallbackRedirectUrl="/chat"
+      signUpFallbackRedirectUrl="/chat"
+    >
     <Helmet />
-    <App />
+      <App />
+    </ClerkProvider>
   </React.StrictMode>
 );
 

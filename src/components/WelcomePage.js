@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { SignedIn, SignedOut, SignInButton } from '@clerk/clerk-react'
 import translations from "../locales/translations";
 
 const WelcomePage = ({ language }) => {
@@ -81,16 +82,26 @@ const WelcomePage = ({ language }) => {
 
         {/* Button */}
         <div className="flex justify-center mt-8">
-          <Link
-            to="/chat"
-            href="/chat"
-            rel="/"
-            role="button"
-            replace
-            className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-300 text-lg font-semibold shadow-md"
-          >
-            {t.ai_button}
-          </Link>
+          <SignedIn>
+            <Link
+              to="/chat"
+              href="/chat"
+              rel="/"
+              role="button"
+              replace
+              className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-300 text-lg font-semibold shadow-md"
+            >
+              {t.ai_button}
+            </Link>
+          </SignedIn>
+
+          <SignedOut>
+            <SignInButton mode="modal">
+              <button className="transition-all duration-300 px-4 py-2 text-sm sm:text-base font-semibold bg-gradient-to-r from-blue-400 to-blue-600 text-white rounded-lg shadow-md hover:scale-105 hover:from-blue-500 hover:to-blue-700">
+                🔐 Sign In
+              </button>
+            </SignInButton>
+          </SignedOut>
         </div>
       </div>
     </div>

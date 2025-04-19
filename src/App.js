@@ -12,7 +12,6 @@ import Loading from './components/Loading';
 
 const WelcomePage = lazy(() => import('./components/WelcomePage'));
 const Chat = lazy(() => import('./components/Chat'));
-//const Loading = () => <div>Loading...</div>;
 
 
 const App = () => {
