@@ -35,7 +35,7 @@ const Header = ({handleLanguageChange, language}) => {
           <button
             key={index}
             onClick={() => handleLanguageChange(Object.keys(lang)[0])}
-            className="transition px-2 sm:px-3 py-1 bg-gray-100 text-gray-800 hover:bg-orange-100 rounded-md text-sm sm:text-base"
+            className={ `transition px-2 sm:px-3 py-1 bg-gray-100 text-gray-800 hover:bg-orange-100 rounded-md text-sm sm:text-base ${language === Object.keys(lang)[0] ? "border-2 bg-orange-100 shadow-md" : ""}` }
           >
             {Object.values(lang)[0]}
           </button>

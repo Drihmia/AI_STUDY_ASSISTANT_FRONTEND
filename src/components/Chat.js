@@ -12,6 +12,7 @@ const Chat = ({ language }) => {
 
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
+  const [sendingMessage, setSendingMessage] = useState(false);
   const [error_message, setError] = useState(null);
   const [isLoadingMsg, setIsLoading] = useState(true);
   const [question_form_id, setQuestionFormId] = useState("");
@@ -31,7 +32,9 @@ const Chat = ({ language }) => {
   const loadChatHistory = useCallback(async () => {
     //console.log('user id frm inside loadChatHistory', user_id);
     try {
+      if (!isSignedIn) return;
       setError(null);
+      setIsLoading(true);
       const response = await fetch(`/api/history?user_id=${user_id}`)
       if (!response.ok) throw new Error("Failed to load history");
       const data = await response.json();
@@ -61,12 +64,8 @@ const Chat = ({ language }) => {
       }));
 
       setQuestionFormId(data.form_id);
-      setMessages(formattedHistory.length ? formattedHistory : [
-        { role: 'ai', parts: 'Hello! How can I help you today?' },
-      ]);
-      setIsLoading(false);
+      setMessages(formattedHistory);
     } catch (error) {
-      setIsLoading(false);
       setError(error);
       console.error("Error loading chat history:", error);
       // in loadChatHistory error
@@ -77,6 +76,8 @@ const Chat = ({ language }) => {
         loadChatHistory();
       }
         , 5000);
+    } finally {
+      setIsLoading(false);
     }
     // eslint-disable-next-line
   }, [user_id, language, isSignedIn]);
@@ -112,11 +113,12 @@ const Chat = ({ language }) => {
       // Reload the chat history after form submission
       await loadChatHistory();
 
-      setIsButtonDisabled(false);
     } catch (error) {
-      setIsButtonDisabled(false);
       setError(error);
       console.error("Error submitting form:", error);
+
+    } finally {
+      setIsButtonDisabled(false);
     }
   }, [language, user_id, loadChatHistory]);
 
@@ -126,9 +128,8 @@ const Chat = ({ language }) => {
 
     // Disables the button to prevent multiple submissions
     setIsButtonDisabled(true);
-
-    // Clears the message input
-    setMessage("");
+    setError(null);
+    setSendingMessage(true);
 
     // Add the user message to the chat
     setMessages([
@@ -138,7 +139,6 @@ const Chat = ({ language }) => {
 
     // Fetch the response from the server
     try {
-      setError(null);
       const response = await fetch(`/api/chat?user_id=${user_id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -161,25 +161,26 @@ const Chat = ({ language }) => {
 
       // Release the button - enable it
       setIsButtonDisabled(false);
+
+      // Clears the message input
+      setMessage("");
+      setSendingMessage(false);
     } catch (error) {
       setCount(4);
-      // Release the button - enable it
-      setIsButtonDisabled(false);
 
       // Add an error message to the chat
       setError(error);
       console.error("Error sending message:", error);
 
       setIsButtonDisabled(true);
-      // Remove the last message from the chat after one second
+
+      // Remove the last message from the chat after 4 seconds
       setTimeout(() => {
-        setMessages(prevMes => [...prevMes]);
+        setSendingMessage(false);
+        setMessages(prevMes => [...prevMes.slice(0,-1)]);
         setError(null);
         setIsButtonDisabled(false);
       }, 4000);
-
-
-    
     }
   }, [message, user_id, messages]);
 
@@ -200,11 +201,11 @@ const Chat = ({ language }) => {
 
 
   useEffect(() => {
-    if (isLoadingMsg || (isLoaded && isSignedIn)) {
+    if (isSignedIn) {
       loadChatHistory();
     }
     // eslint-disable-next-line
-  }, [isLoadingMsg, isLoaded, isSignedIn]);
+  }, [isSignedIn]);
 
   useEffect(() => {
     // Function to scroll to the last message
@@ -227,15 +228,34 @@ const Chat = ({ language }) => {
   }, [question_form_id]);
 
   useEffect(() => {
-    if ((isLoadingMsg && !error_message) && isLoaded) {
+    if ((isLoadingMsg && !error_message)) {
       setIsLoading(false);
     }
-  }, [isLoadingMsg, error_message, isLoaded]);
+  }, [isLoadingMsg, error_message]);
 
   if ((isLoadingMsg && !error_message) || (!isLoaded)) {
     return <Loading location="/chat" />;
   }
 
+  if (isLoaded && !isSignedIn) {
+    return (
+      <div className="flex overflow-y-auto flex-col flex-1 w-full max-w-5xl mx-auto bg-white shadow-md rounded-lg my-4">
+        <div className="flex justify-center items-center h-screen">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold">Please Sign In</h1>
+            <p className="m-4">You need to sign in to access the chat.</p>
+            <SignedOut>
+              <SignInButton mode="modal">
+                <button className="transition-all duration-300 px-4 py-2 text-sm sm:text-base font-semibold bg-gradient-to-r from-orange-400 to-orange-600 text-white rounded-lg shadow-md hover:scale-105 hover:from-orange-500 hover:to-orange-700">
+                  🔐 Sign In
+                </button>
+              </SignInButton>
+            </SignedOut>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   //if (!isLoaded) {
   //return <Loading location="login" />;
@@ -299,9 +319,9 @@ const Chat = ({ language }) => {
               //}
               //setPrevKey(e.key);
             }}
-            className="w-full p-2 border-gray-300 rounded-md bg-white"
+            className={ `w-full p-2 border-gray-300 rounded-md bg-white ${sendingMessage ? "text-gray-300" : "text-gray-900"} focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500`}
             placeholder="Type your message here..."
-            maxLength="500"
+            maxLength="1000"
             required
           />
           <button
