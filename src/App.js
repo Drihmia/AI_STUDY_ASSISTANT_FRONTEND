@@ -1,20 +1,31 @@
-import { React, useEffect, lazy, Suspense, useState } from 'react';
+import { React, lazy, Suspense, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { ClerkProvider } from '@clerk/clerk-react'
+import { frFR, arSA, enUS } from "@clerk/localizations";
+
+
 //import Chat from './components/Chat';
 //import WelcomePage from './components/WelcomePage';
+import GlobalContextProviderLayout from './context/GlobalContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import Loading from './components/Loading';
+
 import GoogleTag from './components/GoogleTag';
 import GoogleTagManager from './components/GoogleTagManager';
 import ConsentBanner from "./components/ConsentBanner";
-import Loading from './components/Loading';
 
 
 const WelcomePage = lazy(() => import('./components/WelcomePage'));
 const Chat = lazy(() => import('./components/Chat'));
 
+const localizationMap = {
+  en: enUS,
+  fr: frFR,
+  ar: arSA,
+};
 
-const App = () => {
+const App = ({ publishableKey }) => {
   const [language, setLanguage] = useState(localStorage.getItem("lang") || "en");
 
 /*  // Enable PWA*/
@@ -84,26 +95,32 @@ const App = () => {
     localStorage.setItem("lang", lang);
   };
 
-  //useEffect(() => {
-  //document.title = '🌟 AI Study Assistant 🌟';
-  //}, []);
-
   return (
-    <Router>
-      <div className="flex flex-col h-screen bg-gray-100">
-        <Header handleLanguageChange={handleLanguageChange} language={language} />
-        <GoogleTag />
-        <GoogleTagManager />
-        <ConsentBanner />
-        <Suspense fallback={<LocationFallback />}>
-          <Routes>
-            <Route path="/" element={<WelcomePage language={language} />} />
-            <Route path="/chat" element={<Chat language={language} />} />
-          </Routes>
-        </Suspense>
-        <Footer language={language} />
-      </div>
-    </Router>
+    <GlobalContextProviderLayout language={language} handleLanguageChange={handleLanguageChange}>
+      <ClerkProvider publishableKey={publishableKey}
+        afterSignOutUrl="/"
+        signInFallbackRedirectUrl="/chat"
+        signUpFallbackRedirectUrl="/chat"
+        localization={localizationMap[language] || localizationMap.fr}
+      >
+        <div className="flex flex-col h-screen bg-gray-100">
+          <GoogleTag />
+          <GoogleTagManager />
+          <ConsentBanner />
+          <Router>
+            <Header />
+            <Suspense fallback={<LocationFallback />}>
+              <Routes>
+                <Route path="/" element={<WelcomePage  />} />
+                <Route path="/chat" element={<Chat />} />
+              </Routes>
+            </Suspense>
+          </Router>
+          <Footer/>
+        </div>
+      </ClerkProvider>
+
+    </GlobalContextProviderLayout>
   );
 };
 const LocationFallback = () => {

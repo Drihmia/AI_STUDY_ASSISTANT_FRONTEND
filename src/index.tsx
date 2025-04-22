@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ClerkProvider } from '@clerk/clerk-react'
 //import { jwtDecode } from 'jwt-decode';
 
 import './index.css';
@@ -37,14 +36,8 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY}
-      afterSignOutUrl="/"
-      signInFallbackRedirectUrl="/chat"
-      signUpFallbackRedirectUrl="/chat"
-    >
     <Helmet />
-      <App />
-    </ClerkProvider>
+    <App publishableKey={PUBLISHABLE_KEY} />
   </React.StrictMode>
 );
 

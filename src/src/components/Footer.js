@@ -1,9 +1,6 @@
 import React from 'react';
-//import { useContext } from 'react';
-//import { GlobalContext } from '../context/GlobalContext';
 
 const Footer = () => {
-  //const { language } = useContext(GlobalContext);
   return (
     <footer className="bg-white text-center py-4">
       <p className="text-sm text-gray-600">

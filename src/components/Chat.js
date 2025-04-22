@@ -1,10 +1,15 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef, useCallback, useContext } from "react";
+import { useUser } from '@clerk/clerk-react'
 import {  SignedOut, SignInButton, } from "@clerk/clerk-react";
 
 import formatMessage from "./messageformated";
 import Loading from "./Loading";
-import { useUser } from '@clerk/clerk-react'
-const Chat = ({ language }) => {
+import { GlobalContext } from "../context/GlobalContext";
+
+
+const Chat = () => {
+  // Get the language from the global context
+  const { language } = useContext(GlobalContext);
 
   const { user, isLoaded, isSignedIn } = useUser();
   //console.log(isLoaded, useUser());

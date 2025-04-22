@@ -1,11 +1,14 @@
 // Purpose: Header component for the application.
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { SignedIn, SignedOut, SignInButton, UserButton, GoogleOneTap } from "@clerk/clerk-react";
+import { GlobalContext } from "../context/GlobalContext";
 
 
-const Header = ({handleLanguageChange, language}) => {
+const Header = () => {
   const [dist, setDist] = useState(window.location.pathname !== "/chat" ? "/chat" : "/");
+  const { language, handleLanguageChange } = useContext(GlobalContext);
+
 
 
   // Language Selector
