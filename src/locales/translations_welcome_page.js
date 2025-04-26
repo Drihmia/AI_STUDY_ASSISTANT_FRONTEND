@@ -5,6 +5,7 @@ const translations = {
     features: "Key Features",
     lessons: "Available Lessons",
     ai_button: "🚀 Start Learning with AI",
+    sign_in: "Sign In",
     feature_list: [
       "📚 **Interactive Learning**: Learn at your own pace, anytime, anywhere.",
       "📝 **Smart Quizzes**: QCM, True/False, Fill in the blank, and Multiple Choice.",
@@ -64,6 +65,7 @@ const translations = {
     features: "Principales Fonctionnalités",
     lessons: "Cours Disponibles",
     ai_button: "🚀 Commencez l'Apprentissage avec l'IA",
+    sign_in: "Se Connecter",
     feature_list: [
       "📚 **Apprentissage interactif** : Apprenez à votre rythme, où et quand vous voulez.",
       "📝 **Quiz intelligents** : QCM, Vrai/Faux, Remplir les blancs, Sélection multiple.",
@@ -122,6 +124,7 @@ const translations = {
     features: "الميزات الرئيسية",
     lessons: "الدروس المتاحة",
     ai_button: "🚀 ابدأ التعلم مع الذكاء الاصطناعي",
+    sign_in: "تسجيل الدخول",
     feature_list: [
       "📚 **تعلم تفاعلي**: تعلم وفقًا لسرعتك الخاصة، في أي وقت وأي مكان.",
       "📝 **اختبارات ذكية**: أسئلة متعددة الاختيارات، صح أو خطأ، املأ الفراغات، اختر الإجابة الصحيحة.",

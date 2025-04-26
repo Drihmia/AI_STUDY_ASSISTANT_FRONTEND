@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { SignedIn, SignedOut, SignInButton } from '@clerk/clerk-react'
-import translations from "../locales/translations";
+import translations from "../locales/translations_welcome_page";
 import { GlobalContext } from "../context/GlobalContext";
 
 const WelcomePage = () => {
@@ -23,7 +23,7 @@ const WelcomePage = () => {
   document.title = t.title;
 
   return (
-    <div dir={direction} className={`flex justify-center items-center bg-gray-100 p-4 ${orientation}`}>
+    <div dir={direction} className={`flex justify-center  bg-gray-100 p-4 ${orientation} overflow-y-auto items-start`}>
       <div className="max-w-3xl w-full bg-white p-8 rounded-2xl shadow-lg">
 
         {/* Title */}
@@ -102,7 +102,7 @@ const WelcomePage = () => {
           <SignedOut>
             <SignInButton mode="modal">
               <button className="transition-all duration-300 px-4 py-2 text-sm sm:text-base font-semibold bg-gradient-to-r from-blue-400 to-blue-600 text-white rounded-lg shadow-md hover:scale-105 hover:from-blue-500 hover:to-blue-700">
-                🔐 Sign In
+                🔐 {t.sign_in}
               </button>
             </SignInButton>
           </SignedOut>

@@ -33,6 +33,7 @@ const Chat = () => {
 
   const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
 
+  //console.log("Chat component rendered", count, error_message);
   // Load chat history
   const loadChatHistory = useCallback(async () => {
     //console.log('user id frm inside loadChatHistory', user_id);
@@ -190,10 +191,16 @@ const Chat = () => {
   }, [message, user_id, messages]);
 
   useEffect(() => {
-    if (count <= 0) return; // Stop when count reaches 0
+    if (count <= 0 || !error_message) return; // Stop when count reaches 0
 
     const timer = setInterval(() => {
-      setCount(prev => prev - 1);
+      setCount(prev => {
+        if (prev <= 0) {
+          clearInterval(timer); // Stop the timer when count reaches 0
+          return prev;
+        }
+        return prev - 1
+      });
     }, 1000);
 
     return () => clearInterval(timer); // Cleanup on unmount or re-run
