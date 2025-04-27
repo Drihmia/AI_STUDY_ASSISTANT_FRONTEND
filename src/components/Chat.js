@@ -354,6 +354,8 @@ const Chat = () => {
           <textarea
             id="message"
             rows="2"
+            autoFocus
+            aria-label="Type your message"
             ref={textAreaRef}
             name="message"
             value={message}
@@ -381,6 +383,7 @@ const Chat = () => {
           <button
             type="submit"
             disabled={isButtonDisabled}
+            aria-label="Send message"
             className="h-full bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 active:bg-orange-700 flex justify-center items-center w-24 h-[85%]"
           >
             {isButtonDisabled ? (

@@ -1,13 +1,17 @@
 // Purpose: Header component for the application.
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { SignedIn, SignedOut, SignInButton, UserButton, GoogleOneTap } from "@clerk/clerk-react";
+
 import { GlobalContext } from "../context/GlobalContext";
+import { translations } from "../locales/translations_header_footer"; // Import translations
 
 
 const Header = () => {
   const [dist, setDist] = useState(window.location.pathname !== "/chat" ? "/chat" : "/");
   const { language, handleLanguageChange } = useContext(GlobalContext);
+  const t = useMemo(() => translations[language || "fr"].header, [language]);
+
 
 
 
@@ -27,7 +31,7 @@ const Header = () => {
               )
           }
         >
-          🌟 AI Study Assistant 🌟
+          { t.title }
         </Link>
       </div>
 
@@ -37,6 +41,7 @@ const Header = () => {
         {languageSelector.map((lang, index) => (
           <button
             key={index}
+            alt={Object.keys(lang)[0]}
             onClick={() => handleLanguageChange(Object.keys(lang)[0])}
             className={ `transition px-2 sm:px-3 py-1 bg-gray-100 text-gray-800 hover:bg-orange-100 rounded-md text-sm sm:text-base ${language === Object.keys(lang)[0] ? "border-2 bg-orange-100 shadow-md" : ""}` }
           >
@@ -48,7 +53,7 @@ const Header = () => {
         <SignedOut>
           <SignInButton mode="modal">
             <button className="transition-all duration-300 px-4 py-2 text-sm sm:text-base font-semibold bg-gradient-to-r from-orange-400 to-orange-600 text-white rounded-lg shadow-md hover:scale-105 hover:from-orange-500 hover:to-orange-700">
-              🔐 Sign In
+              {t.signInButton}
             </button>
           </SignInButton>
         <GoogleOneTap />
