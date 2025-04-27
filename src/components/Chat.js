@@ -33,7 +33,8 @@ const Chat = () => {
 
   const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
 
-  //console.log("Chat component rendered", count, error_message);
+  console.log("Chat component rendered", count, error_message);
+
   // Load chat history
   const loadChatHistory = useCallback(async () => {
     //console.log('user id frm inside loadChatHistory', user_id);
@@ -42,8 +43,11 @@ const Chat = () => {
       setError(null);
       setIsLoading(true);
       const response = await fetch(`/api/history?user_id=${user_id}`)
-      if (!response.ok) throw new Error("Failed to load history");
       const data = await response.json();
+      if ('error' in data) {
+        throw new Error(data.error);
+      }
+      if (!response.ok) throw new Error("Failed to load history");
       let history = data.history;
 
       // If no chat history exists, initiate a conversation
@@ -54,8 +58,11 @@ const Chat = () => {
           body: JSON.stringify({ message: initialMEssage[language] }),
         });
 
-        if (!initResponse.ok) throw new Error("Failed to initiate chat");
         const initData = await initResponse.json();
+        if ('error' in initData) {
+          throw new Error(initData.error);
+        }
+        if (!initResponse.ok) throw new Error("Failed to initiate chat");
 
         history = [
           { role: "user", parts: initialMEssage[language] },
@@ -72,8 +79,8 @@ const Chat = () => {
       setQuestionFormId(data.form_id);
       setMessages(formattedHistory);
     } catch (error) {
-      setError(error);
-      console.error("Error loading chat history:", error);
+      setError(error.message);
+      console.error("Error loading chat history:", error.message);
       // in loadChatHistory error
       retryTimerRef.current = setTimeout(() => {
         setError(null);
@@ -120,7 +127,7 @@ const Chat = () => {
       await loadChatHistory();
 
     } catch (error) {
-      setError(error);
+      setError(error.message);
       console.error("Error submitting form:", error);
 
     } finally {
@@ -151,9 +158,12 @@ const Chat = () => {
         body: JSON.stringify({ message }),
       });
 
-      if (!response.ok) throw new Error("Failed to send message");
-
       const data = await response.json();
+      if ('error' in data) {
+        throw new Error(data.error);
+      }
+
+      if (!response.ok) throw new Error("Failed to send message");
 
       // Add the model response to the chat
       setMessages(prevMes => [
@@ -303,7 +313,7 @@ const Chat = () => {
           {/* Reference to the last message */}
           {error_message && (
             <div className="text-red-500 text-center bg-red-200 p-2 rounded-md">
-              <p>Something went wrong. Please try again later. <strong>{count}</strong></p> 
+              <p>{ error_message } <strong>{count}</strong></p> 
             </div>
           )}
           <div ref={messagesEndRef} />

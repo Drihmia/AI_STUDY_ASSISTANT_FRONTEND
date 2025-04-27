@@ -23,7 +23,7 @@ const WelcomePage = () => {
   document.title = t.title;
 
   return (
-    <div dir={direction} className={`flex justify-center  bg-gray-100 p-4 ${orientation} overflow-y-auto items-start`}>
+    <div dir={direction} className={`flex justify-center items-start bg-gray-100 p-4 ${orientation} overflow-y-auto`}>
       <div className="max-w-3xl w-full bg-white p-8 rounded-2xl shadow-lg">
 
         {/* Title */}

@@ -15,7 +15,7 @@ const Header = () => {
   const languageSelector = [ { 'en': '🇬🇧 EN' }, { 'fr': '🇫🇷 FR' }, { 'ar': '🇲🇦 AR' } ];
 
   return (
-    <header className="bg-white shadow-md w-full text-center py-4 flex flex-col sm:flex-row justify-between items-center px-4">
+    <header className="bg-white shadow-md w-full text-center py-4 flex flex-col sm:flex-row justify-between items-center px-4 backdrop-blur-lg rounded-lg">
       {/* Logo */}
       <div>
         <Link

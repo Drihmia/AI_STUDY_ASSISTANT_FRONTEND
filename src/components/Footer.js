@@ -5,7 +5,7 @@ import React from 'react';
 const Footer = () => {
   //const { language } = useContext(GlobalContext);
   return (
-    <footer className="bg-white text-center py-4">
+    <footer className="bg-white text-center py-4 backdrop-blur-md shadow-lg rounded-lg w-full">
       <p className="text-sm text-gray-600">
         Powered by DRIHMIA AI | Your Personal Study Assistant
       </p>
