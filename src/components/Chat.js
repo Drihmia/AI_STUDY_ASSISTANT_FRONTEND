@@ -292,12 +292,12 @@ const Chat = () => {
       <div className="flex overflow-y-auto flex-col flex-1 w-full max-w-5xl mx-auto bg-white shadow-md rounded-lg my-4">
         <div className="flex justify-center items-center h-screen">
           <div className="text-center">
-            <h1 className="text-2xl font-bold">Please Sign In</h1>
-            <p className="m-4">You need to sign in to access the chat.</p>
+            <h1 className="text-2xl font-bold">{ t.pleaseSignIn }</h1>
+            <p className="m-4">{ t.mustSignIn }</p>
             <SignedOut>
               <SignInButton mode="modal">
                 <button className="transition-all duration-300 px-4 py-2 text-sm sm:text-base font-semibold bg-gradient-to-r from-orange-400 to-orange-600 text-white rounded-lg shadow-md hover:scale-105 hover:from-orange-500 hover:to-orange-700">
-                  🔐 Sign In
+                  { t.signIn }
                 </button>
               </SignInButton>
             </SignedOut>

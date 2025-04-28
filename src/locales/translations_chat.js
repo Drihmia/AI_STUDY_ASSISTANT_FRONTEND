@@ -9,6 +9,9 @@ export const translations = {
     FailedToInitializeChat: "Failed to initialize chat.",
     retryMessage: "Retry",
     placeholderText: "Type your message here...",
+    mustSignIn: "You need to sign in to access the chat.",
+    pleaseSignIn: "Please Sign In",
+    signIn: "🔐 Sign In",
   },
   fr: {
     title: "🌟 ASSISTANT D'ÉTUDE IA - Chat 🌟",
@@ -18,6 +21,9 @@ export const translations = {
     FailedToInitializeChat: "Échec de l'initialisation du chat.",
     retryMessage: "Réessayer",
     placeholderText: "Tapez votre message ici...",
+    mustSignIn: "Vous devez vous connecter pour accéder au chat.",
+    pleaseSignIn: "Veuillez vous connecter",
+    signIn: "🔐 Se connecter",
   },
   ar: {
     title: "🌟 مساعد الدراسة الذكي - دردشة 🌟",
@@ -27,5 +33,8 @@ export const translations = {
     FailedToInitializeChat: "فشل في تهيئة الدردشة.",
     retryMessage: "إعادة المحاولة",
     placeholderText: "...اكتب رسالتك هنا",
+    mustSignIn: "يجب عليك تسجيل الدخول للوصول إلى الدردشة.",
+    pleaseSignIn: "يرجى تسجيل الدخول",
+    signIn: "🔐 تسجيل الدخول",
   },
 };

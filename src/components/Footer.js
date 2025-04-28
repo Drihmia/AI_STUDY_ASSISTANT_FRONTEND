@@ -10,7 +10,7 @@ const Footer = () => {
   return (
     <footer className="bg-white text-center py-4 backdrop-blur-md shadow-lg rounded-lg w-full">
       <p className="text-sm text-gray-600">
-        <a href="https://www.linkedin.com/in/rdrihmia/" target="_" className="text-gray-600 hover:underline">{t.poweredBy} </a>
+        <a href="https://www.linkedin.com/in/rdrihmia/" target="_" className="text-gray-600 hover:underline  hover:text-orange-700 ">{t.poweredBy} </a>
       </p>
     </footer>
   );
