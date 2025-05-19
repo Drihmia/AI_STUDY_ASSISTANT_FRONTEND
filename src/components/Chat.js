@@ -57,7 +57,7 @@ const Chat = () => {
       }
 
       const data = await response.json();
-      if ('error' in data) {
+      if ('error' in data && !response.ok) {
         throw new Error(data.error);
       }
       if (!response.ok) throw new Error(t.FailedToLoadHistory);
@@ -183,7 +183,7 @@ const Chat = () => {
 
       // if the code start with 5xx
       if (response.status >= 500) {
-        throw new Error(t.FailedToLoadHistory);
+        throw new Error(t.FailedToSendMessage);
       }
 
       const data = await response.json();
