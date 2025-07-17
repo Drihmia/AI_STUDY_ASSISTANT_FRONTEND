@@ -1,0 +1,6 @@
+--2025-01-31 22:44:27--  https://takeout-download-drive-eu.usercontent.google.com/download/favicon_io.zip-20250131T224409Z-001.zip?j=3936ebfa-90c5-47d7-83a0-3f1e5b5cbb20
+Resolving takeout-download-drive-eu.usercontent.google.com (takeout-download-drive-eu.usercontent.google.com)... 142.250.187.225, 2a00:1450:4009:827::2001
+Connecting to takeout-download-drive-eu.usercontent.google.com (takeout-download-drive-eu.usercontent.google.com)|142.250.187.225|:443... connected.
+HTTP request sent, awaiting response... 400 Bad Request
+2025-01-31 22:44:27 ERROR 400: Bad Request.
+

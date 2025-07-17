@@ -1,6 +1,6 @@
 const formatMessage = ({ parts, role }) => {
-  console.log('parts', parts);
-  console.log('role', role);
+  //console.log('parts', parts);
+  //console.log('role', role);
   parts = parts[0] === '\n' ? parts : '\n' + parts;
   if (role === 'user') {
     parts = parts.replace(/ /g, "&ensp;");

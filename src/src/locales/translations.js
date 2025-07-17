@@ -19,7 +19,6 @@ const translations = {
     lessons_list: {
       physics_tcs: [
         "Example of Mechanical Actions - CC",
-        "Principle of Inertia - CC",
         "Equilibrium of a Solid Body Subjected to Two Forces - CC",
       ],
       chemistry_tcs: [
@@ -64,7 +63,6 @@ const translations = {
     lessons_list: {
       physics_tcs: [
         "Example des actions mécaniques - TC",
-        "Principe d'inertie - TC",
         "Équilibre d'un corps solide soumis à deux forces - TC",
       ],
       chemistry_tcs: [
@@ -108,14 +106,13 @@ const translations = {
     physics_bac: "🔹 الفيزياء (1BAC-EX)",
     lessons_list: {
       physics_tcs: [
-        "أمثلة لتأثيرات ميكانيكية - جدع علمي",
-        "مبدا القصور - جدع علمي",
-        "توازن جسم صلب خاضع لقوتين - جدع علمي",
+        "أمثلة لتأثيرات ميكانيكية - حدع علمي",
+        "توازن جسم صلب خاضع لقوتين - حدع علمي",
       ],
       chemistry_tcs: [
-        "نموذج الذرة - جدع علمي",
-        "هندسة بعض الجزيئات - جدع علمي",
-        "التصنيف الدوري للعناصر - جدع علمي",
+        "نموذج الذرة - حدع علمي",
+        "هندسة بعض الجزيئات - حدع علمي",
+        "التصنيف الدوري للعناصر - حدع علمي",
       ],
       chemistry_bac: [
         "CH0: لماذا نقيس في الكيمياء؟",
