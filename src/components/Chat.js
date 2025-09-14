@@ -159,7 +159,7 @@ const Chat = () => {
     } finally {
       setIsButtonDisabled(false);
     }
-  }, [language, user_id, loadChatHistory, t]);
+  }, [language, user_id, loadChatHistory, t, FRONT_END_URL]);
 
   // Handle message submission
   const handleMessageSubmit = useCallback(async (e) => {
@@ -229,7 +229,7 @@ const Chat = () => {
         setIsButtonDisabled(false);
       }, 4000);
     }
-  }, [message, user_id, messages, t]);
+  }, [message, user_id, messages, t, FRONT_END_URL]);
 
   useEffect(() => {
     if (count <= 0 || !error_message) return; // Stop when count reaches 0
