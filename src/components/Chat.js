@@ -10,6 +10,9 @@ import { translations } from "../locales/translations_chat"; // Import translati
 
 
 const Chat = () => {
+
+  const FRONT_END_URL = process.env.REACT_APP_FRONTEND_URL || "http://localhost:3000";
+  console.log("FRONT_END_URL:", FRONT_END_URL);
   // Get the language from the global context
   const { language } = useContext(GlobalContext);
 
@@ -49,7 +52,7 @@ const Chat = () => {
       if (!isSignedIn) return;
       setError(null);
       setIsLoading(true);
-      const response = await fetch(`/api/history?user_id=${user_id}`)
+      const response = await fetch(`${FRONT_END_URL}/api/history?user_id=${user_id}`)
 
       // if the code start with 5xx or 4xx
       if (response.status >= 500) {
@@ -65,7 +68,7 @@ const Chat = () => {
 
       // If no chat history exists, initiate a conversation
       if (!history.length) {
-        const initResponse = await fetch(`/api/chat?user_id=${user_id}`, {
+        const initResponse = await fetch(`${FRONT_END_URL}/api/chat?user_id=${user_id}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message: t.greeting }),
@@ -133,7 +136,7 @@ const Chat = () => {
 
     try {
       setError(null);
-      const response = await fetch(`/api/answers?user_id=${user_id}`, {
+      const response = await fetch(`${FRONT_END_URL}/api/answers?user_id=${user_id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: jsonData,
@@ -175,7 +178,7 @@ const Chat = () => {
 
     // Fetch the response from the server
     try {
-      const response = await fetch(`/api/chat?user_id=${user_id}`, {
+      const response = await fetch(`${FRONT_END_URL}/api/chat?user_id=${user_id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message }),
