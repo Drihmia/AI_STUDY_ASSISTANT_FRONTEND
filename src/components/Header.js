@@ -2,7 +2,6 @@
 import React, { useState, useContext, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { SignedIn, SignedOut, SignInButton, UserButton, GoogleOneTap } from "@clerk/clerk-react";
-import { ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
 
 
 import { GlobalContext } from "../context/GlobalContext";
