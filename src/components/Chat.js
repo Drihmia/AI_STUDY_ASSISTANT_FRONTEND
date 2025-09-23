@@ -10,6 +10,9 @@ import { translations } from "../locales/translations_chat"; // Import translati
 
 
 const Chat = () => {
+
+  const FRONT_END_URL = process.env.REACT_APP_FRONTEND_URL || "http://localhost:3000";
+  console.log("FRONT_END_URL:", FRONT_END_URL);
   // Get the language from the global context
   const { language } = useContext(GlobalContext);
 
@@ -49,7 +52,7 @@ const Chat = () => {
       if (!isSignedIn) return;
       setError(null);
       setIsLoading(true);
-      const response = await fetch(`/api/history?user_id=${user_id}`)
+      const response = await fetch(`${FRONT_END_URL}/api/history?user_id=${user_id}`)
 
       // if the code start with 5xx or 4xx
       if (response.status >= 500) {
@@ -57,7 +60,7 @@ const Chat = () => {
       }
 
       const data = await response.json();
-      if ('error' in data && !response.ok) {
+      if ('error' in data) {
         throw new Error(data.error);
       }
       if (!response.ok) throw new Error(t.FailedToLoadHistory);
@@ -65,7 +68,7 @@ const Chat = () => {
 
       // If no chat history exists, initiate a conversation
       if (!history.length) {
-        const initResponse = await fetch(`/api/chat?user_id=${user_id}`, {
+        const initResponse = await fetch(`${FRONT_END_URL}/api/chat?user_id=${user_id}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message: t.greeting }),
@@ -133,7 +136,7 @@ const Chat = () => {
 
     try {
       setError(null);
-      const response = await fetch(`/api/answers?user_id=${user_id}`, {
+      const response = await fetch(`${FRONT_END_URL}/api/answers?user_id=${user_id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: jsonData,
@@ -156,7 +159,7 @@ const Chat = () => {
     } finally {
       setIsButtonDisabled(false);
     }
-  }, [language, user_id, loadChatHistory, t]);
+  }, [language, user_id, loadChatHistory, t, FRONT_END_URL]);
 
   // Handle message submission
   const handleMessageSubmit = useCallback(async (e) => {
@@ -175,7 +178,7 @@ const Chat = () => {
 
     // Fetch the response from the server
     try {
-      const response = await fetch(`/api/chat?user_id=${user_id}`, {
+      const response = await fetch(`${FRONT_END_URL}/api/chat?user_id=${user_id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message }),
@@ -183,7 +186,7 @@ const Chat = () => {
 
       // if the code start with 5xx
       if (response.status >= 500) {
-        throw new Error(t.FailedToSendMessage);
+        throw new Error(t.FailedToLoadHistory);
       }
 
       const data = await response.json();
@@ -226,7 +229,7 @@ const Chat = () => {
         setIsButtonDisabled(false);
       }, 4000);
     }
-  }, [message, user_id, messages, t]);
+  }, [message, user_id, messages, t, FRONT_END_URL]);
 
   useEffect(() => {
     if (count <= 0 || !error_message) return; // Stop when count reaches 0
@@ -298,6 +301,7 @@ const Chat = () => {
               <SignInButton mode="modal">
                 <button className="transition-all duration-300 px-4 py-2 text-sm sm:text-base font-semibold bg-gradient-to-r from-orange-400 to-orange-600 text-white rounded-lg shadow-md hover:scale-105 hover:from-orange-500 hover:to-orange-700">
                   { t.signIn }
+
                 </button>
               </SignInButton>
             </SignedOut>

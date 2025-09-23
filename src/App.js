@@ -26,7 +26,7 @@ const localizationMap = {
 };
 
 const App = ({ publishableKey }) => {
-  const [language, setLanguage] = useState(localStorage.getItem("lang") || "en");
+  const [language, setLanguage] = useState(localStorage.getItem("lang") || navigator.language.split("-")[0] || "fr");
 
 /*  // Enable PWA*/
   /*const [deferredPrompt, setDeferredPrompt] = useState(null);*/
@@ -112,7 +112,7 @@ const App = ({ publishableKey }) => {
             <Suspense fallback={<LocationFallback />}>
               <Routes>
                 <Route path="/" element={<WelcomePage  />} />
-                <Route path="/chat" element={<Chat />} />
+                <Route path="/chat" element={<Chat language={language} />} />
               </Routes>
             </Suspense>
           </Router>
