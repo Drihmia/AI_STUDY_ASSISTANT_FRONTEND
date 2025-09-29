@@ -36,23 +36,84 @@ const Chat = () => {
   const [count, setCount] = useState(4);
   const retryTimerRef = useRef(null);
 
+  // State for infinite scrolling
+  const [page, setPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
 
   // Initialize the chat with a greeting message depending on the user's preferred language
   const messagesEndRef = useRef(null); // Ref for the last message container
+  const chatContainerRef = useRef(null); // Ref for the messages container
   const textAreaRef = useRef(null); // Ref for the text area
 
   const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
 
   console.log("Chat component rendered", count, error_message);
 
+  const loadMoreHistory = useCallback(async () => {
+    if (loadingMore || page >= maxPage) return;
+
+    setLoadingMore(true);
+    setShouldScrollToBottom(false);
+    setError(null);
+
+    const scrollContainer = chatContainerRef.current;
+    const oldScrollHeight = scrollContainer ? scrollContainer.scrollHeight : 0;
+
+    try {
+        const nextPage = page + 1;
+        const response = await fetch(`${FRONT_END_URL}/api/history?user_id=${user_id}&page=${nextPage}`);
+        
+        if (!response.ok) {
+            throw new Error(t.FailedToLoadHistory);
+        }
+
+        const data = await response.json();
+        if ('error' in data) {
+            throw new Error(data.error);
+        }
+
+        const formattedHistory = data.history.map((msg) => ({
+            role: msg.role,
+            parts: formatMessage(msg),
+        }));
+        
+        setMessages(prevMessages => [...formattedHistory, ...prevMessages]);
+        setPage(data.page);
+
+        // Restore scroll position
+        if (scrollContainer) {
+            const newScrollHeight = scrollContainer.scrollHeight;
+            scrollContainer.scrollTop = newScrollHeight - oldScrollHeight;
+        }
+        
+    } catch (error) {
+        setError(error.message);
+        console.error("Error loading more chat history:", error.message);
+    } finally {
+        setLoadingMore(false);
+    }
+}, [user_id, page, maxPage, loadingMore, t, FRONT_END_URL]);
+
+  const handleScroll = () => {
+    if (chatContainerRef.current) {
+        const { scrollTop } = chatContainerRef.current;
+        if (scrollTop === 0) {
+            loadMoreHistory();
+        }
+    }
+  };
+
+
   // Load chat history
-  const loadChatHistory = useCallback(async () => {
+  const loadChatHistory = useCallback(async (pageNum = 1) => {
     //console.log('user id frm inside loadChatHistory', user_id);
     try {
       if (!isSignedIn) return;
       setError(null);
       setIsLoading(true);
-      const response = await fetch(`${FRONT_END_URL}/api/history?user_id=${user_id}`)
+      const response = await fetch(`${FRONT_END_URL}/api/history?user_id=${user_id}&page=${pageNum}`)
 
       // if the code start with 5xx or 4xx
       if (response.status >= 500) {
@@ -98,6 +159,8 @@ const Chat = () => {
       }));
 
       setQuestionFormId(data.form_id);
+      setPage(data.page);
+      setMaxPage(data.max_page);
       setMessages(formattedHistory);
     } catch (error) {
       setError(error.message);
@@ -112,6 +175,7 @@ const Chat = () => {
         , 5000);
     } finally {
       setIsLoading(false);
+      setShouldScrollToBottom(true);
     }
     // eslint-disable-next-line
   }, [user_id, language, isSignedIn, t]);
@@ -169,6 +233,7 @@ const Chat = () => {
     setIsButtonDisabled(true);
     setError(null);
     setSendingMessage(true);
+    setShouldScrollToBottom(true);
 
     // Add the user message to the chat
     setMessages([
@@ -195,7 +260,7 @@ const Chat = () => {
       }
 
       if (!response.ok) throw new Error(t.errorMessage);
-
+      setShouldScrollToBottom(true);
       // Add the model response to the chat
       setMessages(prevMes => [
         ...prevMes.slice(0,-1),
@@ -263,12 +328,12 @@ const Chat = () => {
   useEffect(() => {
     // Function to scroll to the last message
     const scrollToBottom = () => {
-      if (messagesEndRef.current) {
+      if (messagesEndRef.current && shouldScrollToBottom) {
         messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
       }
     };
     scrollToBottom();
-  }, [messages, error_message]); // Trigger the scroll after the messages state is updated
+  }, [messages, error_message, shouldScrollToBottom]); // Trigger the scroll after the messages state is updated
 
   useEffect(() => {
     const question_form = document.getElementById(question_form_id);
@@ -312,8 +377,7 @@ const Chat = () => {
   }
 
   //if (!isLoaded) {
-  //return <Loading location="login" />;
-  //}
+  //return <Loading location="login" />;}
 
   return (
     <>
@@ -322,8 +386,11 @@ const Chat = () => {
         {/* Messages */}
         <div
           id="messages"
+          ref={chatContainerRef}
+          onScroll={handleScroll}
           className="flex-1 overflow-y-auto p-4 bg-gray-100 rounded-t-md"
         >
+          {loadingMore && <div className="text-center p-2 text-gray-500">Loading older messages...</div>}
           {messages.map((msg, index) => {
             const direction = arabicRegex.test(msg.parts) ? "rtl" : "ltr";
             return (
@@ -410,4 +477,3 @@ const Chat = () => {
 };
 
 export default Chat;
-
