@@ -5,7 +5,7 @@ import { GlobalContext } from "../context/GlobalContext";
 import { translations } from "../locales/translations_feedback";
 
 const FeedbackPage = () => {
-  const BACKEND_URL = process.env.REACT_APP_FRONTEND_URL || "http://localhost:3000";
+  const BACKEND_URL = process.env.REACT_APP_FRONTEND_URL || "https://ai-study-assistant-w29f.onrender.com";
   const { language } = useContext(GlobalContext);
   const t = useMemo(() => translations[language || "fr"], [language]);
   const { user, isSignedIn } = useUser();
