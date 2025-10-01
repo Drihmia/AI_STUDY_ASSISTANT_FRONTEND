@@ -98,7 +98,6 @@ const App = ({ publishableKey }) => {
   return (
     <GlobalContextProviderLayout language={language} handleLanguageChange={handleLanguageChange}>
       <ClerkProvider publishableKey={publishableKey}
-        frontendApi="clerk.ai.drihmia.me"
         afterSignOutUrl="/"
         signInFallbackRedirectUrl="/chat"
         signUpFallbackRedirectUrl="/chat"
