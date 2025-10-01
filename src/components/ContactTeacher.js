@@ -27,16 +27,19 @@ const ContactTeacher = () => {
       setError(null);
       setSuccess(false);
 
-      const token = await user?.getToken();
-      const response = await fetch(`${BACKEND_URL}/api/contact-teacher`, {
+      const { userId, firstName, lastName, primaryEmailAddress : emailAdresses } = user || {};
+
+      const response = await fetch(`${BACKEND_URL}/api/contact_teacher`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
           subject: subject.trim(),
-          message: message.trim()
+          message: message.trim(),
+          fullName: `${firstName || ""} ${lastName || ""}`.trim(),
+          emailAddress: emailAdresses?.emailAddress || "",
+          userId: userId || "",
         })
       });
 

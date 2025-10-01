@@ -10,6 +10,7 @@ const FeedbackPage = () => {
   const t = useMemo(() => translations[language || "fr"], [language]);
   const { user, isSignedIn } = useUser();
 
+
   const [feedbackText, setFeedbackText] = useState("");
   const [rating, setRating] = useState(5);
   const [feedbackList, setFeedbackList] = useState([]);
@@ -57,22 +58,30 @@ const FeedbackPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!feedbackText.trim()) return;
+    if (!user) {
+      setError(t.signInToSubmit);
+      return;
+    }
 
     try {
       setSubmitting(true);
       setError(null);
       setSuccess(false);
 
-      const token = await user?.getToken();
+      const { firstName, lastName, primaryEmailAddress : emailAdresses } = user || {};
+
       const response = await fetch(`${BACKEND_URL}/api/feedback`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
           text: feedbackText.trim(),
-          rating
+          rating,
+          fullName: firstName && lastName ? `${firstName} ${lastName}` : "Anonymous",
+          emailAdress: emailAdresses ? emailAdresses.toString() : "",
+          userId: user.id,
+
         })
       });
 
