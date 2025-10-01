@@ -4,7 +4,7 @@ const path = require('path');
 
 // Create an Express app
 const app = express();
-const port = 3000 || process.env.PORT || 3001;
+const port = process.env.PORT || 5000;
 
 // Compress all HTTP responses
 app.use(compression());
