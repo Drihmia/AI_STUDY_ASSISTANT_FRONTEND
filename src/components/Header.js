@@ -36,6 +36,16 @@ const Header = () => {
         </Link>
       </div>
 
+      {/* Navigation Links */}
+      <nav className="flex gap-4 mt-4 sm:mt-0">
+        <Link to="/feedback" className="px-3 py-2 text-gray-700 hover:text-orange-500 hover:bg-orange-50 rounded-md transition font-medium">
+          {t.feedback}
+        </Link>
+        <Link to="/contact" className="px-3 py-2 text-gray-700 hover:text-orange-500 hover:bg-orange-50 rounded-md transition font-medium">
+          {t.contact}
+        </Link>
+      </nav>
+
       {/* Auth + Language Group */}
       <div className="flex items-center gap-4 mt-4 sm:mt-0">
 

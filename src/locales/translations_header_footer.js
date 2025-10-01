@@ -5,6 +5,8 @@ export const translations = {
     header: {
       title: "🌟 AI Study Assistant 🌟",
       signInButton: "🔐 Sign In",
+      feedback: "Feedback",
+      contact: "Contact Teacher",
     },
     footer: {
       poweredBy: "Crafted by DRIHMIA | Your Personal Study Assistant",
@@ -14,6 +16,8 @@ export const translations = {
     header: {
       title: "🌟 Assistant d'étude IA 🌟",
       signInButton: "🔐 Se connecter",
+      feedback: "Retours",
+      contact: "Contacter Prof",
     },
     footer: {
       poweredBy: "Conçu par DRIHMIA | Votre assistant d'étude personnel",
@@ -23,6 +27,8 @@ export const translations = {
     header: {
       title: "🌟 مساعد الدراسة الذكي 🌟",
       signInButton: "🔐 تسجيل الدخول",
+      feedback: "التعليقات",
+      contact: "اتصل بالمعلم",
     },
     footer: {
       poweredBy: "مصنوع من قبل دريهمية | مساعدك الشخصي للدراسة",

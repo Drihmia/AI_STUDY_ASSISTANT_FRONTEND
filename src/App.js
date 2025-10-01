@@ -18,6 +18,8 @@ import ConsentBanner from "./components/ConsentBanner";
 
 const WelcomePage = lazy(() => import('./components/WelcomePage'));
 const Chat = lazy(() => import('./components/Chat'));
+const FeedbackPage = lazy(() => import('./components/FeedbackPage'));
+const ContactTeacher = lazy(() => import('./components/ContactTeacher'));
 
 const localizationMap = {
   en: enUS,
@@ -113,6 +115,8 @@ const App = ({ publishableKey }) => {
               <Routes>
                 <Route path="/" element={<WelcomePage  />} />
                 <Route path="/chat" element={<Chat language={language} />} />
+                <Route path="/feedback" element={<FeedbackPage />} />
+                <Route path="/contact" element={<ContactTeacher />} />
               </Routes>
             </Suspense>
           </Router>
