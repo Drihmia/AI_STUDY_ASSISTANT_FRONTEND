@@ -14,6 +14,7 @@ This project follows a microservices-like architecture with a separate frontend 
 *   **AI-powered study assistance:** The application uses AI to provide students with personalized learning recommendations, practice problems, and feedback.
 *   **Interactive learning:** The application includes a variety of interactive features, such as quizzes, flashcards, and simulations, to help students learn in a more engaging way.
 *   **Cross-Device Conversation History:** Secure authentication allows users to access their chat history and continue their learning journey on any device.
+*   **Direct User Communication:** Includes forms for users to contact the teacher directly and provide valuable feedback on the application.
 *   **Localization:** The application supports multiple languages for a global user base.
 
 ## Getting Started
@@ -52,6 +53,12 @@ The application frontend will now be running at `http://localhost:3000` and will
 ## Project Evolution: A Journey of User-Centric Improvements
 
 This project has continuously evolved to provide a better experience for students. Here are some of the key challenges we've addressed and the solutions we've implemented, turning ideas into impactful features.
+
+### Introducing Direct Communication Channels
+
+*   **The Challenge:** As the user base grew, there was no direct way for users to ask questions or provide feedback about the application. This made it difficult to gather user insights and address their concerns.
+*   **The Solution:** We have now introduced two key communication features: a **Contact Teacher** form and a **Feedback Page**. Authenticated users can easily send messages and submit ratings, with their identity securely passed from the frontend to the backend. This allows for a clear and reliable communication loop.
+*   **The Impact:** These new channels empower users to contribute to the app's development and get the support they need. It provides the development team with direct access to user feedback, which is crucial for making informed decisions on future improvements and features.
 
 ### Seamless Learning Across Devices with Secure Authentication
 
