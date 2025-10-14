@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { HelmetProvider } from 'react-helmet-async';
 //import { jwtDecode } from 'jwt-decode';
 
 import './index.css';
@@ -36,8 +37,10 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <Helmet />
-    <App publishableKey={PUBLISHABLE_KEY} />
+    <HelmetProvider>
+      <Helmet />
+      <App publishableKey={PUBLISHABLE_KEY} />
+    </HelmetProvider>
   </React.StrictMode>
 );
 

@@ -12,7 +12,6 @@ import { translations } from "../locales/translations_chat"; // Import translati
 const Chat = () => {
 
   const FRONT_END_URL = process.env.REACT_APP_FRONTEND_URL || "http://localhost:3000";
-  console.log("FRONT_END_URL:", FRONT_END_URL);
   // Get the language from the global context
   const { language } = useContext(GlobalContext);
 
@@ -49,8 +48,9 @@ const Chat = () => {
 
   const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
 
-  console.log("Chat component rendered", count, error_message);
+  // console.log("Chat component rendered", count, error_message);
 
+  const LIMIT = 20; // Number of messages to fetch per page
   const loadMoreHistory = useCallback(async () => {
     if (loadingMore || page >= maxPage) return;
 
@@ -63,7 +63,7 @@ const Chat = () => {
 
     try {
         const nextPage = page + 1;
-        const response = await fetch(`${FRONT_END_URL}/api/history?user_id=${user_id}&page=${nextPage}`);
+        const response = await fetch(`${FRONT_END_URL}/api/history?user_id=${user_id}&page=${nextPage}&limit=${LIMIT}`);
         
         if (!response.ok) {
             throw new Error(t.FailedToLoadHistory);
@@ -81,6 +81,7 @@ const Chat = () => {
         
         setMessages(prevMessages => [...formattedHistory, ...prevMessages]);
         setPage(data.page);
+      setMaxPage(data.max_page);
 
         // Restore scroll position
         if (scrollContainer) {
@@ -113,7 +114,7 @@ const Chat = () => {
       if (!isSignedIn) return;
       setError(null);
       setIsLoading(true);
-      const response = await fetch(`${FRONT_END_URL}/api/history?user_id=${user_id}&page=${pageNum}`)
+      const response = await fetch(`${FRONT_END_URL}/api/history?user_id=${user_id}&page=${pageNum}&limit=${LIMIT}`);
 
       // if the code start with 5xx or 4xx
       if (response.status >= 500) {
@@ -358,7 +359,9 @@ const Chat = () => {
   if (isLoaded && !isSignedIn) {
     return (
       <div className="flex overflow-y-auto flex-col flex-1 w-full max-w-5xl mx-auto bg-white shadow-md rounded-lg my-4">
+          <h1 className="text-3xl md:text-4xl font-bold text-center mb-4 mt-4 text-gray-800"> {t.chatWithAI} </h1>
         <div className="flex justify-center items-center h-screen">
+        
           <div className="text-center">
             <h1 className="text-2xl font-bold">{ t.pleaseSignIn }</h1>
             <p className="m-4">{ t.mustSignIn }</p>
@@ -390,7 +393,7 @@ const Chat = () => {
           onScroll={handleScroll}
           className="flex-1 overflow-y-auto p-4 bg-gray-100 rounded-t-md"
         >
-          {loadingMore && <div className="text-center p-2 text-gray-500">Loading older messages...</div>}
+          {loadingMore && <div className="text-center p-2 text-gray-500"> { t.loadingMore } </div>}
           {messages.map((msg, index) => {
             const direction = arabicRegex.test(msg.parts) ? "rtl" : "ltr";
             return (

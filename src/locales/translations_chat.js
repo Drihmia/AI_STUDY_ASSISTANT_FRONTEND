@@ -13,6 +13,8 @@ export const translations = {
     mustSignIn: "You need to sign in to access the chat.",
     pleaseSignIn: "Please Sign In",
     signIn: "🔐 Sign In",
+    loadingMore: "Loading older messages...",
+    chatWithAI: "Chat with AI",
   },
   fr: {
     title: "🌟 ASSISTANT D'ÉTUDE IA - Chat 🌟",
@@ -26,6 +28,8 @@ export const translations = {
     mustSignIn: "Vous devez vous connecter pour accéder au chat.",
     pleaseSignIn: "Veuillez vous connecter",
     signIn: "🔐 Se connecter",
+    loadingMore: "Chargement des messages plus anciens...",
+    chatWithAI: "Discuter avec l'IA",
   },
   ar: {
     title: "🌟 مساعد الدراسة الذكي - دردشة 🌟",
@@ -39,5 +43,7 @@ export const translations = {
     mustSignIn: "يجب عليك تسجيل الدخول للوصول إلى الدردشة.",
     pleaseSignIn: "يرجى تسجيل الدخول",
     signIn: "🔐 تسجيل الدخول",
+    loadingMore: "...جارٍ تحميل الرسائل الأقدم",
+    chatWithAI: "الدردشة مع الذكاء الاصطناعي",
   },
 };

@@ -7,7 +7,7 @@ import { GlobalContext } from "../context/GlobalContext";
 const WelcomePage = () => {
   // Get the language from context
   const { language } = useContext(GlobalContext);
-  console.log(`language from welcome page: ${language}`);
+  //console.log(`language from welcome page: ${language}`);
 
   const direction = language === "ar" ? "rtl" : "ltr";
   const orientation = language === "ar" ? "pr-6 text-right" : "pl-6 text-left";

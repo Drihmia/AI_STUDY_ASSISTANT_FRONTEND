@@ -1,8 +1,11 @@
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
+import React from 'react';
 
 
 const GoogleTagManager = () => {
   const gtmId = process.env.REACT_APP_GTM_ID;
+  //const [gtmId, ] = React.useState(gtmId);
+
   if (!gtmId) {
     console.warn('GTM ID not found. Check your environment variables.');
     return null;
@@ -10,7 +13,6 @@ const GoogleTagManager = () => {
   try {
     return (
       <Helmet>
-        {/* Google Tag Manager Script - placed in <head> */}
         <script>
           {`
                         (function(w,d,s,l,i){

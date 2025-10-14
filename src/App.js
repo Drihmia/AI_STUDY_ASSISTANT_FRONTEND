@@ -11,7 +11,6 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Loading from './components/Loading';
 
-import GoogleTag from './components/GoogleTag';
 import GoogleTagManager from './components/GoogleTagManager';
 import ConsentBanner from "./components/ConsentBanner";
 
@@ -28,6 +27,8 @@ const localizationMap = {
 };
 
 const App = ({ publishableKey }) => {
+  console.log("localStorage.getItem('lang'):", localStorage.getItem("lang"));
+  console.log("navigator.language:", navigator.language.split("-")[0]);
   const [language, setLanguage] = useState(localStorage.getItem("lang") || navigator.language.split("-")[0] || "fr");
 
 /*  // Enable PWA*/
@@ -106,7 +107,6 @@ const App = ({ publishableKey }) => {
         localization={localizationMap[language] || localizationMap.fr}
       >
         <div className="flex flex-col h-screen bg-gray-100">
-          <GoogleTag />
           <GoogleTagManager />
           <ConsentBanner />
           <Router>
