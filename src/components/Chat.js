@@ -13,7 +13,7 @@ const Chat = () => {
 
   const FRONT_END_URL = process.env.REACT_APP_FRONTEND_URL || "http://localhost:3000";
   // Get the language from the global context
-  const { language } = useContext(GlobalContext);
+  const { language, serverStatus } = useContext(GlobalContext);
 
   const t = useMemo(() => {
     return translations[language || "fr"];;
@@ -386,6 +386,12 @@ const Chat = () => {
     <>
       {/* Main Chat Section */}
       <div className="flex overflow-y-auto flex-col flex-1 w-full max-w-5xl mx-auto bg-white shadow-md rounded-lg">
+        {/* Server Status Message */}
+        {serverStatus === 'offline' && (
+          <div className="text-center p-2 text-gray-500 bg-yellow-100">
+            {t.serverStarting}
+          </div>
+        )}
         {/* Messages */}
         <div
           id="messages"

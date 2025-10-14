@@ -1,5 +1,5 @@
 // Purpose: Header component for the application.
-import React, { useState, useContext, useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { SignedIn, SignedOut, SignInButton, UserButton, GoogleOneTap } from "@clerk/clerk-react";
 
@@ -11,7 +11,7 @@ import ToggleMenu from "./ToggleMenu";
 
 const Header = () => {
   //const [dist, setDist] = useState(window.location.pathname !== "/chat" ? "/chat" : "/");
-  const { language, handleLanguageChange } = useContext(GlobalContext);
+  const { language, handleLanguageChange, serverStatus } = useContext(GlobalContext);
   const t = useMemo(() => translations[language || "fr"].header, [language]);
 
 
@@ -27,7 +27,9 @@ const Header = () => {
         <Link
           //to={dist}
           to={"/"}
-          className="text-3xl only-md:text-2xl only-sm:text-2xl font-bold hover:text-orange-500 transition-colors"
+          className={`text-3xl only-md:text-2xl only-sm:text-2xl font-bold hover:text-orange-500 transition-colors ${
+            serverStatus === 'online' ? 'text-green-500' : ''
+          }`}
           //onClick={() =>
               //setDist(() =>
                 //window.location.pathname === "/chat" ? "/" : "/chat"
