@@ -5,8 +5,8 @@ import { GlobalContext } from "../context/GlobalContext";
 import { translations } from "../locales/translations_feedback";
 
 const FeedbackPage = () => {
-  const BACKEND_URL = process.env.REACT_APP_FRONTEND_URL || "https://ai-study-assistant-w29f.onrender.com";
-  const { language } = useContext(GlobalContext);
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+  const { language, serverStatus } = useContext(GlobalContext);
   const t = useMemo(() => translations[language || "fr"], [language]);
   const { user, isSignedIn } = useUser();
 
@@ -194,8 +194,16 @@ const FeedbackPage = () => {
 
         <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
           <h2 className="text-2xl font-semibold mb-6 text-gray-800">{t.allFeedback}</h2>
-          
-          {loading && feedbackList.length === 0 ? (
+
+          { (serverStatus === 'offline' || serverStatus === 'starting') ? (
+                <div className="flex overflow-y-auto flex-col flex-1 w-full max-w-5xl mx-auto bg-white shadow-md rounded-lg my-4">
+                  <div className={`text-center p-2 text-gray-500 ${serverStatus === 'starting'? "bg-yellow-100": "bg-red-100"}`}>
+                    {serverStatus === 'starting'? t.serverStarting: t.serverOffline}
+                  </div>
+                </div>
+              ) :
+
+          loading && feedbackList.length === 0 ? (
             <div className="text-center py-8 text-gray-500">{t.loading}</div>
           ) : feedbackList.length === 0 ? (
             <div className="text-center py-8 text-gray-500">{t.noFeedback}</div>

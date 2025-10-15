@@ -18,7 +18,9 @@ export const translations = {
     anonymous: "Anonymous",
     successMessage: "Thank you for your feedback!",
     errorSubmittingFeedback: "Failed to submit feedback. Please try again.",
-    errorLoadingFeedback: "Failed to load feedback. Please refresh the page."
+    errorLoadingFeedback: "Failed to load feedback. Please refresh the page.",
+    serverStarting: "Server is starting, please wait a moment...",
+    serverOffline: "Server is offline. Please try again later.",
   },
   fr: {
     title: "Retours - Assistant d'étude IA",
@@ -39,7 +41,9 @@ export const translations = {
     anonymous: "Anonyme",
     successMessage: "Merci pour votre avis!",
     errorSubmittingFeedback: "Échec de l'envoi de l'avis. Veuillez réessayer.",
-    errorLoadingFeedback: "Échec du chargement des avis. Veuillez actualiser la page."
+    errorLoadingFeedback: "Échec du chargement des avis. Veuillez actualiser la page.",
+    serverStarting: "Le serveur démarre, veuillez patienter un moment...",
+    serverOffline: "Le serveur est hors ligne. Veuillez réessayer plus tard.",
   },
   ar: {
     title: "التعليقات - مساعد الدراسة الذكي",
@@ -60,6 +64,8 @@ export const translations = {
     anonymous: "مجهول",
     successMessage: "شكراً لك على تعليقك!",
     errorSubmittingFeedback: "فشل إرسال التعليق. يرجى المحاولة مرة أخرى.",
-    errorLoadingFeedback: "فشل تحميل التعليقات. يرجى تحديث الصفحة."
+    errorLoadingFeedback: "فشل تحميل التعليقات. يرجى تحديث الصفحة.",
+    serverStarting: "الخادم قيد التشغيل، يرجى الانتظار لحظة...",
+    serverOffline: "الخادم غير متصل. يرجى المحاولة لاحقاً.",
   }
 };

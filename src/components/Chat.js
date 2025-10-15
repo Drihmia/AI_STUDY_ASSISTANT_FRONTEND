@@ -11,7 +11,7 @@ import { translations } from "../locales/translations_chat"; // Import translati
 
 const Chat = () => {
 
-  const FRONT_END_URL = process.env.REACT_APP_FRONTEND_URL || "http://localhost:3000";
+  const BACK_END_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
   // Get the language from the global context
   const { language, serverStatus } = useContext(GlobalContext);
 
@@ -63,7 +63,7 @@ const Chat = () => {
 
     try {
         const nextPage = page + 1;
-        const response = await fetch(`${FRONT_END_URL}/api/history?user_id=${user_id}&page=${nextPage}&limit=${LIMIT}`);
+        const response = await fetch(`${BACK_END_URL}/api/history?user_id=${user_id}&page=${nextPage}&limit=${LIMIT}`);
         
         if (!response.ok) {
             throw new Error(t.FailedToLoadHistory);
@@ -95,7 +95,7 @@ const Chat = () => {
     } finally {
         setLoadingMore(false);
     }
-}, [user_id, page, maxPage, loadingMore, t, FRONT_END_URL]);
+}, [user_id, page, maxPage, loadingMore, t, BACK_END_URL]);
 
   const handleScroll = () => {
     if (chatContainerRef.current) {
@@ -114,7 +114,7 @@ const Chat = () => {
       if (!isSignedIn) return;
       setError(null);
       setIsLoading(true);
-      const response = await fetch(`${FRONT_END_URL}/api/history?user_id=${user_id}&page=${pageNum}&limit=${LIMIT}`);
+      const response = await fetch(`${BACK_END_URL}/api/history?user_id=${user_id}&page=${pageNum}&limit=${LIMIT}`);
 
       // if the code start with 5xx or 4xx
       if (response.status >= 500) {
@@ -130,7 +130,7 @@ const Chat = () => {
 
       // If no chat history exists, initiate a conversation
       if (!history.length) {
-        const initResponse = await fetch(`${FRONT_END_URL}/api/chat?user_id=${user_id}`, {
+        const initResponse = await fetch(`${BACK_END_URL}/api/chat?user_id=${user_id}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message: t.greeting }),
@@ -201,7 +201,7 @@ const Chat = () => {
 
     try {
       setError(null);
-      const response = await fetch(`${FRONT_END_URL}/api/answers?user_id=${user_id}`, {
+      const response = await fetch(`${BACK_END_URL}/api/answers?user_id=${user_id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: jsonData,
@@ -224,7 +224,7 @@ const Chat = () => {
     } finally {
       setIsButtonDisabled(false);
     }
-  }, [language, user_id, loadChatHistory, t, FRONT_END_URL]);
+  }, [language, user_id, loadChatHistory, t, BACK_END_URL]);
 
   // Handle message submission
   const handleMessageSubmit = useCallback(async (e) => {
@@ -244,7 +244,7 @@ const Chat = () => {
 
     // Fetch the response from the server
     try {
-      const response = await fetch(`${FRONT_END_URL}/api/chat?user_id=${user_id}`, {
+      const response = await fetch(`${BACK_END_URL}/api/chat?user_id=${user_id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message }),
@@ -295,7 +295,7 @@ const Chat = () => {
         setIsButtonDisabled(false);
       }, 4000);
     }
-  }, [message, user_id, messages, t, FRONT_END_URL]);
+  }, [message, user_id, messages, t, BACK_END_URL]);
 
   useEffect(() => {
     if (count <= 0 || !error_message) return; // Stop when count reaches 0
@@ -379,6 +379,17 @@ const Chat = () => {
     );
   }
 
+
+        //Server Status Message
+        if (serverStatus === 'offline' || serverStatus === 'starting' ) {
+          return (
+            <div className="flex overflow-y-auto flex-col flex-1 w-full max-w-5xl mx-auto bg-white shadow-md rounded-lg my-4">
+              <div className={`text-center p-2 text-gray-500 ${serverStatus === 'starting'? "bg-yellow-100": "bg-red-100"}`}>
+                {serverStatus === 'starting'? t.serverStarting: t.serverOffline}
+              </div>
+            </div>
+          );
+        }
   //if (!isLoaded) {
   //return <Loading location="login" />;}
 
@@ -386,12 +397,6 @@ const Chat = () => {
     <>
       {/* Main Chat Section */}
       <div className="flex overflow-y-auto flex-col flex-1 w-full max-w-5xl mx-auto bg-white shadow-md rounded-lg">
-        {/* Server Status Message */}
-        {serverStatus === 'offline' && (
-          <div className="text-center p-2 text-gray-500 bg-yellow-100">
-            {t.serverStarting}
-          </div>
-        )}
         {/* Messages */}
         <div
           id="messages"
@@ -486,3 +491,4 @@ const Chat = () => {
 };
 
 export default Chat;
+

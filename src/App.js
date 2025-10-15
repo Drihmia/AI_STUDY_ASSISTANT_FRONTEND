@@ -27,14 +27,17 @@ const localizationMap = {
 const App = ({ publishableKey }) => {
   console.log("localStorage.getItem('lang'):", localStorage.getItem("lang"));
   console.log("navigator.language:", navigator.language.split("-")[0]);
-  const FRONT_END_URL = process.env.REACT_APP_FRONTEND_URL || "http://localhost:000";
+
   const [language, setLanguage] = useState(localStorage.getItem("lang") || navigator.language.split("-")[0] || "fr");
-  const [serverStatus, setServerStatus] = useState('pending');
+  const [serverStatus, setServerStatus] = useState('starting'); // 'starting', 'online', 'offline'
+
+  const BACK_END_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 
   useEffect(() => {
     const wakeUpServer = async () => {
       try {
-        const response = await fetch(`${FRONT_END_URL}/api/test/ok`);
+        const response = await fetch(`${BACK_END_URL}/api/test/ok`);
+        console.table(response);
         if (response.ok) {
           setServerStatus('online');
         } else {
@@ -46,7 +49,7 @@ const App = ({ publishableKey }) => {
     };
 
     wakeUpServer();
-  }, [FRONT_END_URL]);
+  }, [BACK_END_URL]);
 
   const handleLanguageChange = (lang) => {
     setLanguage(lang);

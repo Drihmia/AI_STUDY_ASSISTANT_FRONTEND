@@ -15,6 +15,8 @@ export const translations = {
     signIn: "🔐 Sign In",
     loadingMore: "Loading older messages...",
     chatWithAI: "Chat with AI",
+    serverStarting: "Server is starting, please wait a moment...",
+    serverOffline: "Server is offline. Please try again later.",
   },
   fr: {
     title: "🌟 ASSISTANT D'ÉTUDE IA - Chat 🌟",
@@ -30,6 +32,8 @@ export const translations = {
     signIn: "🔐 Se connecter",
     loadingMore: "Chargement des messages plus anciens...",
     chatWithAI: "Discuter avec l'IA",
+    serverStarting: "Le serveur démarre, veuillez patienter un moment...",
+    serverOffline: "Le serveur est hors ligne. Veuillez réessayer plus tard.",
   },
   ar: {
     title: "🌟 مساعد الدراسة الذكي - دردشة 🌟",
@@ -45,5 +49,7 @@ export const translations = {
     signIn: "🔐 تسجيل الدخول",
     loadingMore: "...جارٍ تحميل الرسائل الأقدم",
     chatWithAI: "الدردشة مع الذكاء الاصطناعي",
+    serverStarting: "...الخادم قيد التشغيل، يرجى الانتظار لحظة",
+    serverOffline: "الخادم غير متصل. يرجى المحاولة مرة أخرى لاحقًا.",
   },
 };
