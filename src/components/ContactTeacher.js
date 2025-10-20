@@ -1,4 +1,4 @@
-import React, { useState, useContext, useMemo } from "react";
+import React, { useState, useContext, useMemo, useRef, memo } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { SignedOut, SignInButton } from "@clerk/clerk-react";
 import { GlobalContext } from "../context/GlobalContext";
@@ -9,9 +9,8 @@ const ContactTeacher = () => {
   const { language } = useContext(GlobalContext);
   const t = useMemo(() => translations[language || "fr"], [language]);
   const { user, isSignedIn } = useUser();
+  const formRef = useRef(null);
 
-  const [subject, setSubject] = useState("");
-  const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -20,6 +19,10 @@ const ContactTeacher = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData(formRef.current);
+    const subject = formData.get("subject");
+    const message = formData.get("message");
+
     if (!subject.trim() || !message.trim()) return;
 
     try {
@@ -49,8 +52,7 @@ const ContactTeacher = () => {
       }
 
       setSuccess(true);
-      setSubject("");
-      setMessage("");
+      formRef.current.reset();
       
       setTimeout(() => setSuccess(false), 5000);
     } catch (err) {
@@ -89,15 +91,14 @@ const ContactTeacher = () => {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit}>
+            <form ref={formRef} onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium mb-2">
                   {t.subjectLabel}
                 </label>
                 <input
                   type="text"
-                  value={subject}
-                  onChange={(e) => setSubject(e.target.value)}
+                  name="subject"
                   maxLength="200"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                   placeholder={t.subjectPlaceholder}
@@ -110,17 +111,14 @@ const ContactTeacher = () => {
                   {t.messageLabel}
                 </label>
                 <textarea
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
+                  name="message"
                   rows="8"
                   maxLength="2000"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
                   placeholder={t.messagePlaceholder}
+                  dir="auto"
                   required
                 />
-                <p className="text-sm text-gray-500 mt-1">
-                  {message.length}/2000 {t.characters}
-                </p>
               </div>
 
               {error && (
@@ -137,7 +135,7 @@ const ContactTeacher = () => {
 
               <button
                 type="submit"
-                disabled={submitting || !subject.trim() || !message.trim()}
+                disabled={submitting}
                 className="w-full py-3 bg-gradient-to-r from-orange-400 to-orange-600 text-white font-semibold rounded-lg hover:from-orange-500 hover:to-orange-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {submitting ? t.sending : t.sendButton}
@@ -150,4 +148,4 @@ const ContactTeacher = () => {
   );
 };
 
-export default ContactTeacher;
+export default memo(ContactTeacher);

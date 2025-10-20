@@ -5,10 +5,18 @@ const ConsentBanner = () => {
   const [isCMPAvailable, setIsCMPAvailable] = useState(false);
 
   useEffect(() => {
-    // Wait for Google's Consent Management Platform to be available
+    const startTime = Date.now();
+    const timeout = 10000; // 10 seconds
+
     const checkCMP = setInterval(() => {
-      if (window.__fundingChoices?.gcmp?.show) {
+      const isAvailable = !!window.__fundingChoices?.gcmp?.show;
+      const isTimedOut = Date.now() - startTime > timeout;
+
+      if (isAvailable) {
         setIsCMPAvailable(true);
+        clearInterval(checkCMP);
+      } else if (isTimedOut) {
+        console.warn("Google CMP did not become available after 10 seconds.");
         clearInterval(checkCMP);
       }
     }, 500); // Check every 500ms
@@ -24,36 +32,33 @@ const ConsentBanner = () => {
     }
   };
 
-  return showBanner ? (
-    <div className="fixed bottom-0 left-0 w-full bg-gray-900 text-white p-4 text-center flex flex-col md:flex-row justify-between items-center">
-      <p className="mb-2 md:mb-0 text-sm">
-        This website uses cookies to improve your experience.
-      </p>
-      <div className="flex space-x-2">
-        <button
-          onClick={() => {
-            setShowBanner(false)
-            localStorage.setItem("showBanner", "false");
-          }}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-        >
-          Consent
-        </button>
-        <button
-          onClick={handleManage}
-          className={`px-4 py-2 rounded ${
-            isCMPAvailable
-              ? "bg-gray-600 hover:bg-gray-700 text-white"
-              : "bg-gray-400 text-gray-700 cursor-not-allowed"
-          }`}
-          disabled={!isCMPAvailable}
-        >
-          Manage Options
-        </button>
+  if (!showBanner) {
+    return null;
+  }
+
+  return (
+    <div className="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4 z-50">
+      <div className="container mx-auto flex justify-between items-center">
+        <p>This site uses cookies to enhance your experience.</p>
+        <div>
+          {isCMPAvailable && (
+            <button onClick={handleManage} className="underline hover:text-gray-300 mr-4">
+              Manage Consent
+            </button>
+          )}
+          <button
+            onClick={() => {
+              setShowBanner(false);
+              localStorage.setItem("showBanner", "false");
+            }}
+            className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+          >
+            Got it!
+          </button>
+        </div>
       </div>
     </div>
-  ) : null;
+  );
 };
 
 export default ConsentBanner;
-

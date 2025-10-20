@@ -1,4 +1,4 @@
-import React, { useMemo, useContext } from 'react';
+import React, { useMemo, useContext, memo } from 'react';
 import { GlobalContext } from '../context/GlobalContext';
 import { translations } from "../locales/translations_header_footer"; // Import translations
 
@@ -16,4 +16,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default memo(Footer);

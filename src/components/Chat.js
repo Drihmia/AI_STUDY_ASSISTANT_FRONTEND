@@ -1,32 +1,30 @@
-import React, { useEffect, useState, useRef, useCallback, useContext, useMemo } from "react";
-import { useUser } from '@clerk/clerk-react'
-import {  SignedOut, SignInButton, } from "@clerk/clerk-react";
+import React, { useEffect, useState, useRef, useCallback, useContext, useMemo, memo } from "react";
+import { useUser } from '@clerk/clerk-react';
+import { SignedOut, SignInButton } from "@clerk/clerk-react";
 
 import formatMessage from "./messageformated";
 import Loading from "./Loading";
 import { GlobalContext } from "../context/GlobalContext";
 import { translations } from "../locales/translations_chat"; // Import translations
 
+const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
+const BACK_END_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 
 
 const Chat = () => {
-
-  const BACK_END_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
   // Get the language from the global context
   const { language, serverStatus } = useContext(GlobalContext);
 
   const t = useMemo(() => {
-    return translations[language || "fr"];;
+    return translations[language || "fr"];
   }, [language]);
 
   document.title = t.title;
 
   const { user, isLoaded, isSignedIn } = useUser();
-  //console.log(isLoaded, useUser());
   const user_id = user?.id;
 
   const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState("");
   const [sendingMessage, setSendingMessage] = useState(false);
   const [error_message, setError] = useState(null);
   const [isLoadingMsg, setIsLoading] = useState(true);
@@ -41,14 +39,11 @@ const Chat = () => {
   const [loadingMore, setLoadingMore] = useState(false);
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
 
-  // Initialize the chat with a greeting message depending on the user's preferred language
-  const messagesEndRef = useRef(null); // Ref for the last message container
-  const chatContainerRef = useRef(null); // Ref for the messages container
-  const textAreaRef = useRef(null); // Ref for the text area
+  // Refs
+  const messagesEndRef = useRef(null);
+  const chatContainerRef = useRef(null);
+  const textAreaRef = useRef(null);
 
-  const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
-
-  // console.log("Chat component rendered", count, error_message);
 
   const LIMIT = 20; // Number of messages to fetch per page
   const loadMoreHistory = useCallback(async () => {
@@ -62,54 +57,52 @@ const Chat = () => {
     const oldScrollHeight = scrollContainer ? scrollContainer.scrollHeight : 0;
 
     try {
-        const nextPage = page + 1;
-        const response = await fetch(`${BACK_END_URL}/api/history?user_id=${user_id}&page=${nextPage}&limit=${LIMIT}`);
-        
-        if (!response.ok) {
-            throw new Error(t.FailedToLoadHistory);
-        }
+      const nextPage = page + 1;
+      const response = await fetch(`${BACK_END_URL}/api/history?user_id=${user_id}&page=${nextPage}&limit=${LIMIT}`);
 
-        const data = await response.json();
-        if ('error' in data) {
-            throw new Error(data.error);
-        }
+      if (!response.ok) {
+        throw new Error(t.FailedToLoadHistory);
+      }
 
-        const formattedHistory = data.history.map((msg) => ({
-            role: msg.role,
-            parts: formatMessage(msg),
-        }));
-        
-        setMessages(prevMessages => [...formattedHistory, ...prevMessages]);
-        setPage(data.page);
+      const data = await response.json();
+      if ('error' in data) {
+        throw new Error(data.error);
+      }
+
+      const formattedHistory = data.history.map((msg) => ({
+        role: msg.role,
+        parts: formatMessage(msg),
+      }));
+
+      setMessages(prevMessages => [...formattedHistory, ...prevMessages]);
+      setPage(data.page);
       setMaxPage(data.max_page);
 
-        // Restore scroll position
-        if (scrollContainer) {
-            const newScrollHeight = scrollContainer.scrollHeight;
-            scrollContainer.scrollTop = newScrollHeight - oldScrollHeight;
-        }
-        
+      // Restore scroll position
+      if (scrollContainer) {
+        const newScrollHeight = scrollContainer.scrollHeight;
+        scrollContainer.scrollTop = newScrollHeight - oldScrollHeight;
+      }
+
     } catch (error) {
-        setError(error.message);
-        console.error("Error loading more chat history:", error.message);
+      setError(error.message);
+      console.error("Error loading more chat history:", error.message);
     } finally {
-        setLoadingMore(false);
+      setLoadingMore(false);
     }
-}, [user_id, page, maxPage, loadingMore, t, BACK_END_URL]);
+  }, [user_id, page, maxPage, loadingMore, t]);
 
   const handleScroll = () => {
     if (chatContainerRef.current) {
-        const { scrollTop } = chatContainerRef.current;
-        if (scrollTop === 0) {
-            loadMoreHistory();
-        }
+      const { scrollTop } = chatContainerRef.current;
+      if (scrollTop === 0) {
+        loadMoreHistory();
+      }
     }
   };
 
-
   // Load chat history
   const loadChatHistory = useCallback(async (pageNum = 1) => {
-    //console.log('user id frm inside loadChatHistory', user_id);
     try {
       if (!isSignedIn) return;
       setError(null);
@@ -181,7 +174,7 @@ const Chat = () => {
     // eslint-disable-next-line
   }, [user_id, language, isSignedIn, t]);
 
-  // Consolidated form submit handler
+  // Consolidated in-chat form submit handler
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -197,7 +190,6 @@ const Chat = () => {
     // Append the language to the form data
     formObject.language = language;
     let jsonData = JSON.stringify(formObject);
-
 
     try {
       setError(null);
@@ -224,7 +216,7 @@ const Chat = () => {
     } finally {
       setIsButtonDisabled(false);
     }
-  }, [language, user_id, loadChatHistory, t, BACK_END_URL]);
+  }, [language, user_id, loadChatHistory, t]);
 
   // Handle message submission
   const handleMessageSubmit = useCallback(async (e) => {
@@ -237,17 +229,23 @@ const Chat = () => {
     setShouldScrollToBottom(true);
 
     // Add the user message to the chat
-    setMessages([
-      ...messages,
-      { role: "user", parts: formatMessage({ parts: message, role: "user" }) },
+    setMessages(prevMessages => [
+      ...prevMessages,
+      { role: "user", parts: formatMessage({ parts: textAreaRef.current?.value, role: "user" }) },
     ]);
 
     // Fetch the response from the server
+
+    // Clear any existing retry timers
+    if (retryTimerRef.current) {
+      clearTimeout(retryTimerRef.current);
+      retryTimerRef.current = null;
+    }
     try {
       const response = await fetch(`${BACK_END_URL}/api/chat?user_id=${user_id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ message: textAreaRef.current?.value }),
       });
 
       // if the code start with 5xx
@@ -264,7 +262,7 @@ const Chat = () => {
       setShouldScrollToBottom(true);
       // Add the model response to the chat
       setMessages(prevMes => [
-        ...prevMes.slice(0,-1),
+        ...prevMes.slice(0, -1),
         { role: "user", parts: formatMessage({ parts: data.user_message, role: "user" }) },
         { role: "model", parts: formatMessage({ parts: data.response, role: "model" }) },
       ]);
@@ -274,9 +272,6 @@ const Chat = () => {
 
       // Release the button - enable it
       setIsButtonDisabled(false);
-
-      // Clears the message input
-      setMessage("");
       setSendingMessage(false);
     } catch (error) {
       setCount(4);
@@ -290,12 +285,17 @@ const Chat = () => {
       // Remove the last message from the chat after 4 seconds
       setTimeout(() => {
         setSendingMessage(false);
-        setMessages(prevMes => [...prevMes.slice(0,-1)]);
+        setMessages(prevMes => [...prevMes.slice(0, -1)]);
         setError(null);
         setIsButtonDisabled(false);
       }, 4000);
+    } finally {
+      // Clear the text area
+      if (textAreaRef.current) {
+        textAreaRef.current.value = "";
+      }
     }
-  }, [message, user_id, messages, t, BACK_END_URL]);
+  }, [user_id, t]);
 
   useEffect(() => {
     if (count <= 0 || !error_message) return; // Stop when count reaches 0
@@ -303,10 +303,10 @@ const Chat = () => {
     const timer = setInterval(() => {
       setCount(prev => {
         if (prev <= 0) {
-          clearInterval(timer); // Stop the timer when count reaches 0
+          clearInterval(timer);
           return prev;
         }
-        return prev - 1
+        return prev - 1;
       });
     }, 1000);
 
@@ -352,24 +352,40 @@ const Chat = () => {
     }
   }, [isLoadingMsg, error_message]);
 
-  if ((isLoadingMsg && !error_message) || (!isLoaded)) {
+  const memoizedMessages = useMemo(() => {
+    return messages.map((msg, index) => {
+      const direction = arabicRegex.test(msg.parts) ? "rtl" : "ltr";
+      return (
+        <div
+          key={index}
+          className={`mb-4 overflow-x-auto ${direction === "ltr" ? "text-left" : "text-right"}  p-2 rounded-md odd:bg-blue-500 odd:text-white even:bg-gray-200 even:text-gray-900 odd:mr-1 even:ml-1`}
+          dir={direction}
+        >
+          <div
+            dangerouslySetInnerHTML={{ __html: msg.parts }}
+          />
+        </div>
+      );
+    });
+  }, [messages]);
+
+  if ((isLoadingMsg && !error_message) || (!isLoaded)) {
     return <Loading location="/chat" />;
   }
 
   if (isLoaded && !isSignedIn) {
     return (
       <div className="flex overflow-y-auto flex-col flex-1 w-full max-w-5xl mx-auto bg-white shadow-md rounded-lg my-4">
-          <h1 className="text-3xl md:text-4xl font-bold text-center mb-4 mt-4 text-gray-800"> {t.chatWithAI} </h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-center mb-4 mt-4 text-gray-800"> {t.chatWithAI} </h1>
         <div className="flex justify-center items-center h-screen">
-        
+
           <div className="text-center">
-            <h1 className="text-2xl font-bold">{ t.pleaseSignIn }</h1>
-            <p className="m-4">{ t.mustSignIn }</p>
+            <h1 className="text-2xl font-bold">{t.pleaseSignIn}</h1>
+            <p className="m-4">{t.mustSignIn}</p>
             <SignedOut>
               <SignInButton mode="modal">
                 <button className="transition-all duration-300 px-4 py-2 text-sm sm:text-base font-semibold bg-gradient-to-r from-orange-400 to-orange-600 text-white rounded-lg shadow-md hover:scale-105 hover:from-orange-500 hover:to-orange-700">
-                  { t.signIn }
-
+                  {t.signIn}
                 </button>
               </SignInButton>
             </SignedOut>
@@ -379,19 +395,16 @@ const Chat = () => {
     );
   }
 
-
-        //Server Status Message
-        if (serverStatus === 'offline' || serverStatus === 'starting' ) {
-          return (
-            <div className="flex overflow-y-auto flex-col flex-1 w-full max-w-5xl mx-auto bg-white shadow-md rounded-lg my-4">
-              <div className={`text-center p-2 text-gray-500 ${serverStatus === 'starting'? "bg-yellow-100": "bg-red-100"}`}>
-                {serverStatus === 'starting'? t.serverStarting: t.serverOffline}
-              </div>
-            </div>
-          );
-        }
-  //if (!isLoaded) {
-  //return <Loading location="login" />;}
+  //Server Status Message
+  if (serverStatus === 'offline' || serverStatus === 'starting') {
+    return (
+      <div className="flex overflow-y-auto flex-col flex-1 w-full max-w-5xl mx-auto bg-white shadow-md rounded-lg my-4">
+        <div className={`text-center p-2 text-gray-500 ${serverStatus === 'starting' ? "bg-yellow-100" : "bg-red-100"}`}>
+          {serverStatus === 'starting' ? t.serverStarting : t.serverOffline}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -404,28 +417,12 @@ const Chat = () => {
           onScroll={handleScroll}
           className="flex-1 overflow-y-auto p-4 bg-gray-100 rounded-t-md"
         >
-          {loadingMore && <div className="text-center p-2 text-gray-500"> { t.loadingMore } </div>}
-          {messages.map((msg, index) => {
-            const direction = arabicRegex.test(msg.parts) ? "rtl" : "ltr";
-            return (
-              <div
-                key={index}
-                className={`mb-4 overflow-x-auto ${
-                  direction === "ltr" ? "text-left" : "text-right"
-                }  p-2 rounded-md odd:bg-blue-500 odd:text-white even:bg-gray-200 even:text-gray-900 odd:mr-1 even:ml-1`}
-                dir={direction}
-              >
-                {/* <strong>{msg.role === "user" ? "You" : "AI"}:</strong> */}
-                <div
-                  dangerouslySetInnerHTML={{ __html: msg.parts }}
-                />
-              </div>
-            );
-          })}
+          {loadingMore && <div className="text-center p-2 text-gray-500"> {t.loadingMore} </div>}
+          {memoizedMessages}
           {/* Reference to the last message */}
           {error_message && (
             <div className="text-red-500 text-center bg-red-200 p-2 rounded-md">
-              <p>{ error_message } <strong>{count}</strong></p> 
+              <p>{error_message} <strong>{count}</strong></p>
             </div>
           )}
           <div ref={messagesEndRef} />
@@ -443,26 +440,23 @@ const Chat = () => {
             aria-label="Type your message"
             ref={textAreaRef}
             name="message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyDown={(e) => {
-              //if (e.key === "Enter" && prev_key === "Shift") {
-              //e.preventDefault(); // Prevents adding a new line
-              //setMessage((message) => `${message}\n`);
-              //}
-              //if (e.key === "Enter" && prev_key !== "Shift") {
-              //e.preventDefault();
-              //handleMessageSubmit(e); // Triggers the submit function
-              //}
-              //setPrevKey(e.key);
-            }}
-            className={ `w-full h-full p-2 border-gray-300 rounded-md bg-white ${
+            //onKeyDown={(e) => {
+            //if (e.key === "Enter" && prev_key === "Shift") {
+            //e.preventDefault(); // Prevents adding a new line
+            //setMessage((message) => `${message}\n`);
+            //}
+            //if (e.key === "Enter" && prev_key !== "Shift") {
+            //e.preventDefault();
+            //handleMessageSubmit(e); // Triggers the submit function
+            //}
+            //setPrevKey(e.key);
+            //}}
+            className={`w-full h-full p-2 border-gray-300 rounded-md bg-white ${
               sendingMessage ? "text-gray-300" : "text-gray-900"
-              } focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none ${
-              arabicRegex.test(message || t.placeholderText) ? "text-right" : "text-left" // Takes into account the placeholder text
-              }`}
+              } focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none`}
             placeholder={t.placeholderText}
             maxLength="1000"
+            dir="auto"
             required
           />
           <button
@@ -490,5 +484,4 @@ const Chat = () => {
   );
 };
 
-export default Chat;
-
+export default memo(Chat);

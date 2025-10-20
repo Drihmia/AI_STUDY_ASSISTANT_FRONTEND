@@ -1,5 +1,5 @@
 // Purpose: Header component for the application.
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useMemo, memo } from "react";
 import { Link } from "react-router-dom";
 import { SignedIn, SignedOut, SignInButton, UserButton, GoogleOneTap } from "@clerk/clerk-react";
 
@@ -110,5 +110,4 @@ const Header = () => {
   );
 };
 
-export default Header;
-
+export default memo(Header);

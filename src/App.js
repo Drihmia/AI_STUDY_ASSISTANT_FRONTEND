@@ -24,14 +24,14 @@ const localizationMap = {
   ar: arSA,
 };
 
+const BACK_END_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+
 const App = ({ publishableKey }) => {
   console.log("localStorage.getItem('lang'):", localStorage.getItem("lang"));
   console.log("navigator.language:", navigator.language.split("-")[0]);
 
   const [language, setLanguage] = useState(localStorage.getItem("lang") || navigator.language.split("-")[0] || "fr");
   const [serverStatus, setServerStatus] = useState('starting'); // 'starting', 'online', 'offline'
-
-  const BACK_END_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 
   useEffect(() => {
     const wakeUpServer = async () => {
@@ -49,7 +49,7 @@ const App = ({ publishableKey }) => {
     };
 
     wakeUpServer();
-  }, [BACK_END_URL]);
+  }, []);
 
   const handleLanguageChange = (lang) => {
     setLanguage(lang);

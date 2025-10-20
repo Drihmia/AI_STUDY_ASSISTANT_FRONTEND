@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useContext, useMemo, useCallback, useRef } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { SignedOut, SignInButton } from "@clerk/clerk-react";
 import { GlobalContext } from "../context/GlobalContext";
@@ -9,9 +9,8 @@ const FeedbackPage = () => {
   const { language, serverStatus } = useContext(GlobalContext);
   const t = useMemo(() => translations[language || "fr"], [language]);
   const { user, isSignedIn } = useUser();
+  const formRef = useRef(null);
 
-
-  const [feedbackText, setFeedbackText] = useState("");
   const [rating, setRating] = useState(5);
   const [feedbackList, setFeedbackList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -27,21 +26,21 @@ const FeedbackPage = () => {
     try {
       setLoading(true);
       setError(null);
-      const url = cursorParam 
+      const url = cursorParam
         ? `${BACKEND_URL}/api/feedback?limit=10&cursor=${cursorParam}`
         : `${BACKEND_URL}/api/feedback?limit=10`;
-      
+
       const response = await fetch(url);
       if (!response.ok) throw new Error(t.errorLoadingFeedback);
-      
+
       const data = await response.json();
-      
+
       if (cursorParam) {
         setFeedbackList(prev => [...prev, ...data.items]);
       } else {
         setFeedbackList(data.items);
       }
-      
+
       setCursor(data.nextCursor || null);
       setHasMore(!!data.nextCursor);
     } catch (err) {
@@ -57,6 +56,9 @@ const FeedbackPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData(formRef.current);
+    const feedbackText = formData.get("feedbackText");
+
     if (!feedbackText.trim()) return;
     if (!user) {
       setError(t.signInToSubmit);
@@ -68,7 +70,7 @@ const FeedbackPage = () => {
       setError(null);
       setSuccess(false);
 
-      const { firstName, lastName, primaryEmailAddress : emailAdresses } = user || {};
+      const { firstName, lastName, primaryEmailAddress: emailAdresses } = user || {};
 
       const response = await fetch(`${BACKEND_URL}/api/feedback`, {
         method: "POST",
@@ -81,16 +83,15 @@ const FeedbackPage = () => {
           fullName: firstName && lastName ? `${firstName} ${lastName}` : "Anonymous",
           emailAdress: emailAdresses ? emailAdresses.toString() : "",
           userId: user.id,
-
         })
       });
 
       if (!response.ok) throw new Error(t.errorSubmittingFeedback);
 
       setSuccess(true);
-      setFeedbackText("");
+      formRef.current.reset();
       setRating(5);
-      
+
       setTimeout(() => {
         fetchFeedback();
       }, 500);
@@ -130,7 +131,7 @@ const FeedbackPage = () => {
         {isSignedIn && (
           <div className="bg-white rounded-lg shadow-lg p-6 md:p-8 mb-8">
             <h2 className="text-2xl font-semibold mb-4 text-gray-800">{t.submitFeedback}</h2>
-            <form onSubmit={handleSubmit}>
+            <form ref={formRef} onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium mb-2">
                   {t.ratingLabel}
@@ -156,17 +157,14 @@ const FeedbackPage = () => {
                   {t.feedbackLabel}
                 </label>
                 <textarea
-                  value={feedbackText}
-                  onChange={(e) => setFeedbackText(e.target.value)}
+                  name="feedbackText"
                   rows="4"
                   maxLength="500"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
                   placeholder={t.feedbackPlaceholder}
+                  dir="auto"
                   required
                 />
-                <p className="text-sm text-gray-500 mt-1">
-                  {feedbackText.length}/500 {t.characters}
-                </p>
               </div>
 
               {error && (
@@ -183,7 +181,7 @@ const FeedbackPage = () => {
 
               <button
                 type="submit"
-                disabled={submitting || !feedbackText.trim()}
+                disabled={submitting}
                 className="w-full py-3 bg-gradient-to-r from-orange-400 to-orange-600 text-white font-semibold rounded-lg hover:from-orange-500 hover:to-orange-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {submitting ? t.submitting : t.submitButton}
