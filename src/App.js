@@ -9,8 +9,8 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Loading from './components/Loading';
 
-import GoogleTagManager from './components/GoogleTagManager';
-import ConsentBanner from "./components/ConsentBanner";
+const GoogleTagManager = lazy(() => import('./components/GoogleTagManager'));
+const ConsentBanner = lazy(() => import("./components/ConsentBanner"));
 
 
 const WelcomePage = lazy(() => import('./components/WelcomePage'));
@@ -65,8 +65,10 @@ const App = ({ publishableKey }) => {
         localization={localizationMap[language] || localizationMap.fr}
       >
         <div className="flex flex-col h-screen bg-gray-100">
-          <GoogleTagManager />
-          <ConsentBanner />
+          <Suspense fallback={null}>
+            <GoogleTagManager />
+            <ConsentBanner />
+          </Suspense>
           <Router>
             <Header />
             <Suspense fallback={<LocationFallback />}>
