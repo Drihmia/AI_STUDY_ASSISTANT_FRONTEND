@@ -1,3 +1,4 @@
+
 import { React, lazy, Suspense, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import { ClerkProvider } from '@clerk/clerk-react'
@@ -17,6 +18,7 @@ const WelcomePage = lazy(() => import('./components/WelcomePage'));
 const Chat = lazy(() => import('./components/Chat'));
 const FeedbackPage = lazy(() => import('./components/FeedbackPage'));
 const ContactTeacher = lazy(() => import('./components/ContactTeacher'));
+const ResourcesPage = lazy(() => import('./components/ResourcesPage'));
 
 const localizationMap = {
   en: enUS,
@@ -56,6 +58,13 @@ const App = ({ publishableKey }) => {
     localStorage.setItem("lang", lang);
   };
 
+  const headerButtons = [
+    { to: "/feedback", label: "Feedback" },
+    { to: "/contact", label: "Contact" },
+    { to: "/chat", label: "Chat" },
+    { to: "/resources", label: "Resources" }
+  ];
+
   return (
     <GlobalContext.Provider value={{ language, handleLanguageChange, serverStatus, setServerStatus }}>
       <ClerkProvider publishableKey={publishableKey}
@@ -70,13 +79,14 @@ const App = ({ publishableKey }) => {
             <ConsentBanner />
           </Suspense>
           <Router>
-            <Header />
+            <Header buttons={headerButtons} />
             <Suspense fallback={<LocationFallback />}>
               <Routes>
                 <Route path="/" element={<WelcomePage  />} />
                 <Route path="/chat" element={<Chat language={language} />} />
                 <Route path="/feedback" element={<FeedbackPage />} />
                 <Route path="/contact" element={<ContactTeacher />} />
+                <Route path="/resources" element={<ResourcesPage />} />
               </Routes>
             </Suspense>
           </Router>
