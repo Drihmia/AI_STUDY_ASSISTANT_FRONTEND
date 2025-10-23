@@ -4,9 +4,9 @@ import ChatInputFile from './ChatInputFile';
 
 const ChatInput = memo(forwardRef(({ handleMessageSubmit, isButtonDisabled, sendingMessage, placeholderText }, ref) => {
 
-  const { file, setFile } = useContext(GlobalContext);
+  //const { file, setFile } = useContext(GlobalContext);
   return (
-    <form onSubmit={(e) => handleMessageSubmit(e, file, setFile) } className="flex items-center space-x-2 p-2 bg-gray-100">
+    <form onSubmit={(e) => handleMessageSubmit(e) } className="flex items-center space-x-2 p-2 bg-gray-100">
       {/* Textarea for message input */}
       <textarea
         id="message"
