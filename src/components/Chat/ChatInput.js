@@ -1,5 +1,4 @@
-import React, { forwardRef, memo, useContext } from 'react';
-import { GlobalContext } from '../../context/GlobalContext';
+import React, { forwardRef, memo } from 'react';
 import ChatInputFile from './ChatInputFile';
 
 const ChatInput = memo(forwardRef(({ handleMessageSubmit, isButtonDisabled, sendingMessage, placeholderText }, ref) => {

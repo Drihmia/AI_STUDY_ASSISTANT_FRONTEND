@@ -232,7 +232,7 @@ const useChat = () => {
         textAreaRef.current.value = '';
       }
     }
-  }, [user_id, t, file]);
+  }, [user_id, t, file, setFile]);
 
   const handleFormSubmit = useCallback(async (e) => {
     e.preventDefault();

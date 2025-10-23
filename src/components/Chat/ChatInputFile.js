@@ -1,4 +1,4 @@
-import {useState, useEffect, useContext } from 'react';
+import {useState, useEffect, useContext, useCallback } from 'react';
 import { GlobalContext } from '../../context/GlobalContext';
 
 
@@ -9,27 +9,30 @@ const ChatInputFile = () => {
 
   useEffect(() => {
       // Clean up the object URL to avoid memory leaks
-    //console.log("file changed:", file);
-      if (!file) {
+      if (!file && selectedFile) {
         URL.revokeObjectURL(selectedFile);
         setSelectedFile(null);
       }
-  }, [file]);
+  }, [file, selectedFile]);
 
 
-  const handleFileChange = (event) => {
+  const handleFileChange = useCallback((event) => {
     const file = event.target.files[0];
     if (file) {
       // Handle the file upload logic here
       const formImageData = new FormData();
-      //formImageData['image'] = file;
       formImageData.append('image', file);
       // save it to user's local using fetch aPI
       setFile(formImageData);
-      setSelectedFile(prev => URL.createObjectURL(file));
+      setSelectedFile(prev => {
+        if (prev) {
+          URL.revokeObjectURL(prev);
+        }
+        return URL.createObjectURL(file)
+      });
 
     }
-  };
+  }, [setFile]);
 
   useEffect( () => {
     const fileInput = document.getElementById('fileInput');
@@ -37,7 +40,7 @@ const ChatInputFile = () => {
     return () => {
       fileInput.removeEventListener('change', handleFileChange);
     };
-  });
+  }, [handleFileChange]);
 
   return (
     <>
@@ -70,4 +73,3 @@ const ChatInputFile = () => {
 };
 
 export default ChatInputFile;
-
