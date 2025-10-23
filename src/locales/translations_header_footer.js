@@ -1,5 +1,3 @@
-// translations_header_footer.js
-
 export const translations = {
   en: {
     header: {
@@ -7,7 +5,8 @@ export const translations = {
       signInButton: "🔐 Sign In",
       feedback: "Feedback",
       contact: "Contact",
-      chat: "Chat"
+      chat: "Chat",
+      resources: "Resources",
     },
     footer: {
       poweredBy: "Crafted by DRIHMIA | Your Personal Study Assistant",
@@ -19,7 +18,8 @@ export const translations = {
       signInButton: "🔐 Se connecter",
       feedback: "Retours",
       contact: "Contacter",
-      chat: "Discution"
+      chat: "Discution",
+      resources: "Ressources",
     },
     footer: {
       poweredBy: "Conçu par DRIHMIA | Votre assistant d'étude personnel",
@@ -31,7 +31,8 @@ export const translations = {
       signInButton: "🔐 تسجيل الدخول",
       feedback: "التعليقات",
       contact: "اتصل بالمعلم",
-      chat: "الدردشة"
+      chat: "الدردشة",
+      resources: "المصادر",
     },
     footer: {
       poweredBy: "مصنوع من قبل دريهمية | مساعدك الشخصي للدراسة",

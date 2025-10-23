@@ -70,6 +70,7 @@ const FeedbackPage = () => {
       setError(null);
       setSuccess(false);
 
+      console.table(user);
       const { firstName, lastName, primaryEmailAddress: emailAdresses } = user || {};
 
       const response = await fetch(`${BACKEND_URL}/api/feedback`, {

@@ -8,8 +8,8 @@ function ToggleMenu( { children } ) {
   };
 
   return (
-    <div>
-      <button onClick={handleToggle}> {isOpen ? '❌' : '🌐'} </button>
+    <div className="transform scale-150">
+      <button onClick={handleToggle} className="p-2 pb-3 text-2xl "> {isOpen ? '❌' : '🌐'} </button>
       {isOpen && (
         <div className="popup-menu">
           {children}
@@ -20,3 +20,4 @@ function ToggleMenu( { children } ) {
 }
 
 export default ToggleMenu;
+

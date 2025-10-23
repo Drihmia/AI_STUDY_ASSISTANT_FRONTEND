@@ -9,7 +9,10 @@ const BACK_END_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000
 const LIMIT = 20;
 
 const useChat = () => {
-  const { language, serverStatus } = useContext(GlobalContext);
+  const { language, serverStatus, file, setFile } = useContext(GlobalContext);
+  useEffect(() => {
+  console.log('file in useChat:', file);
+  }, [file]);
   const t = translations[language] || translations.fr;
 
   useEffect(() => {
@@ -17,6 +20,7 @@ const useChat = () => {
   }, [t.title]);
 
   const { user, isLoaded, isSignedIn } = useUser();
+  const { firstName, lastName, primaryEmailAddress: emailAdresses } = user || {};
   const user_id = user?.id;
 
   const [messages, setMessages] = useState([]);
@@ -50,7 +54,7 @@ const useChat = () => {
 
       const data = await response.json();
       if ('error' in data) {
-        throw new Error(data.error);
+        //throw new Error(data.error);
       }
       if (!response.ok) throw new Error(t.FailedToLoadHistory);
 
@@ -60,7 +64,7 @@ const useChat = () => {
         const initResponse = await fetch(`${BACK_END_URL}/api/chat?user_id=${user_id}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: t.greeting }),
+          body: JSON.stringify({ message: t.greeting(firstName, lastName, emailAdresses, language ) }),
         });
 
         if (initResponse.status >= 500) {
@@ -74,7 +78,7 @@ const useChat = () => {
         if (!initResponse.ok) throw new Error(t.FailedToInitializeChat);
 
         history = [
-          { role: 'user', parts: t.greeting },
+          { role: 'user', parts: t.greeting(firstName, lastName, emailAdresses, language ) },
           { role: 'model', parts: formatMessage({ parts: initData.response, role: 'model' }) },
         ];
       }
@@ -99,7 +103,7 @@ const useChat = () => {
       setIsLoading(false);
       setShouldScrollToBottom(true);
     }
-  }, [user_id, isSignedIn, t]);
+  }, [user_id, isSignedIn, t, firstName, lastName, emailAdresses, language]);
 
   const loadMoreHistory = useCallback(async () => {
     if (loadingMore || page >= maxPage) return;
@@ -170,12 +174,25 @@ const useChat = () => {
       clearTimeout(retryTimerRef.current);
       retryTimerRef.current = null;
     }
-    try {
-      const response = await fetch(`${BACK_END_URL}/api/chat?user_id=${user_id}`, {
+
+    let params;
+    console.log("File being sent:", file);
+    if(file) {
+      file.append('message', textAreaRef.current?.value);
+      params = {
         method: 'POST',
+        body: file,
+      };
+    } else {
+      params = {
+        method: 'POST',
+        body: JSON.stringify({ message: textAreaRef.current?.value}),
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: textAreaRef.current?.value }),
-      });
+        };
+    }
+
+    try {
+      const response = await fetch(`${BACK_END_URL}/api/chat?user_id=${user_id}`, params);
 
       if (response.status >= 500) {
         throw new Error(t.FailedToLoadHistory);
@@ -197,6 +214,7 @@ const useChat = () => {
       setQuestionFormId(data.form_id);
       setIsButtonDisabled(false);
       setSendingMessage(false);
+      setFile(null);
     } catch (error) {
       setCount(4);
       setError(error.message);
@@ -214,7 +232,7 @@ const useChat = () => {
         textAreaRef.current.value = '';
       }
     }
-  }, [user_id, t]);
+  }, [user_id, t, file]);
 
   const handleFormSubmit = useCallback(async (e) => {
     e.preventDefault();

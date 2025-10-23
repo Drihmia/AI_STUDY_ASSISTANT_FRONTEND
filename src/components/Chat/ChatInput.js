@@ -1,8 +1,13 @@
-import React, { forwardRef, memo } from 'react';
+import React, { forwardRef, memo, useContext } from 'react';
+import { GlobalContext } from '../../context/GlobalContext';
+import ChatInputFile from './ChatInputFile';
 
 const ChatInput = memo(forwardRef(({ handleMessageSubmit, isButtonDisabled, sendingMessage, placeholderText }, ref) => {
+
+  const { file, setFile } = useContext(GlobalContext);
   return (
-    <form onSubmit={handleMessageSubmit} className="flex items-center space-x-2 p-2 bg-gray-100">
+    <form onSubmit={(e) => handleMessageSubmit(e, file, setFile) } className="flex items-center space-x-2 p-2 bg-gray-100">
+      {/* Textarea for message input */}
       <textarea
         id="message"
         rows="2"
@@ -18,6 +23,11 @@ const ChatInput = memo(forwardRef(({ handleMessageSubmit, isButtonDisabled, send
         dir="auto"
         required
       />
+      
+      {/* File Upload Component */}
+      <ChatInputFile />
+
+      {/* Submit Button */}
       <button
         type="submit"
         disabled={isButtonDisabled}

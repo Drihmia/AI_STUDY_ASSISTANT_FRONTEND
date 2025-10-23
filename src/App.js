@@ -29,17 +29,24 @@ const localizationMap = {
 const BACK_END_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 
 const App = ({ publishableKey }) => {
-  console.log("localStorage.getItem('lang'):", localStorage.getItem("lang"));
-  console.log("navigator.language:", navigator.language.split("-")[0]);
+  //console.log("localStorage.getItem('lang'):", localStorage.getItem("lang"));
+  //console.log("navigator.language:", navigator.language.split("-")[0]);
 
   const [language, setLanguage] = useState(localStorage.getItem("lang") || navigator.language.split("-")[0] || "fr");
   const [serverStatus, setServerStatus] = useState('starting'); // 'starting', 'online', 'offline'
+  const [file, setFile] = useState(null);
+
+  //useEffect(() => {
+    //console.log("file changed in App.js:", file);
+  //}
+    //, [file]);
+
 
   useEffect(() => {
     const wakeUpServer = async () => {
       try {
         const response = await fetch(`${BACK_END_URL}/api/test/ok`);
-        console.table(response);
+        //console.table(response);
         if (response.ok) {
           setServerStatus('online');
         } else {
@@ -66,7 +73,7 @@ const App = ({ publishableKey }) => {
   ];
 
   return (
-    <GlobalContext.Provider value={{ language, handleLanguageChange, serverStatus, setServerStatus }}>
+    <GlobalContext.Provider value={{ language, handleLanguageChange, serverStatus, setServerStatus, file, setFile }}>
       <ClerkProvider publishableKey={publishableKey}
         afterSignOutUrl="/"
         signInFallbackRedirectUrl="/chat"
@@ -83,7 +90,7 @@ const App = ({ publishableKey }) => {
             <Suspense fallback={<LocationFallback />}>
               <Routes>
                 <Route path="/" element={<WelcomePage  />} />
-                <Route path="/chat" element={<Chat language={language} />} />
+                <Route path="/chat" element={<Chat language={language}/>} />
                 <Route path="/feedback" element={<FeedbackPage />} />
                 <Route path="/contact" element={<ContactTeacher />} />
                 <Route path="/resources" element={<ResourcesPage />} />

@@ -27,16 +27,16 @@ const Chat = () => {
     serverStatus,
   } = useChat();
 
+  if (serverStatus === 'offline' || serverStatus === 'starting') {
+    return <ServerStatus serverStatus={serverStatus} t={t} />;
+  }
+
   if ((isLoading && !error) || !isLoaded) {
     return <Loading location="/chat" />;
   }
 
   if (isLoaded && !isSignedIn) {
     return <SignInPrompt t={t} />;
-  }
-
-  if (serverStatus === 'offline' || serverStatus === 'starting') {
-    return <ServerStatus serverStatus={serverStatus} t={t} />;
   }
 
   return (

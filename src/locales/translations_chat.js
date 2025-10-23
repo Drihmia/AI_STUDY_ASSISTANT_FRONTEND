@@ -3,7 +3,15 @@
 export const translations = {
   en: {
     title: "🌟 AI STUDY ASSISTANT - Chat 🌟",
-    greeting: "Hello!",
+    greeting: (firstName, lastName, email, language ) => {
+      return `Information about the User : 
+      - First Name: ${firstName}
+      - Last Name: ${lastName}
+      - Email: ${email}
+      - Language: ${language}
+
+      `
+    },
     errorMessage: "An error occurred. Please try again.",
     FailedToLoadHistory: "Failed to load conversation history.",
     FailedToInitializeChat: "Failed to initialize chat.",
@@ -20,7 +28,15 @@ export const translations = {
   },
   fr: {
     title: "🌟 ASSISTANT D'ÉTUDE IA - Chat 🌟",
-    greeting: "Bonjour!",
+    greeting: (firstName, lastName, email, language ) => {
+      return `Informations sur l'utilisateur : 
+      - Prénom : ${firstName}
+      - Nom : ${lastName}
+      - Email : ${email}
+      - Langue : ${language}
+
+      `
+    },
     errorMessage: "Une erreur est survenue. Veuillez réessayer.",
     FailedToLoadHistory: "Échec du chargement de l'historique de la conversation.",
     FailedToInitializeChat: "Échec de l'initialisation du chat.",
@@ -37,7 +53,15 @@ export const translations = {
   },
   ar: {
     title: "🌟 مساعد الدراسة الذكي - دردشة 🌟",
-    greeting: "ﺎﻠﺳﻼﻣ ﻊﻠﻴﻜﻣ",
+    greeting: (firstName, lastName, email, language ) => {
+      return `معلومات عن المستخدم : 
+      - الاسم الأول: ${firstName}
+      - اسم العائلة: ${lastName}
+      - البريد الإلكتروني: ${email}
+      - اللغة: ${language}
+
+      `
+    },
     errorMessage: "حدث خطأ. يرجى المحاولة مرة أخرى.",
     FailedToLoadHistory: "فشل في تحميل سجل المحادثة.",
     FailedToInitializeChat: "فشل في تهيئة الدردشة.",
