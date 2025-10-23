@@ -10,9 +10,9 @@ const LIMIT = 20;
 
 const useChat = () => {
   const { language, serverStatus, file, setFile } = useContext(GlobalContext);
-  useEffect(() => {
-  console.log('file in useChat:', file);
-  }, [file]);
+  // useEffect(() => {
+  // console.log('file in useChat:', file);
+  // }, [file]);
   const t = translations[language] || translations.fr;
 
   useEffect(() => {
@@ -176,7 +176,7 @@ const useChat = () => {
     }
 
     let params;
-    console.log("File being sent:", file);
+    // console.log("File being sent:", file);
     if(file) {
       file.append('message', textAreaRef.current?.value);
       params = {
