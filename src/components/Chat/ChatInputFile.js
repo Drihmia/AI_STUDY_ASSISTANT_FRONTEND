@@ -8,7 +8,8 @@ const ChatInputFile = () => {
   const { file, setFile } = useContext(GlobalContext);
 
   useEffect(() => {
-      // Clean up the object URL to avoid memory leaks
+      // This effect now solely handles cleaning up the object URL 
+      // when the message is sent (i.e., when `file` is cleared from global context).
       if (!file && selectedFile) {
         URL.revokeObjectURL(selectedFile);
         setSelectedFile(null);
@@ -19,16 +20,16 @@ const ChatInputFile = () => {
   const handleFileChange = useCallback((event) => {
     const file = event.target.files[0];
     if (file) {
-      // Handle the file upload logic here
       const formImageData = new FormData();
       formImageData.append('image', file);
-      // save it to user's local using fetch aPI
       setFile(formImageData);
+      
+      // Revoke the old object URL before creating a new one to prevent memory leaks.
       setSelectedFile(prev => {
         if (prev) {
           URL.revokeObjectURL(prev);
         }
-        return URL.createObjectURL(file)
+        return URL.createObjectURL(file);
       });
 
     }

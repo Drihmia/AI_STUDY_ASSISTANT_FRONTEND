@@ -1,5 +1,5 @@
 
-import { useState, useCallback, useRef, useEffect, useContext } from 'react';
+import { useState, useCallback, useRef, useEffect, useContext, useMemo } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import formatMessage from '../components/messageformated';
 import { GlobalContext } from '../context/GlobalContext';
@@ -10,10 +10,7 @@ const LIMIT = 20;
 
 const useChat = () => {
   const { language, serverStatus, file, setFile } = useContext(GlobalContext);
-  // useEffect(() => {
-  // console.log('file in useChat:', file);
-  // }, [file]);
-  const t = translations[language] || translations.fr;
+  const t = useMemo(() => translations[language] || translations.fr, [language]);
 
   useEffect(() => {
     document.title = t.title;
@@ -46,7 +43,7 @@ const useChat = () => {
       if (!isSignedIn) return;
       setError(null);
       setIsLoading(true);
-      const response = await fetch(`${BACK_END_URL}/api/history?user_id=${user_id}&page=${pageNum}&limit=${LIMIT}`);
+      const response = await fetch(`${BACK_END_URL}/api/history?user_id=${user_id}&page=${pageNum}&limit=${LIMIT}`, {credentials: 'include',});
 
       if (response.status >= 500) {
         throw new Error(t.FailedToLoadHistory);
@@ -65,6 +62,7 @@ const useChat = () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: t.greeting(firstName, lastName, emailAdresses, language ) }),
+          credentials: 'include',
         });
 
         if (initResponse.status >= 500) {
@@ -117,7 +115,7 @@ const useChat = () => {
 
     try {
       const nextPage = page + 1;
-      const response = await fetch(`${BACK_END_URL}/api/history?user_id=${user_id}&page=${nextPage}&limit=${LIMIT}`);
+      const response = await fetch(`${BACK_END_URL}/api/history?user_id=${user_id}&page=${nextPage}&limit=${LIMIT}`, {credentials: 'include'});
 
       if (!response.ok) {
         throw new Error(t.FailedToLoadHistory);
@@ -149,14 +147,14 @@ const useChat = () => {
     }
   }, [user_id, page, maxPage, loadingMore, t]);
 
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
     if (chatContainerRef.current) {
       const { scrollTop } = chatContainerRef.current;
       if (scrollTop === 0) {
         loadMoreHistory();
       }
     }
-  };
+  }, [loadMoreHistory]);
 
   const handleMessageSubmit = useCallback(async (e) => {
     e.preventDefault();
@@ -176,18 +174,19 @@ const useChat = () => {
     }
 
     let params;
-    // console.log("File being sent:", file);
     if(file) {
       file.append('message', textAreaRef.current?.value);
       params = {
         method: 'POST',
         body: file,
+        credentials: 'include',
       };
     } else {
       params = {
         method: 'POST',
         body: JSON.stringify({ message: textAreaRef.current?.value}),
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         };
     }
 
@@ -254,6 +253,7 @@ const useChat = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: jsonData,
+        credentials: 'include',
       });
 
       if (response.status >= 500) {
@@ -287,6 +287,7 @@ const useChat = () => {
 
   useEffect(() => {
     const question_form = document.getElementById(questionFormId);
+
     if (question_form) {
       question_form.style.display = 'block';
       question_form.addEventListener('submit', handleFormSubmit);
@@ -311,7 +312,7 @@ const useChat = () => {
     return () => clearInterval(timer);
   }, [error, count]);
 
-  return {
+  return useMemo(() => ({
     messages,
     loadingMore,
     isLoading,
@@ -330,7 +331,23 @@ const useChat = () => {
     isLoaded,
     isSignedIn,
     serverStatus,
-  };
+  }), [
+    messages,
+    loadingMore,
+    isLoading,
+    error,
+    questionFormId,
+    handleScroll,
+    sendingMessage,
+    isButtonDisabled,
+    count,
+    handleMessageSubmit,
+    handleFormSubmit,
+    t,
+    isLoaded,
+    isSignedIn,
+    serverStatus
+  ]);
 };
 
 export default useChat;

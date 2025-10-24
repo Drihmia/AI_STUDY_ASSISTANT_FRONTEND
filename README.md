@@ -16,6 +16,7 @@ This project follows a microservices-like architecture with a separate frontend 
 *   **Cross-Device Conversation History:** Secure authentication allows users to access their chat history and continue their learning journey on any device.
 *   **Direct User Communication:** Includes forms for users to contact the teacher directly and provide valuable feedback on the application.
 *   **Localization:** The application supports multiple languages for a global user base.
+*   **Image Upload in Chat:** Users can now upload images directly into the chat, allowing the AI to analyze and discuss visual content.
 
 ## Getting Started
 
@@ -65,6 +66,14 @@ This project has continuously evolved to provide a better experience for student
 *   **The Challenge:** Initially, user conversations were tracked using browser cookies. This meant if a user switched from their laptop to their phone, their entire chat history was lost. This created a fragmented and frustrating experience, hindering continuous learning.
 *   **The Solution:** We moved from a cookie-based approach to a full-fledged authentication system using Clerk. This decision was twofold: to explore and implement modern authentication technology and to avoid the security and maintenance overhead of managing a custom user database.
 *   **The Impact:** Users can now sign in and have their conversations seamlessly synced across all their devices. This provides a persistent and continuous learning journey. By using a specialized service like Clerk, we also enhance user data security and privacy, allowing us to focus on what matters most: the learning experience.
+
+### Performance First: A Smoother, Faster Experience
+
+*   **The Challenge:** A snappy, responsive UI is crucial for a good user experience. We identified that the application could be faster and more efficient, especially in the chat interface.
+*   **The Solution:** We conducted a thorough performance audit and implemented a series of optimizations using React's performance-tuning features.
+    *   **Memoization:** We wrapped key components in `React.memo` to prevent unnecessary re-renders.
+    *   **Callback and Memoization Hooks:** We used the `useCallback` and `useMemo` hooks to memoize functions and values, ensuring that they are not recreated on every render.
+*   **The Impact:** These optimizations have resulted in a significantly more responsive and fluid user interface, allowing students to focus on learning without any performance hiccups.
 
 ### Beyond Conversations: The Future is Personalized Progress Tracking
 

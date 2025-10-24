@@ -1,5 +1,5 @@
 
-import { React, lazy, Suspense, useState, useEffect } from 'react';
+import { React, lazy, Suspense, useState, useEffect, useCallback, useMemo, memo } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import { ClerkProvider } from '@clerk/clerk-react'
 import { frFR, arSA, enUS } from "@clerk/localizations";
@@ -29,24 +29,14 @@ const localizationMap = {
 const BACK_END_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 
 const App = ({ publishableKey }) => {
-  //console.log("localStorage.getItem('lang'):", localStorage.getItem("lang"));
-  //console.log("navigator.language:", navigator.language.split("-")[0]);
-
   const [language, setLanguage] = useState(localStorage.getItem("lang") || navigator.language.split("-")[0] || "fr");
-  const [serverStatus, setServerStatus] = useState('starting'); // 'starting', 'online', 'offline'
+  const [serverStatus, setServerStatus] = useState('starting');
   const [file, setFile] = useState(null);
-
-  //useEffect(() => {
-    //console.log("file changed in App.js:", file);
-  //}
-    //, [file]);
-
 
   useEffect(() => {
     const wakeUpServer = async () => {
       try {
         const response = await fetch(`${BACK_END_URL}/api/test/ok`);
-        //console.table(response);
         if (response.ok) {
           setServerStatus('online');
         } else {
@@ -60,20 +50,30 @@ const App = ({ publishableKey }) => {
     wakeUpServer();
   }, []);
 
-  const handleLanguageChange = (lang) => {
+  const handleLanguageChange = useCallback((lang) => {
     setLanguage(lang);
     localStorage.setItem("lang", lang);
-  };
+  }, []);
 
-  const headerButtons = [
-    { to: "/feedback", label: "Feedback" },
-    { to: "/contact", label: "Contact" },
-    { to: "/chat", label: "Chat" },
-    { to: "/resources", label: "Resources" }
-  ];
+  const headerButtons = useMemo(() => [
+    { to: "/feedback", label: "feedback" },
+    { to: "/contact", label: "contact" },
+    { to: "/chat", label: "chat" },
+    { to: "/resources", label: "resources" }
+  ], []);
+
+  const globalContextValue = useMemo(() => ({
+    language,
+    handleLanguageChange,
+    serverStatus,
+    setServerStatus,
+    file,
+    setFile
+  }), [language, handleLanguageChange, serverStatus, file]);
+
 
   return (
-    <GlobalContext.Provider value={{ language, handleLanguageChange, serverStatus, setServerStatus, file, setFile }}>
+    <GlobalContext.Provider value={globalContextValue}>
       <ClerkProvider publishableKey={publishableKey}
         afterSignOutUrl="/"
         signInFallbackRedirectUrl="/chat"
@@ -89,25 +89,24 @@ const App = ({ publishableKey }) => {
             <Header buttons={headerButtons} />
             <Suspense fallback={<LocationFallback />}>
               <Routes>
-                <Route path="/" element={<WelcomePage  />} />
-                <Route path="/chat" element={<Chat language={language}/>} />
+                <Route path="/" element={<WelcomePage />} />
+                <Route path="/chat" element={<Chat language={language} />} />
                 <Route path="/feedback" element={<FeedbackPage />} />
                 <Route path="/contact" element={<ContactTeacher />} />
                 <Route path="/resources" element={<ResourcesPage />} />
               </Routes>
             </Suspense>
           </Router>
-          <Footer/>
+          <Footer />
         </div>
       </ClerkProvider>
-
     </GlobalContext.Provider>
   );
 };
-const LocationFallback = () => {
-  const location = useLocation(); // Access location inside the fallback
 
+const LocationFallback = memo(() => {
+  const location = useLocation();
   return <Loading location={location.pathname} />;
-};
+});
 
 export default App;
