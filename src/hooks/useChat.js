@@ -27,7 +27,6 @@ const useChat = () => {
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [questionFormId, setQuestionFormId] = useState('');
 
   const [sendingMessage, setSendingMessage] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
@@ -86,7 +85,6 @@ const useChat = () => {
         parts: formatMessage(msg),
       }));
 
-      setQuestionFormId(data.form_id);
       setPage(data.page);
       setMaxPage(data.max_page);
       setMessages(formattedHistory);
@@ -210,7 +208,6 @@ const useChat = () => {
         { role: 'model', parts: formatMessage({ parts: data.response, role: 'model' }) },
       ]);
 
-      setQuestionFormId(data.form_id);
       setIsButtonDisabled(false);
       setSendingMessage(false);
       setFile(null);
@@ -286,14 +283,24 @@ const useChat = () => {
   }, [messages, error, shouldScrollToBottom, messagesEndRef]);
 
   useEffect(() => {
-    const question_form = document.getElementById(questionFormId);
+    const chatContainer = chatContainerRef.current;
+    if (!chatContainer) return;
 
-    if (question_form) {
-      question_form.style.display = 'block';
-      question_form.addEventListener('submit', handleFormSubmit);
-      return () => question_form.removeEventListener('submit', handleFormSubmit);
-    }
-  }, [questionFormId, handleFormSubmit]);
+    // Find all forms within the chat container
+    const forms = chatContainer.querySelectorAll('form');
+
+    // Attach the event listener to each form
+    forms.forEach(form => {
+      form.addEventListener('submit', handleFormSubmit);
+    });
+
+    // Cleanup: remove the event listeners when the messages change or component unmounts
+    return () => {
+      forms.forEach(form => {
+        form.removeEventListener('submit', handleFormSubmit);
+      });
+    };
+  }, [messages, handleFormSubmit]); // Rerun when messages change
 
   useEffect(() => {
     if (count <= 0 || !error) return;
@@ -317,7 +324,6 @@ const useChat = () => {
     loadingMore,
     isLoading,
     error,
-    questionFormId,
     chatContainerRef,
     messagesEndRef,
     textAreaRef,
@@ -336,7 +342,6 @@ const useChat = () => {
     loadingMore,
     isLoading,
     error,
-    questionFormId,
     handleScroll,
     sendingMessage,
     isButtonDisabled,
