@@ -18,7 +18,7 @@ const WelcomePage = lazy(() => import('./components/WelcomePage'));
 const Chat = lazy(() => import('./components/Chat'));
 const FeedbackPage = lazy(() => import('./components/FeedbackPage'));
 const ContactTeacher = lazy(() => import('./components/ContactTeacher'));
-const ResourcesPage = lazy(() => import('./components/ResourcesPage'));
+const Resources = lazy(() => import('./pages/Resources'));
 
 const localizationMap = {
   en: enUS,
@@ -87,15 +87,17 @@ const App = ({ publishableKey }) => {
           </Suspense>
           <Router>
             <Header buttons={headerButtons} />
-            <Suspense fallback={<LocationFallback />}>
-              <Routes>
-                <Route path="/" element={<WelcomePage />} />
-                <Route path="/chat" element={<Chat language={language} />} />
-                <Route path="/feedback" element={<FeedbackPage />} />
-                <Route path="/contact" element={<ContactTeacher />} />
-                <Route path="/resources" element={<ResourcesPage />} />
-              </Routes>
-            </Suspense>
+            <main className="flex-grow overflow-y-auto">
+              <Suspense fallback={<LocationFallback />}>
+                <Routes>
+                  <Route path="/" element={<WelcomePage />} />
+                  <Route path="/chat" element={<Chat language={language} />} />
+                  <Route path="/feedback" element={<FeedbackPage />} />
+                  <Route path="/contact" element={<ContactTeacher />} />
+                  <Route path="/resources" element={<Resources />} />
+                </Routes>
+              </Suspense>
+            </main>
           </Router>
           <Footer />
         </div>

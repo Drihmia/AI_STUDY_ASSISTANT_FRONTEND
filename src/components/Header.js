@@ -1,4 +1,3 @@
-
 import React, { useState, useContext, useMemo, memo, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { SignedIn, SignedOut, SignInButton, UserButton, GoogleOneTap } from "@clerk/clerk-react";
@@ -51,7 +50,7 @@ const Header = ({ buttons }) => {
 
 
   return (
-    <header className="bg-white shadow-md w-full py-4 px-4 flex items-center justify-between backdrop-blur-lg rounded-lg">
+    <header className="relative z-30 bg-white shadow-md w-full py-4 px-4 flex items-center justify-between backdrop-blur-lg rounded-lg">
       {/* Small Screen Layout */}
       <div className="nav-break:hidden flex-1 flex justify-start items-center">
         {/* Hamburger Menu */}
@@ -157,7 +156,7 @@ const Header = ({ buttons }) => {
         </nav>
         <div className="flex items-center gap-4">
           <ToggleMenu>
-            <div className="absolute right top-full mt-2 transform -translate-x-1/2 opacity-100 hover:opacity-100 transition bg-gray-300 shadow-md backdrop-blur-lg text-white text-xs rounded-md py-1 px-2 whitespace-nowrap">
+            <div className="absolute right-0 top-full mt-2 transform -translate-x-1/2 opacity-100 hover:opacity-100 transition bg-gray-300 shadow-md backdrop-blur-lg text-white text-xs rounded-md py-1 px-2 whitespace-nowrap">
               {languageSelector.map((lang, index) => (
                 <button
                   key={index}
