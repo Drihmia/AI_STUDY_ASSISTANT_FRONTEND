@@ -9,7 +9,7 @@ function ToggleMenu( { children } ) {
 
   return (
     <div className="scale-100">
-      <button onClick={handleToggle} className="px-1 mt-1 text-4xl "> {isOpen ? '❌' : '🌐'} </button>
+      <button onClick={handleToggle} className="px-1 text-4xl "> {isOpen ? '❌' : '🌐'} </button>
       {isOpen && (
         <div className="popup-menu">
           {children}

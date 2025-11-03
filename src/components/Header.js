@@ -53,7 +53,7 @@ const Header = ({ buttons }) => {
   return (
     <header className="bg-white shadow-md w-full py-4 px-4 flex items-center justify-between backdrop-blur-lg rounded-lg">
       {/* Small Screen Layout */}
-      <div className="sm:hidden flex-1 flex justify-start items-center">
+      <div className="nav-break:hidden flex-1 flex justify-start items-center">
         {/* Hamburger Menu */}
         <div className="relative" ref={menuRef}>
           <button onClick={toggleMenu} className="p-2 focus:outline-none">
@@ -92,7 +92,7 @@ const Header = ({ buttons }) => {
           )}
         </div>
       </div>
-      <div className="sm:hidden flex-auto text-center">
+      <div className="nav-break:hidden flex-auto text-center">
         <Link
           to={"/"}
           className={`text-2xl font-bold hover:text-orange-500 transition-colors ${
@@ -102,7 +102,7 @@ const Header = ({ buttons }) => {
           { t.title }
         </Link>
       </div>
-      <div className="sm:hidden flex-1 flex justify-end">
+      <div className="nav-break:hidden flex-1 flex justify-end">
         <SignedIn>
           <div className="transform scale-125">
             <UserButton mode="modal" />
@@ -111,7 +111,7 @@ const Header = ({ buttons }) => {
         <SignedOut>
           <SignInButton mode="modal" >
             <button className="relative group flex items-center gap-2 transition-all duration-300
-              px-5 py-2.5 text-sm sm:text-base font-semibold text-white rounded-lg shadow-md
+              px-5 py-2.5 text-sm font-semibold text-white rounded-lg shadow-md
               bg-gradient-to-r from-orange-400 to-orange-600
               hover:scale-105 hover:from-orange-500 hover:to-orange-700">
               <svg
@@ -137,24 +137,24 @@ const Header = ({ buttons }) => {
 
 
       {/* Large Screen Layout */}
-      <div className="hidden sm:flex flex-1 justify-between items-center">
+      <div className="hidden nav-break:flex flex-1 justify-between items-center">
         <div className="flex items-center gap-4">
           <Link
             to={"/"}
-            className={`text-2xl sm:text-3xl font-bold hover:text-orange-500 transition-colors ${
+            className={`text-2xl nav-break:text-3xl font-bold hover:text-orange-500 transition-colors ${
                 serverStatus === 'online' ? 'text-green-500' : ''
               }`}
           >
             { t.title }
           </Link>
-          <nav className="flex gap-0 px-2">
-            {buttons.map((button, index) => (
-              <Link key={index} to={button.to} className="px-2 py-1 text-sm md:px-3 md:py-2 sm:text-xl lg:px-4 text-gray-700 hover:text-orange-500 hover:bg-orange-50 rounded-md transition font-medium">
-                {t[button.label]}
-              </Link>
-            ))}
-          </nav>
         </div>
+        <nav className="flex gap-0 px-2">
+          {buttons.map((button, index) => (
+            <Link key={index} to={button.to} className="px-2 py-1 text-sm md:px-3 md:py-2 nav-break:text-xl lg:px-4 text-gray-700 hover:text-orange-500 hover:bg-orange-50 rounded-md transition font-medium">
+              {t[button.label]}
+            </Link>
+          ))}
+        </nav>
         <div className="flex items-center gap-4">
           <ToggleMenu>
             <div className="absolute right top-full mt-2 transform -translate-x-1/2 opacity-100 hover:opacity-100 transition bg-gray-300 shadow-md backdrop-blur-lg text-white text-xs rounded-md py-1 px-2 whitespace-nowrap">
@@ -163,7 +163,7 @@ const Header = ({ buttons }) => {
                   key={index}
                   alt={Object.keys(lang)[0]}
                   onClick={() => handleLanguageSelection(Object.keys(lang)[0])}
-                  className={ `mx-1 transition px-2 sm:px-3 py-1 bg-gray-100 text-gray-800 hover:bg-orange-100 rounded-md text-sm sm:text-base ${language === Object.keys(lang)[0] ? "border-2 bg-orange-100 shadow-md" : ""}` }
+                  className={ `mx-1 transition px-2 nav-break:px-3 py-1 bg-gray-100 text-gray-800 hover:bg-orange-100 rounded-md text-sm nav-break:text-base ${language === Object.keys(lang)[0] ? "border-2 bg-orange-100 shadow-md" : ""}` }
                 >
                   {Object.values(lang)[0]}
                 </button>
@@ -173,7 +173,7 @@ const Header = ({ buttons }) => {
           <SignedOut>
             <SignInButton mode="modal">
     <button className="relative group flex items-center gap-2 transition-all duration-300
-      px-5 py-2.5 text-sm sm:text-base font-semibold text-white rounded-lg shadow-md
+      px-5 py-2.5 text-sm nav-break:text-base font-semibold text-white rounded-lg shadow-md
       bg-gradient-to-r from-orange-400 to-orange-600
       hover:scale-105 hover:from-orange-500 hover:to-orange-700">
       <svg
