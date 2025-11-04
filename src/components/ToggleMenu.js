@@ -1,16 +1,9 @@
-import React, { useState } from 'react';
 
-function ToggleMenu( { children } ) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleToggle = () => {
-    setIsOpen(!isOpen);
-  };
-
+const ToggleMenu = ( { setIsLanguageOpen, isLanguageOpen, children } ) => {
   return (
     <div className="scale-100">
-      <button onClick={handleToggle} className="px-1 text-4xl "> {isOpen ? '❌' : '🌐'} </button>
-      {isOpen && (
+      <button onClick={() => setIsLanguageOpen(!isLanguageOpen)} className="px-1 text-4xl "> {isLanguageOpen ? '❌' : '🌐'} </button>
+      {isLanguageOpen && (
         <div className="popup-menu">
           {children}
         </div>
@@ -20,4 +13,3 @@ function ToggleMenu( { children } ) {
 }
 
 export default ToggleMenu;
-

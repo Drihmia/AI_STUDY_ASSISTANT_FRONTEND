@@ -10,6 +10,8 @@ const Header = ({ buttons }) => {
   const { language, handleLanguageChange, serverStatus } = useContext(GlobalContext);
   const t = useMemo(() => translations[language || "fr"].header, [language]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLanguageOpen, setIsLanguageOpen] = useState(false);
+
   const menuRef = useRef(null);
 
   const Span = ({text}) => {
@@ -27,6 +29,7 @@ const Header = ({ buttons }) => {
   }, []);
 
   const handleLanguageSelection = useCallback((lang) => {
+    setIsLanguageOpen(false);
     handleLanguageChange(lang);
   }, [handleLanguageChange]);
 
@@ -155,7 +158,7 @@ const Header = ({ buttons }) => {
           ))}
         </nav>
         <div className="flex items-center gap-4">
-          <ToggleMenu>
+          <ToggleMenu isLanguageOpen={isLanguageOpen} setIsLanguageOpen={setIsLanguageOpen} >
             <div className="absolute right-0 top-full mt-2 transform -translate-x-1/2 opacity-100 hover:opacity-100 transition bg-gray-300 shadow-md backdrop-blur-lg text-white text-xs rounded-md py-1 px-2 whitespace-nowrap">
               {languageSelector.map((lang, index) => (
                 <button
