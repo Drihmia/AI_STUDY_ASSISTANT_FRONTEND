@@ -27,6 +27,7 @@ module.exports = {
         '2xl': '1536px',
         'only-2xl': { 'raw': '(min-width: 1536px) and (max-width: 1919px)' },
         '3xl': '1920px',
+        'short': { 'raw': '(max-height: 575px)' },
       },
     },
   },

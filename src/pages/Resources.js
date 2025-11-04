@@ -113,7 +113,7 @@ const Resources = () => {
   }, [activeLevel, activeCategory]);
 
   return (
-    <div className="flex h-full landscape:h-auto bg-gray-50" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+    <div className="flex h-full landscape:short:h-auto bg-gray-50" dir={language === 'ar' ? 'rtl' : 'ltr'}>
       {/* --- Sidebar Navigation -- */}
       <aside className={`flex flex-col bg-white shadow-lg transition-all duration-300 ease-in-out ${isSidebarExpanded ? 'w-64' : 'w-20'}`}>
         <nav className="flex-grow px-2 py-4">
