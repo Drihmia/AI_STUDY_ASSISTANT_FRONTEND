@@ -1,9 +1,8 @@
 
 import { React, lazy, Suspense, useState, useEffect, useCallback, useMemo, memo } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-import { ClerkProvider } from '@clerk/clerk-react'
+import { ClerkProvider } from '@clerk/clerk-react';
 import { frFR, arSA, enUS } from "@clerk/localizations";
-
 
 import { GlobalContext } from './context/GlobalContext';
 import Header from './components/Header';
@@ -32,7 +31,6 @@ const App = ({ publishableKey }) => {
   const [language, setLanguage] = useState(localStorage.getItem("lang") || navigator.language.split("-")[0] || "fr");
   const [serverStatus, setServerStatus] = useState('starting');
   const [file, setFile] = useState(null);
-  const [isPortrait, setIsPortrait] = useState(window.screen.orientation.type.includes("portrait"));
 
   useEffect(() => {
     const wakeUpServer = async () => {
@@ -49,10 +47,6 @@ const App = ({ publishableKey }) => {
     };
 
     wakeUpServer();
-
-    window.screen.orientation.addEventListener("change",
-      () => setIsPortrait(window.screen.orientation.type.includes("portrait"))
-  );
 
   }, []);
 
@@ -74,9 +68,8 @@ const App = ({ publishableKey }) => {
     serverStatus,
     setServerStatus,
     file,
-    setFile,
-    isPortrait,
-  }), [language, handleLanguageChange, serverStatus, file, isPortrait]);
+    setFile
+  }), [language, handleLanguageChange, serverStatus, file]);
 
 
   return (
