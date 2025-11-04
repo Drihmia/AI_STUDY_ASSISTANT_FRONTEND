@@ -98,7 +98,7 @@ const ResourceCard = ({ resource, authoredByText }) => (
 );
 
 const Resources = () => {
-  const { language } = useContext(GlobalContext);
+  const { language, isPortrait } = useContext(GlobalContext);
   const t = useMemo(() => translations[language] || translations.en, [language]);
 
   const [activeLevel, setActiveLevel] = useState('TC');
@@ -113,7 +113,7 @@ const Resources = () => {
   }, [activeLevel, activeCategory]);
 
   return (
-    <div className="flex h-full bg-gray-50" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+    <div className={`flex ${ isPortrait === true? 'h-full' : ''} bg-gray-50`} dir={language === 'ar' ? 'rtl' : 'ltr'}>
       {/* --- Sidebar Navigation -- */}
       <aside className={`flex flex-col bg-white shadow-lg transition-all duration-300 ease-in-out ${isSidebarExpanded ? 'w-64' : 'w-20'}`}>
         <nav className="flex-grow px-2 py-4">

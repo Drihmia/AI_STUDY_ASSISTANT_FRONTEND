@@ -32,6 +32,7 @@ const App = ({ publishableKey }) => {
   const [language, setLanguage] = useState(localStorage.getItem("lang") || navigator.language.split("-")[0] || "fr");
   const [serverStatus, setServerStatus] = useState('starting');
   const [file, setFile] = useState(null);
+  const [isPortrait, setIsPortrait] = useState(window.screen.orientation.type.includes("portrait"));
 
   useEffect(() => {
     const wakeUpServer = async () => {
@@ -48,6 +49,11 @@ const App = ({ publishableKey }) => {
     };
 
     wakeUpServer();
+
+    window.screen.orientation.addEventListener("change",
+      () => setIsPortrait(window.screen.orientation.type.includes("portrait"))
+  );
+
   }, []);
 
   const handleLanguageChange = useCallback((lang) => {
@@ -68,8 +74,9 @@ const App = ({ publishableKey }) => {
     serverStatus,
     setServerStatus,
     file,
-    setFile
-  }), [language, handleLanguageChange, serverStatus, file]);
+    setFile,
+    isPortrait,
+  }), [language, handleLanguageChange, serverStatus, file, isPortrait]);
 
 
   return (
