@@ -56,9 +56,9 @@ const App = ({ publishableKey }) => {
   }, []);
 
   const headerButtons = useMemo(() => [
+    { to: "/chat", label: "chat" },
     { to: "/feedback", label: "feedback" },
     { to: "/contact", label: "contact" },
-    { to: "/chat", label: "chat" },
     { to: "/resources", label: "resources" }
   ], []);
 

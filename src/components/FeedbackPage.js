@@ -112,7 +112,7 @@ const FeedbackPage = () => {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto bg-gradient-to-br from-blue-50 to-orange-50 p-4 md:p-8">
+    <div dir={language === 'ar' ? 'rtl': 'ltr'} className="flex-1 overflow-y-auto bg-gradient-to-br from-blue-50 to-orange-50 p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl md:text-4xl font-bold text-center mb-8 text-gray-800">
           {t.pageTitle}
@@ -163,7 +163,6 @@ const FeedbackPage = () => {
                   maxLength="500"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
                   placeholder={t.feedbackPlaceholder}
-                  dir="auto"
                   required
                 />
               </div>

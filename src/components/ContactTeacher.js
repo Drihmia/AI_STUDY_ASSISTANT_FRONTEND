@@ -2,7 +2,7 @@ import React, { useState, useContext, useMemo, useRef, memo } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { SignedOut, SignInButton } from "@clerk/clerk-react";
 import { GlobalContext } from "../context/GlobalContext";
-import { translations } from "../locales/translations_contact";
+import { translations }  from "../locales/translations_contact";
 
 const ContactTeacher = () => {
   const BACKEND_URL = process.env.REACT_APP_FRONTEND_URL || "https://ai-study-assistant-w29f.onrender.com";
@@ -63,7 +63,7 @@ const ContactTeacher = () => {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto bg-gradient-to-br from-blue-50 to-orange-50 p-4 md:p-8">
+    <div dir={language === 'ar'? 'rtl': 'ltr'} className="flex-1 overflow-y-auto bg-gradient-to-br from-blue-50 to-orange-50 p-4 md:p-8">
       <div className="max-w-2xl mx-auto">
         <h1 className="text-3xl md:text-4xl font-bold text-center mb-8 text-gray-800">
           {t.pageTitle}
@@ -116,7 +116,6 @@ const ContactTeacher = () => {
                   maxLength="2000"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
                   placeholder={t.messagePlaceholder}
-                  dir="auto"
                   required
                 />
               </div>

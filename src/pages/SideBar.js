@@ -13,7 +13,7 @@ const SideBar = memo(({ activeCategory, setActiveCategory, isSidebarExpanded, se
       <nav className="flex-grow px-2 py-4">
         <ul className="space-y-2">
           {categories.map(category => (
-            <li key={category} className="relative group">
+            <li key={category} className={`relative group hover:${isSidebarExpanded ? 'scale-110' : 'scale-125'}`}>
               <button
                 onClick={() => setActiveCategory(category)}
                 className={`w-full flex items-center p-3 rounded-lg transition-all duration-200 font-semibold ${activeCategory === category ? 'bg-orange-500 text-white shadow-md' : 'text-gray-600 hover:bg-orange-50'}`}>
