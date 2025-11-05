@@ -55,6 +55,12 @@ The application frontend will now be running at `http://localhost:3000` and will
 
 This project has continuously evolved to provide a better experience for students. Here are some of the key challenges we've addressed and the solutions we've implemented, turning ideas into impactful features.
 
+### Visual Learning: Bringing Images into the Conversation
+
+*   **The Challenge:** Learning isn't limited to text. Students often work with complex diagrams, charts, and handwritten notes. The AI assistant was blind to this visual context, limiting its ability to provide comprehensive help.
+*   **The Solution:** We've integrated an image upload feature directly into the chat. Users can now share visual materials, allowing the AI to analyze and discuss them in the context of the conversation.
+*   **The Impact:** This transforms the study assistant into a multimedia learning partner. Students can now get help understanding complex diagrams, ask questions about visual data, or even get feedback on their handwritten work. It breaks down the barrier between text-based and visual learning, making the assistant a more versatile and powerful tool.
+
 ### Introducing Direct Communication Channels
 
 *   **The Challenge:** As the user base grew, there was no direct way for users to ask questions or provide feedback about the application. This made it difficult to gather user insights and address their concerns.
@@ -81,6 +87,12 @@ This project has continuously evolved to provide a better experience for student
 *   **The Vision:** The next evolution for the AI Study Assistant is to move from simply remembering conversations to actively tracking learning progress. We envision a system that can analyze user interactions to identify strengths and weaknesses, offering personalized feedback and detailed performance reports.
 *   **The Impact:** This will transform the application from a reactive study tool into a proactive learning partner. Imagine the assistant suggesting specific topics for review, creating personalized quizzes based on your chat history, and providing visual dashboards of your progress over time. It’s not just about what you’ve learned, but about understanding *how* you learn best and where to focus your efforts for maximum impact.
 
+### Centralized Learning Hub: The Future of Teacher-Curated Resources
+
+*   **The Foundation:** We've established direct communication channels between the teacher and students. The next logical step is to create a dedicated space for sharing high-quality learning materials.
+*   **The Vision:** We envision a future where the teacher can create and manage a centralized library of resources—such as documents, lecture notes, and important links—directly within the application. This gives students a single, trusted place to find all the official course materials.
+*   **The Impact:** This feature will bridge the gap between AI-driven conversation and traditional course content. Students will have a reliable "source of truth" to refer to while interacting with the AI, and the AI itself could even be enhanced to draw upon this curated knowledge base, providing more contextually aware and accurate assistance. It transforms the app from just a study tool into a comprehensive learning hub.
+
 ### From a Single-Language App to a Global Platform
 
 *   **The Challenge:** The application was initially only available in English, which limited its reach and accessibility for a global audience.
@@ -101,3 +113,9 @@ This project has continuously evolved to provide a better experience for student
 *   **The Challenge:** A great tool is only useful if people can find it. The application needed to be more visible on the web.
 *   **The Solution:** We implemented SEO-friendly headers to improve the application's ranking and visibility on search engines.
 *   **The Impact:** More students can now discover and benefit from the AI Study Assistant through organic search.
+
+## License
+
+This project is licensed under the **GNU Affero General Public License v3.0**.
+
+See the [LICENSE](LICENSE) file for more details.
