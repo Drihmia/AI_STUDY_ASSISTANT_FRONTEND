@@ -30,7 +30,7 @@ const ContactTeacher = () => {
       setError(null);
       setSuccess(false);
 
-      const { userId, firstName, lastName, primaryEmailAddress : emailAdresses } = user || {};
+      const { id, firstName, lastName, primaryEmailAddress : emailAdresses } = user || {};
 
       const response = await fetch(`${BACKEND_URL}/api/contact_teacher`, {
         method: "POST",
@@ -42,7 +42,7 @@ const ContactTeacher = () => {
           message: message.trim(),
           fullName: `${firstName || ""} ${lastName || ""}`.trim(),
           emailAddress: emailAdresses?.emailAddress || "",
-          userId: userId || "",
+          userId: id || "",
         })
       });
 

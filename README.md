@@ -1,5 +1,11 @@
 # AI Study Assistant
 
+<div align="center">
+  <a href="https://app.netlify.com/projects/ai-study-assistant-red/deploys">
+    <img src="https://api.netlify.com/api/v1/badges/83a0222d-3880-4f21-8948-b8406b9e81c4/deploy-status" alt="Netlify Status">
+  </a>
+</div>
+
 This project is a study assistant that uses AI to help students learn more effectively. It is a single-page application built with a separate frontend and backend.
 
 ## Architecture

@@ -211,6 +211,9 @@ const useChat = () => {
       setIsButtonDisabled(false);
       setSendingMessage(false);
       setFile(null);
+      if (textAreaRef.current) {
+        textAreaRef.current.value = '';
+      }
     } catch (error) {
       setCount(4);
       setError(error.message);
@@ -223,10 +226,6 @@ const useChat = () => {
         setError(null);
         setIsButtonDisabled(false);
       }, 4000);
-    } finally {
-      if (textAreaRef.current) {
-        textAreaRef.current.value = '';
-      }
     }
   }, [user_id, t, file, setFile]);
 
