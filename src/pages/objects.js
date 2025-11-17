@@ -36,8 +36,11 @@ export const resourcesData = {
     lessons: [],
     exercises: [
       { title: "Correction d'exercices 1 et 2 de CH2", description: "Corrigé des exercices 1 et 2 de la lecon CH2 de la suivi temporel pour la 2BAC PC.", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1rh5kUnzMAat8LQGWIuWlmHhqeD-dgXae/view?usp=drivesdk' },
+      { title: "Correction d'exercice 5 de CH3", description: "Correction d'exercice 5 de la lecon CH3 des transformations chimiques s'efuctuant dans les deux sens - page 185", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1BC0OVKEt2z9stBBIXiS_IL4HLqJMICPD/view?usp=drivesdk' }
     ],
     experiences: [],
-    more: [],
+    more: [
+      { title: "Rappel de chimie", description: "Contient les relations nécessaires et les définitions indispensables.", author: "Prof. AYOUB MARDI", link: "https://drive.google.com/file/d/12CSEGSFy5hS6A_UnRpRd-IJj7fPL9ntH/view?usp=drivesdk" }
+    ],
   },
 };
