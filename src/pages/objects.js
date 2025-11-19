@@ -38,7 +38,14 @@ export const resourcesData = {
       { title: "Correction d'exercices 1 et 2 de CH2", description: "Corrigé des exercices 1 et 2 de la lecon CH2 de la suivi temporel pour la 2BAC PC.", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1rh5kUnzMAat8LQGWIuWlmHhqeD-dgXae/view?usp=drivesdk' },
       { title: "Correction d'exercice 5 de CH3", description: "Correction d'exercice 5 de la lecon CH3 des transformations chimiques s'efuctuant dans les deux sens - page 185", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1BC0OVKEt2z9stBBIXiS_IL4HLqJMICPD/view?usp=drivesdk' }
     ],
-    experiences: [],
+    experiences: [
+        {
+            title: "Diagramme de Segrè Interactif",
+            description: "Une animation Flash du diagramme de Segrè où les élèves peuvent le manipuler librement, en faisant défiler vers le haut et sur le côté en N (axe horizontal) et Z (axe vertical) grâce à un bouton de défilement dans l'animation flash, et les élèves peuvent voir en zoomant sur la zone si elle est de type alpha ou bêta+ ou - radioactif.",
+            author: "web-labosims.org",
+            link: "https://segreee.web-labosims.org/index.html"
+        }
+    ],
     more: [
       { title: "Rappel de chimie", description: "Contient les relations nécessaires et les définitions indispensables.", author: "Prof. AYOUB MARDI", link: "https://drive.google.com/file/d/12CSEGSFy5hS6A_UnRpRd-IJj7fPL9ntH/view?usp=drivesdk" }
     ],
