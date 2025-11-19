@@ -1,5 +1,7 @@
 import React, { memo, useMemo } from 'react';
 import translations from '../locales/translations_resources.js';
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
+
 
 // --- Main Content Area ---
 const MainContent = memo(({ activeLevel, setActiveLevel, levels, displayedResources, language }) => {
@@ -56,7 +58,7 @@ const ResourcesCards = memo(({ displayedResources, language }) => {
           {displayedResources.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
               {displayedResources.map((resource, index) => (
-                <ResourceCard key={index} resource={resource} authoredByText={t.authoredBy} />
+                <ResourceCard key={index} resource={resource} t={t} />
               ))}
             </div>
           ) : (
@@ -85,12 +87,25 @@ const BetaNotice = memo(({ language }) => {
     </div> );
 });
 
-const ResourceCard = ({ resource, authoredByText }) => (
-  <a href={resource.link} target="_blank" rel="noopener noreferrer" className="block p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-    <h3  dir='ltr' className="text-lg font-bold text-orange-600">{resource.title}</h3>
-    <p  dir='ltr' className="text-gray-700 mt-1">{resource.description}</p>
-    <p className="text-sm text-gray-500 mt-2">{authoredByText}: {resource.author}</p>
-  </a>
+const ResourceCard = ({ resource, t }) => (
+    <>
+        <SignedIn>
+            <a href={resource.link} target="_blank" rel="noopener noreferrer" className="block p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                <h3  dir='ltr' className="text-lg font-bold text-orange-600">{resource.title}</h3>
+                <p  dir='ltr' className="text-gray-700 mt-1">{resource.description}</p>
+                <p className="text-sm text-gray-500 mt-2">{t.authoredBy}: {resource.author}</p>
+            </a>
+        </SignedIn>
+        <SignedOut>
+            <div className="block p-4 bg-gray-100 rounded-lg shadow-inner cursor-not-allowed">
+                <h3  dir='ltr' className="text-lg font-bold text-gray-500">{resource.title}</h3>
+                <p  dir='ltr' className="text-gray-500 mt-1">{resource.description}</p>
+                <p className="text-sm text-gray-400 mt-2">{t.authoredBy}: {resource.author}</p>
+                <p className="text-sm font-semibold text-red-500 mt-3">{t.signInToView}</p>
+            </div>
+        </SignedOut>
+    </>
 );
+
 
 export default MainContent;
