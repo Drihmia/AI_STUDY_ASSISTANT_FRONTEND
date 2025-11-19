@@ -1,5 +1,5 @@
 import React, { useState, useContext, useMemo, memo, useEffect, useRef, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { SignedIn, SignedOut, SignInButton, UserButton, GoogleOneTap } from "@clerk/clerk-react";
 
 import { GlobalContext } from "../context/GlobalContext";
@@ -73,9 +73,9 @@ const Header = ({ buttons }) => {
             <div className="absolute left-50 mt-2 w-48 bg-white rounded-md shadow-lg z-20">
               <nav className="flex flex-col p-2">
                 {buttons.map((button, index) => (
-                  <Link key={index} to={button.to} className="px-3 py-2 text-gray-700 hover:text-orange-500 hover:bg-orange-50 rounded-md transition font-medium" onClick={() => setIsMenuOpen(false)}>
+                  <NavLink key={index} to={button.to} className={({ isActive }) => `px-3 py-2 text-gray-700 hover:text-green-500 hover:bg-green-50 rounded-md transition font-medium ${isActive ? 'bg-green-100 text-green-700' : ''}`} onClick={() => setIsMenuOpen(false)}>
                     {t[button.label]}
-                  </Link>
+                  </NavLink>
                 ))}
               </nav>
               <div className="border-t border-gray-200 p-2">
@@ -152,9 +152,9 @@ const Header = ({ buttons }) => {
         </div>
         <nav className="flex gap-2 px-2">
           {buttons.map((button, index) => (
-            <Link key={index} to={button.to} className="hover:scale-110 px-2 py-1 text-sm md:px-3 md:py-2 nav-break:text-xl lg:px-4 text-gray-700 hover:text-orange-500 hover:bg-orange-50 rounded-md transition font-medium">
+            <NavLink key={index} to={button.to} className={({ isActive }) => `hover:scale-110 px-2 py-1 text-sm md:px-3 md:py-2 nav-break:text-xl lg:px-4 text-gray-700 hover:text-green-500 hover:bg-green-50 rounded-md transition font-medium ${isActive ? 'bg-green-100 text-green-700' : ''}`}>
               {t[button.label]}
-            </Link>
+            </NavLink>
           ))}
         </nav>
         <div className="flex items-center gap-4">
