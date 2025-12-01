@@ -33,7 +33,14 @@ export const resourcesData = {
     more: [],
   },
   '2BAC': {
-    lessons: [],
+    lessons: [
+        {
+            title: "Chimie: L'équilibre - Révision Express",
+            description: "Une fiche de révision express pour le chapitre sur l'équilibre chimique.",
+            author: "Prof. DRIHMIA",
+            link: "/pdf/Chimie_Lequilibre_Revision_Express.pdf"
+        }
+    ],
     exercises: [
       { title: "Correction d'exercices 1 et 2 de CH2", description: "Corrigé des exercices 1 et 2 de la lecon CH2 de la suivi temporel pour la 2BAC PC.", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1rh5kUnzMAat8LQGWIuWlmHhqeD-dgXae/view?usp=drivesdk' },
       { title: "Correction d'exercice 5 de CH3", description: "Correction d'exercice 5 de la lecon CH3 des transformations chimiques s'efuctuant dans les deux sens - page 185", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1BC0OVKEt2z9stBBIXiS_IL4HLqJMICPD/view?usp=drivesdk' }

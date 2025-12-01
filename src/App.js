@@ -81,12 +81,12 @@ const App = ({ publishableKey }) => {
         signUpFallbackRedirectUrl="/chat"
         localization={localizationMap[language] || localizationMap.fr}
       >
-        <div className="flex flex-col h-screen bg-gray-100">
-          <Suspense fallback={null}>
-            <GoogleTagManager />
-            <ConsentBanner />
-          </Suspense>
-          <Router>
+        <Router>
+          <div className="flex flex-col h-screen bg-gray-100">
+            <Suspense fallback={null}>
+              <GoogleTagManager />
+              <ConsentBanner />
+            </Suspense>
             <Header buttons={headerButtons} />
             <main className="flex-grow overflow-y-auto">
               <Suspense fallback={<LocationFallback />}>
@@ -100,9 +100,9 @@ const App = ({ publishableKey }) => {
                 </Routes>
               </Suspense>
             </main>
-          </Router>
-          <Footer />
-        </div>
+            <Footer />
+          </div>
+        </Router>
       </ClerkProvider>
     </GlobalContext.Provider>
   );

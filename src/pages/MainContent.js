@@ -1,4 +1,6 @@
+
 import React, { memo, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import translations from '../locales/translations_resources.js';
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
 
@@ -87,25 +89,41 @@ const BetaNotice = memo(({ language }) => {
     </div> );
 });
 
-const ResourceCard = ({ resource, t }) => (
-    <>
-        <SignedIn>
-            <a href={resource.link} target="_blank" rel="noopener noreferrer" className="block p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                <h3  dir='ltr' className="text-lg font-bold text-orange-600">{resource.title}</h3>
-                <p  dir='ltr' className="text-gray-700 mt-1">{resource.description}</p>
-                <p className="text-sm text-gray-500 mt-2">{t.authoredBy}: {resource.author}</p>
-            </a>
-        </SignedIn>
-        <SignedOut>
-            <div className="block p-4 bg-gray-100 rounded-lg shadow-inner cursor-not-allowed">
-                <h3  dir='ltr' className="text-lg font-bold text-gray-500">{resource.title}</h3>
-                <p  dir='ltr' className="text-gray-500 mt-1">{resource.description}</p>
-                <p className="text-sm text-gray-400 mt-2">{t.authoredBy}: {resource.author}</p>
-                <p className="text-sm font-semibold text-red-500 mt-3">{t.signInToView}</p>
-            </div>
-        </SignedOut>
-    </>
-);
+const ResourceCard = ({ resource, t }) => {
+    const isInternalPdf = resource.link && resource.link.startsWith('/pdf/');
+
+    const cardContent = (
+        <>
+            <h3 dir='ltr' className="text-lg font-bold text-orange-600">{resource.title}</h3>
+            <p dir='ltr' className="text-gray-700 mt-1">{resource.description}</p>
+            <p className="text-sm text-gray-500 mt-2">{t.authoredBy}: {resource.author}</p>
+        </>
+    );
+
+    return (
+        <>
+            <SignedIn>
+                {isInternalPdf ? (
+                    <Link to={resource.link} className="block p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                        {cardContent}
+                    </Link>
+                ) : (
+                    <a href={resource.link} target="_blank" rel="noopener noreferrer" className="block p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                        {cardContent}
+                    </a>
+                )}
+            </SignedIn>
+            <SignedOut>
+                <div className="block p-4 bg-gray-100 rounded-lg shadow-inner cursor-not-allowed">
+                    <h3 dir='ltr' className="text-lg font-bold text-gray-500">{resource.title}</h3>
+                    <p dir='ltr' className="text-gray-500 mt-1">{resource.description}</p>
+                    <p className="text-sm text-gray-400 mt-2">{t.authoredBy}: {resource.author}</p>
+                    <p className="text-sm font-semibold text-red-500 mt-3">{t.signInToView}</p>
+                </div>
+            </SignedOut>
+        </>
+    );
+};
 
 
 export default MainContent;
