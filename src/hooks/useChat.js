@@ -143,7 +143,7 @@ const useChat = () => {
     } finally {
       setLoadingMore(false);
     }
-  }, [user_id, page, maxPage, loadingMore, t]);
+  }, [user_id, page, maxPage, t, ]);
 
   const handleScroll = useCallback(() => {
     if (chatContainerRef.current) {
@@ -227,7 +227,7 @@ const useChat = () => {
         setIsButtonDisabled(false);
       }, 4000);
     }
-  }, [user_id, t, file, setFile]);
+  }, [user_id, t, file, setFile, textAreaRef]);
 
   const handleFormSubmit = useCallback(async (e) => {
     e.preventDefault();
@@ -299,7 +299,7 @@ const useChat = () => {
         form.removeEventListener('submit', handleFormSubmit);
       });
     };
-  }, [messages, handleFormSubmit]); // Rerun when messages change
+  }, [messages, handleFormSubmit, chatContainerRef]); // Rerun when messages change or container ref changes
 
   useEffect(() => {
     if (count <= 0 || !error) return;

@@ -18,6 +18,7 @@ const Chat = lazy(() => import('./components/Chat'));
 const FeedbackPage = lazy(() => import('./components/FeedbackPage'));
 const ContactTeacher = lazy(() => import('./components/ContactTeacher'));
 const Resources = lazy(() => import('./pages/Resources'));
+const PdfViewer = lazy(() => import('./components/PdfViewer'));
 
 const localizationMap = {
   en: enUS,
@@ -95,6 +96,7 @@ const App = ({ publishableKey }) => {
                   <Route path="/feedback" element={<FeedbackPage />} />
                   <Route path="/contact" element={<ContactTeacher />} />
                   <Route path="/resources" element={<Resources />} />
+                  <Route path="/pdf/*" element={<PdfViewer />} />
                 </Routes>
               </Suspense>
             </main>
