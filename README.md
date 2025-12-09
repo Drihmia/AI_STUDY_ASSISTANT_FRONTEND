@@ -13,7 +13,7 @@ This project is a study assistant that uses AI to help students learn more effec
 This project follows a microservices-like architecture with a separate frontend and backend.
 
 *   **Frontend (This Repository):** The frontend is built using **React** and utilizes **Clerk** for secure user authentication.
-*   **Backend:** The backend service is a **Python** application that uses **MongoDB** for database management. You can find the backend repository here: [https://github.com/Drihmia/AI_STUDY_ASSISTANT_BACKEND](https://github.com/Drihmia/AI_STUDY_ASSISTANT_BACKEND)
+*   **Backend:** The backend service is a **Python** application that uses **MongoDB** for database management. The backend repository is private.
 
 ## Features
 
@@ -35,18 +35,9 @@ To get this project running, you will need to set up both the frontend and the b
 
 ### 1. Backend Setup
 
-First, clone and set up the backend service.
-
-```bash
-git clone https://github.com/Drihmia/AI_STUDY_ASSISTANT_BACKEND.git
-cd AI_STUDY_ASSISTANT_BACKEND
-```
-
-Once inside the backend directory, please follow the setup and installation instructions provided in its specific `README.md` file.
+The backend for this project is in a separate, private repository. You will need to follow the setup instructions in that repository's `README.md` file. You can check the status of the backend service [here](https://b.drihmia.me/api/test/ok).
 
 ### 2. Frontend Setup
-
-Next, clone and set up the frontend service (this repository).
 
 ```bash
 git clone https://github.com/Drihmia/AI_STUDY_ASSISTANT_FRONTEND.git
@@ -98,7 +89,7 @@ This project has continuously evolved to provide a better experience for student
 *   **The Foundation:** We've established direct communication channels between the teacher and students. The next logical step is to create a dedicated space for sharing high-quality learning materials.
 *   **The Vision:** We envision a future where the teacher can create and manage a centralized library of resources—such as documents, lecture notes, and important links—directly within the application. This gives students a single, trusted place to find all the official course materials.
 *   **The Impact:** This feature will bridge the gap between AI-driven conversation and traditional course content. Students will have a reliable "source of truth" to refer to while interacting with the AI, and the AI itself could even be enhanced to draw upon this curated knowledge base, providing more contextually aware and accurate assistance. It transforms the app from just a study tool into a comprehensive learning hub.
-
+
 ### From a Single-Language App to a Global Platform
 
 *   **The Challenge:** The application was initially only available in English, which limited its reach and accessibility for a global audience.
@@ -119,6 +110,75 @@ This project has continuously evolved to provide a better experience for student
 *   **The Challenge:** A great tool is only useful if people can find it. The application needed to be more visible on the web.
 *   **The Solution:** We implemented SEO-friendly headers to improve the application's ranking and visibility on search engines.
 *   **The Impact:** More students can now discover and benefit from the AI Study Assistant through organic search.
+
+## File Structure
+
+<details>
+<summary>Click to expand</summary>
+
+```
+.
+├── LICENSE
+├── README.md
+├── package-lock.json
+├── package.json
+├── public
+│   ├── _redirects
+│   └── index.html
+├── src
+│   ├── App.css
+│   ├── App.html
+│   ├── App.js
+│   ├── Helmet.js
+│   ├── components
+│   │   ├── Chat
+│   │   │   ├── ChatInput.js
+│   │   │   ├── ChatInputFile.js
+│   │   │   ├── MessageList.js
+│   │   │   ├── ServerStatus.js
+│   │   │   └── SignInPrompt.js
+│   │   ├── Chat.js
+│   │   ├── ConsentBanner.js
+│   │   ├── ContactTeacher.js
+│   │   ├── FeedbackPage.js
+│   │   ├── Footer.js
+│   │   ├── GoogleTagManager.js
+│   │   ├── Header.js
+│   │   ├── Loading.js
+│   │   ├── PdfViewer.js
+│   │   ├── ResourcesPage.js
+│   │   ├── ToggleMenu.js
+│   │   ├── WelcomePage.js
+│   │   └── messageformated.js
+│   ├── context
+│   │   └── GlobalContext.js
+│   ├── hooks
+│   │   └── useChat.js
+│   ├── index.css
+│   ├── index.tsx
+│   ├── locales
+│   │   ├── translations_chat.js
+│   │   ├── translations_contact.js
+│   │   ├── translations_feedback.js
+│   │   ├── translations_header_footer.js
+│   │   ├── translations_resources.js
+│   │   └── translations_welcome_page.js
+│   ├── logo.svg
+│   ├── pages
+│   │   ├── ExternalLink.js
+│   │   ├── InternalPdfLink.js
+│   │   ├── MainContent.js
+│   │   ├── Resources.js
+│   │   ├── SideBar.js
+│   │   └── objects.js
+│   ├── react-app-env.d.ts
+│   ├── reportWebVitals.ts
+│   └── setupTests.ts
+├── tailwind.config.js
+└── tsconfig.json
+```
+
+</details>
 
 ## License
 
