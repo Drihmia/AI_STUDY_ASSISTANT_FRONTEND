@@ -7,6 +7,8 @@ const translations = {
       noResources: 'No resources found in this category.',
       authoredBy: 'Authored by',
       signInToView: 'Sign in to view this resource',
+      requiresPlan1: 'Requires Plan 1 to access',
+      requiresPlan2: 'Requires Plan 2 to access',
       categoryTranslations: {
         lessons: 'Lessons',
         exercises: 'Exercises',
@@ -23,6 +25,8 @@ const translations = {
       noResources: 'Aucune ressource trouvée dans cette catégorie.',
       authoredBy: 'Auteur',
       signInToView: 'Connectez-vous pour voir cette ressource',
+      requiresPlan1: 'Nécessite le Plan 1 pour y accéder',
+      requiresPlan2: 'Nécessite le Plan 2 pour y accéder',
       categoryTranslations: {
         lessons: 'Leçons',
         exercises: 'Exercices',
@@ -39,6 +43,8 @@ const translations = {
       noResources: 'لم يتم العثور على موارد في هذه الفئة.',
       authoredBy: 'المؤلف',
       signInToView: 'سجل الدخول لعرض هذا المورد',
+      requiresPlan1: 'يتطلب الخطة 1 للوصول',
+      requiresPlan2: 'يتطلب الخطة 2 للوصول',
       categoryTranslations: {
         lessons: 'دروس',
         exercises: 'تمارين',
