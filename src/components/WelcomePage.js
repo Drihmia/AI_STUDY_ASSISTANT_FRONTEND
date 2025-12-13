@@ -1,3 +1,4 @@
+
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { SignedIn, SignedOut, SignInButton } from '@clerk/clerk-react'
@@ -7,19 +8,12 @@ import { GlobalContext } from "../context/GlobalContext";
 const WelcomePage = () => {
   // Get the language from context
   const { language } = useContext(GlobalContext);
-  //console.log(`language from welcome page: ${language}`);
 
   const direction = language === "ar" ? "rtl" : "ltr";
   const orientation = language === "ar" ? "pr-6 text-right" : "pl-6 text-left";
 
   // Get text based on selected language
   const t = translations[language || 'en'];
-
-  // Function to change language
-  //const changeLanguage = (lang) => {
-    //setLanguage(lang);
-    //localStorage.setItem("lang", lang);
-  //};
 
   document.title = t.title;
 
@@ -35,22 +29,38 @@ const WelcomePage = () => {
         {/* Introduction */}
         <p className="text-lg text-gray-700 text-center mb-6" aria-label={t.intro}>{t.intro}</p>
 
-        {/* Features */}
-        <h2 className={`text-xl font-semibold text-gray-800 mb-3 ${direction} ${orientation}`}  aria-label={t.features}>{t.features}</h2>
-        <ul className={`list-disc text-gray-700 ${orientation}`}>
+        {/* New Features Section */}
+        <div className="mb-8 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+          <h2 className={`text-xl font-bold text-orange-600 mb-3 flex items-center gap-2 ${direction === 'rtl' ? 'flex-row-reverse justify-end' : ''}`} aria-label={t.new_features_title}>
+            {t.new_features_title}
+          </h2>
+          <ul className={`space-y-2 text-gray-800 ${orientation}`}>
+            {t.new_feature_list.map((item, index) => (
+              <li key={index} className={`flex items-start gap-2 ${direction === 'rtl' ? 'flex-row-reverse' : ''}`} aria-label={item}>
+                <span className="text-lg"></span> {/* Placeholder for potential icon in future if item doesn't have emoji */}
+                 <span dangerouslySetInnerHTML={{ __html: item.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
+              </li>
+            ))}
+          </ul>
+        </div>
 
+        {/* Core Features Section */}
+        <h2 className={`text-xl font-semibold text-gray-800 mb-3 ${direction} ${orientation}`} aria-label={t.features}>{t.features}</h2>
+        <ul className={`list-disc text-gray-700 space-y-2 ${orientation} ${language === 'ar' ? 'pr-5' : 'pl-5'}`}>
           {t.feature_list.map((item, index) => (
-            <li key={index} className={`${direction} ${orientation}`} aria-label={item}>{item}</li>
+             <li key={index} className={`${direction} ${orientation}`} aria-label={item}>
+               <span dangerouslySetInnerHTML={{ __html: item.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
+             </li>
           ))}
         </ul>
 
         {/* Lessons */}
-        <h2 className="text-xl font-semibold text-gray-800 mt-6 mb-3" aria-label={t.lessons}>{t.lessons}</h2>
+        <h2 className="text-xl font-semibold text-gray-800 mt-8 mb-3" aria-label={t.lessons}>{t.lessons}</h2>
 
         <div className="space-y-6">
           <div>
             <h3 className="text-lg font-semibold text-blue-600" aria-label={t.physics_tcs}>{t.physics_tcs}</h3>
-            <ul className={`list-disc text-gray-700 ${orientation}`}>
+            <ul className={`list-disc text-gray-700 ${orientation} ${language === 'ar' ? 'pr-5' : 'pl-5'}`}>
               { t.lessons_list.physics_tcs.map((item, index) => (
                 <li key={index}  aria-label={item}>{item}</li>
               ))}
@@ -59,7 +69,7 @@ const WelcomePage = () => {
 
           <div>
             <h3 className="text-lg font-semibold text-blue-600">{t.chemistry_tcs}</h3>
-            <ul className={`list-disc text-gray-700 ${orientation}`}>
+            <ul className={`list-disc text-gray-700 ${orientation} ${language === 'ar' ? 'pr-5' : 'pl-5'}`}>
               { t.lessons_list.chemistry_tcs.map((item, index) => (
                 <li key={index} aria-label={item}>{item}</li>
               ))}
@@ -68,7 +78,7 @@ const WelcomePage = () => {
 
           <div>
             <h3 className="text-lg font-semibold text-blue-600">{t.chemistry_bac}</h3>
-            <ul className={`list-disc text-gray-700 ${orientation}`}>
+            <ul className={`list-disc text-gray-700 ${orientation} ${language === 'ar' ? 'pr-5' : 'pl-5'}`}>
             { t.lessons_list.chemistry_bac.map((item, index) => (
               <li key={index} aria-label={item}>{item}</li>
             ))}
@@ -77,7 +87,7 @@ const WelcomePage = () => {
 
           <div>
             <h3 className="text-lg font-semibold text-blue-600">{t.physics_bac}</h3>
-            <ul className={`list-disc text-gray-700 ${orientation}`}>
+            <ul className={`list-disc text-gray-700 ${orientation} ${language === 'ar' ? 'pr-5' : 'pl-5'}`}>
             { t.lessons_list.physics_bac.map((item, index) => (
               <li key={index} aria-label={item}>{item}</li>
             ))}
@@ -115,4 +125,3 @@ const WelcomePage = () => {
 };
 
 export default WelcomePage;
-

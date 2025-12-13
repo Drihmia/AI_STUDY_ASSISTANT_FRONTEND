@@ -1,17 +1,24 @@
+
 const translations = {
   en: {
-    title: "🌟 Invitation to Explore the AI Assistant for Your Studies 🌟",
-    intro: "Discover the AI Assistant—your smart study companion, tailored for the Moroccan education system.",
-    features: "Key Features",
+    title: "🌟 Welcome to Your Enhanced AI Study Companion 🌟",
+    intro: "Experience the evolution of learning. Beyond just a chat, we now offer a complete study ecosystem tailored for the Moroccan curriculum.",
+    new_features_title: "🔥 What's New",
+    features: "Core Features",
     lessons: "Available Lessons",
     ai_button: "🚀 Start Learning with AI",
     sign_in: "Sign In",
+    new_feature_list: [
+      "📸 **Visual AI Support**: Don't just type! Upload images of diagrams, charts, or handwritten notes directly in chat for instant analysis.",
+      "📂 **Rich Resource Library**: We are no longer just a chatbot. Access a structured collection of lessons, exercises, and secure PDFs.",
+      "📢 **Direct Teacher Link**: Have a specific question or suggestion? Use the new 'Contact' and 'Feedback' forms to reach your teacher directly.",
+      "🌟 **Community Feedback Wall**: Share your thoughts, support the project, and see what others are saying. A free space for transparent feedback."
+    ],
     feature_list: [
       "📚 **Interactive Learning**: Learn at your own pace, anytime, anywhere.",
-      "📝 **Smart Quizzes**: QCM, True/False, Fill in the blank, and Multiple Choice.",
-      "🔍 **Deep Understanding & Critical Thinking**: Develop problem-solving skills.",
-      "📖 **Aligned with Moroccan Curriculum**: Uses official symbols and rules.",
-      "⚡ **Create Custom Tests**: Generate quick interactive quizzes to test knowledge.",
+      "🔐 **Cross-Device History**: Log in to securely save your conversations and resume your learning journey on any device.",
+      "📝 **Smart Interactive Quizzes**: Test your knowledge with MCQ, True/False, and custom-generated tests.",
+      "📖 **Moroccan Curriculum Aligned**: All content and symbols follow official educational guidelines.",
     ],
     chemistry_tcs: "🔹 Chemistry (TCS)",
     physics_tcs: "🔹 Physics (TCS)",
@@ -53,24 +60,29 @@ const translations = {
         "PC11: The Magnetic Field",
         "PC12: The Magnetic Field Created by an Electric Current",
         "PC13: Electromagnetic Forces - Laplace's Law",
-
       ],
     },
   },
 
   fr: {
-    title: "🌟 Invitation à Explorer l'Assistant IA pour vos Études 🌟",
-    intro: "Découvrez l'Assistant IA—votre compagnon d'étude intelligent, adapté au système éducatif marocain.",
-    features: "Principales Fonctionnalités",
+    title: "🌟 Bienvenue sur Votre Compagnon d'Étude IA Amélioré 🌟",
+    intro: "Découvrez l'évolution de l'apprentissage. Bien plus qu'un simple chat, nous offrons désormais un écosystème d'étude complet adapté au programme marocain.",
+    new_features_title: "🔥 Nouveautés",
+    features: "Fonctionnalités Clés",
     lessons: "Cours Disponibles",
     ai_button: "🚀 Commencez l'Apprentissage avec l'IA",
     sign_in: "Se Connecter",
+    new_feature_list: [
+      "📸 **Support Visuel IA** : Ne faites pas qu'écrire ! Envoyez des images de diagrammes ou de notes manuscrites dans le chat pour une analyse instantanée.",
+      "📂 **Bibliothèque de Ressources** : Nous ne sommes plus seulement un chatbot. Accédez à une collection structurée de leçons, d'exercices et de PDF sécurisés.",
+      "📢 **Lien Direct Enseignant** : Une question spécifique ou une suggestion ? Utilisez les nouveaux formulaires 'Contact' et 'Feedback' pour joindre votre prof.",
+      "🌟 **Mur Communautaire** : Partagez vos avis, soutenez le projet et voyez ce que les autres en disent. Un espace libre pour des retours transparents."
+    ],
     feature_list: [
       "📚 **Apprentissage interactif** : Apprenez à votre rythme, où et quand vous voulez.",
-      "📝 **Quiz intelligents** : QCM, Vrai/Faux, Remplir les blancs, Sélection multiple.",
-      "🔍 **Compréhension approfondie & pensée critique** : Développez des compétences en résolution de problèmes.",
-      "📖 **Aligné avec le programme marocain** : Utilisation des symboles et règles officielles.",
-      "⚡ **Créer des tests personnalisés** : Générez des quiz interactifs pour évaluer vos connaissances.",
+      "🔐 **Historique Multi-appareils** : Connectez-vous pour sauvegarder vos échanges et reprendre votre apprentissage sur n'importe quel appareil.",
+      "📝 **Quiz Interactifs Intelligents** : Testez vos connaissances avec des QCM, Vrai/Faux et des tests personnalisés.",
+      "📖 **Aligné Programme Marocain** : Tout le contenu et les symboles respectent les directives officielles.",
     ],
     chemistry_tcs: "🔹 Chimie (TCS)",
     physics_tcs: "🔹 Physique (TCS)",
@@ -78,7 +90,7 @@ const translations = {
     physics_bac: "🔹 Physique (1BAC-EX)",
     lessons_list: {
       physics_tcs: [
-        "Example des actions mécaniques - TC",
+        "Exemples d'actions mécaniques - TC",
         "Équilibre d'un corps solide soumis à deux forces - TC",
         "Équilibre d'un corps solide soumis à trois forces non parallèles - TC",
         "Équilibre d'un solide en rotation autour d'un axe fixe - TC",
@@ -104,7 +116,7 @@ const translations = {
         "CH10: Les groupes caractéristiques",
       ],
       physics_bac: [
-        "PC2: Travail mécanique et énergie  - Puissance d'une force",
+        "PC2: Travail mécanique et énergie - Puissance d'une force",
         "PC3: Énergie cinétique - Théorème de l'énergie cinétique",
         "PC4 + 5: Énergie potentielle de pesanteur et énergie mécanique",
         "PC9: Transfert d'énergie dans un circuit électrique",
@@ -117,18 +129,24 @@ const translations = {
   },
 
   ar: {
-    title: "🌟 دعوة لاستكشاف المساعد الذكي لدراستك 🌟",
-    intro: "اكتشف المساعد الذكي - رفيقك الدراسي المصمم خصيصًا للنظام التعليمي المغربي.",
+    title: "🌟 مرحبًا بك في رفيقك الدراسي الذكي والمطور 🌟",
+    intro: "جرب تطور التعلم. أبعد من مجرد دردشة، نقدم الآن بيئة دراسية متكاملة مصممة للمنهج المغربي.",
+    new_features_title: "🔥 ما الجديد",
     features: "الميزات الرئيسية",
     lessons: "الدروس المتاحة",
     ai_button: "🚀 ابدأ التعلم مع الذكاء الاصطناعي",
     sign_in: "تسجيل الدخول",
+    new_feature_list: [
+      "📸 **دعم الذكاء الاصطناعي البصري**: لا تكتفِ بالكتابة! حمل صور الرسوم البيانية أو الملاحظات المكتوبة بخط اليد مباشرة في الدردشة لتحليل فوري.",
+      "📂 **مكتبة موارد غنية**: لم نعد مجرد روبوت دردشة. يمكنك الوصول إلى مجموعة منظمة من الدروس والتمارين وملفات PDF الآمنة.",
+      "📢 **تواصل مباشر مع المعلم**: هل لديك سؤال محدد أو اقتراح؟ استخدم نماذج 'اتصل بنا' و 'التعليقات' الجديدة للتواصل مع معلمك مباشرة.",
+      "🌟 **جدار مجتمع المستفيدين**: شارك رأيك، ادعم المشروع، واطلع على آراء الآخرين. مساحة حرة لتعليقات شفافة."
+    ],
     feature_list: [
       "📚 **تعلم تفاعلي**: تعلم وفقًا لسرعتك الخاصة، في أي وقت وأي مكان.",
-      "📝 **اختبارات ذكية**: أسئلة متعددة الاختيارات، صح أو خطأ، املأ الفراغات، اختر الإجابة الصحيحة.",
-      "🔍 **تعزيز الفهم والتفكير النقدي**: تطوير مهارات حل المشكلات.",
-      "📖 **استخدام الرموز والقواعد المتوافقة مع البرنامج الدراسي المغربي**.",
-      "⚡ **توفير خاصية إنشاء روائز اختبار قصيرة تفاعلية**.",
+      "🔐 **سجل عبر الأجهزة**: سجل الدخول لحفظ محادثاتك بأمان ومتابعة رحلة التعلم على أي جهاز.",
+      "📝 **اختبارات تفاعلية ذكية**: اختبر معلوماتك بأسئلة متعددة الاختيارات، صح/خطأ، واختبارات مخصصة.",
+      "📖 **متوافق مع المنهج المغربي**: جميع المحتويات والرموز تتبع التوجيهات التعليمية الرسمية.",
     ],
     chemistry_tcs: "🔹 الكيمياء (TCS)",
     physics_tcs: "🔹 الفيزياء (TCS)",
@@ -137,11 +155,10 @@ const translations = {
     lessons_list: {
       physics_tcs: [
         "أمثلة لتأثيرات ميكانيكية - جدع علمي",
-        "مبدا القصور - جدع علمي",
+        "مبدأ القصور - جدع علمي",
         "توازن جسم صلب خاضع لقوتين - جدع علمي",
         "توازن جسم صلب خاضع لثلاث قوى غير متوازية - جدع علمي",
         "توازن جسم صلب في دوران حول محور ثابت - جدع علمي",
-
       ],
       chemistry_tcs: [
         "نموذج الذرة - جدع علمي",
@@ -154,7 +171,7 @@ const translations = {
         "CH0: لماذا نقيس في الكيمياء؟",
         "CH1: المقادير الفيزيائية المرتبطة بكميات المادة",
         "CH2: التركيز والمحاليل الإلكتروليتية",
-        "CH3: تطبيقات لتتبع تحول كميائي",
+        "CH3: تطبيقات لتتبع تحول كيميائي",
         "CH4: قياس المواصلة الكهربائية",
         "CH5: التفاعلات الحمضية - القاعدية",
         "CH6: تفاعلات الأكسدة - اختزال",
