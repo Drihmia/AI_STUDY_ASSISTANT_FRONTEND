@@ -23,6 +23,9 @@ This project follows a microservices-like architecture with a separate frontend 
 *   **Direct User Communication:** Includes forms for users to contact the teacher directly and provide valuable feedback on the application.
 *   **Localization:** The application supports multiple languages for a global user base.
 *   **Image Upload in Chat:** Users can now upload images directly into the chat, allowing the AI to analyze and discuss visual content.
+*   **Secure PDF Viewer:** A built-in, secure PDF viewer allows users to view course materials directly within the app without leaving the platform.
+*   **Community Feedback Wall:** A transparent space for users to share their thoughts, support the project, and see what others are saying.
+*   **Tiered Access Control:** Content visibility is managed based on user subscription plans (Plan 1, Plan 2) and authentication status.
 
 ## Getting Started
 
@@ -64,6 +67,12 @@ This project has continuously evolved to provide a better experience for student
 *   **The Solution:** We have now introduced two key communication features: a **Contact Teacher** form and a **Feedback Page**. Authenticated users can easily send messages and submit ratings, with their identity securely passed from the frontend to the backend. This allows for a clear and reliable communication loop.
 *   **The Impact:** These new channels empower users to contribute to the app's development and get the support they need. It provides the development team with direct access to user feedback, which is crucial for making informed decisions on future improvements and features.
 
+### Building a Community: The Feedback Wall
+
+*   **The Challenge:** Users often felt isolated in their experience, unaware of how others were using or benefiting from the platform. There was also no public space to showcase community support or constructive criticism.
+*   **The Solution:** We created the **Community Feedback Wall**. This feature allows users to post public feedback, creating a transparent forum where students can share their thoughts, admire new features, or suggest improvements.
+*   **The Impact:** This fosters a sense of community and trust. It turns the application into a shared space where users feel heard and valued, and it provides social proof for new users exploring the platform.
+
 ### Seamless Learning Across Devices with Secure Authentication
 
 *   **The Challenge:** Initially, user conversations were tracked using browser cookies. This meant if a user switched from their laptop to their phone, their entire chat history was lost. This created a fragmented and frustrating experience, hindering continuous learning.
@@ -86,10 +95,10 @@ This project has continuously evolved to provide a better experience for student
 
 ### Centralized Learning Hub: The Future of Teacher-Curated Resources
 
-*   **The Foundation:** We've established direct communication channels between the teacher and students. The next logical step is to create a dedicated space for sharing high-quality learning materials.
+*   **The Foundation:** We've established direct communication channels and now integrated a **Secure PDF Viewer**. This allows us to host and display high-quality learning materials directly within the app.
 *   **The Vision:** We envision a future where the teacher can create and manage a centralized library of resources—such as documents, lecture notes, and important links—directly within the application. This gives students a single, trusted place to find all the official course materials.
-*   **The Impact:** This feature will bridge the gap between AI-driven conversation and traditional course content. Students will have a reliable "source of truth" to refer to while interacting with the AI, and the AI itself could even be enhanced to draw upon this curated knowledge base, providing more contextually aware and accurate assistance. It transforms the app from just a study tool into a comprehensive learning hub.
-
+*   **The Impact:** This feature bridges the gap between AI-driven conversation and traditional course content. Students have a reliable "source of truth" to refer to while interacting with the AI. The secure viewer ensures that materials are accessed appropriately based on the user's plan, protecting intellectual property while facilitating learning.
+
 ### From a Single-Language App to a Global Platform
 
 *   **The Challenge:** The application was initially only available in English, which limited its reach and accessibility for a global audience.
@@ -168,6 +177,7 @@ This project has continuously evolved to provide a better experience for student
 │   │   ├── ExternalLink.js
 │   │   ├── InternalPdfLink.js
 │   │   ├── MainContent.js
+│   │   ├── PDFViewer.js
 │   │   ├── Resources.js
 │   │   ├── SideBar.js
 │   │   └── objects.js
