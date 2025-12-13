@@ -2,7 +2,7 @@
 import React, { memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import translations from '../locales/translations_resources.js';
-import { SignedIn, SignedOut } from "@clerk/clerk-react";
+import { useUser } from "@clerk/clerk-react";
 
 
 // --- Main Content Area ---
@@ -91,6 +91,38 @@ const BetaNotice = memo(({ language }) => {
 
 const ResourceCard = ({ resource, t }) => {
     const isInternalPdf = resource.link && resource.link.startsWith('/pdf/');
+    const { user, isSignedIn } = useUser();
+
+    // Default to public access if not specified
+    const accessLevel = resource.access || 'public';
+    const userPlan = isSignedIn ? user.publicMetadata.plan : null;
+
+    let hasAccess = false;
+    let requiredPlan = null;
+
+    if (accessLevel === 'public') {
+        hasAccess = true;
+    } else if (isSignedIn) {
+        if (accessLevel === 'loggedIn') {
+            hasAccess = true;
+        } else if (accessLevel === 'plan2') {
+            if (userPlan === 'plan1' || userPlan === 'plan2') {
+                hasAccess = true;
+            } else {
+                requiredPlan = t.requiresPlan2;
+            }
+        } else if (accessLevel === 'plan1') {
+            if (userPlan === 'plan1') {
+                hasAccess = true;
+            } else {
+                requiredPlan = t.requiresPlan1;
+            }
+        }
+    } else {
+        // Not signed in and resource is not public
+        requiredPlan = t.signInToView;
+    }
+
 
     const cardContent = (
         <>
@@ -100,28 +132,25 @@ const ResourceCard = ({ resource, t }) => {
         </>
     );
 
+    if (hasAccess) {
+        return isInternalPdf ? (
+            <Link to={resource.link} className="block p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                {cardContent}
+            </Link>
+        ) : (
+            <a href={resource.link} target="_blank" rel="noopener noreferrer" className="block p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                {cardContent}
+            </a>
+        );
+    }
+
     return (
-        <>
-            <SignedIn>
-                {isInternalPdf ? (
-                    <Link to={resource.link} className="block p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                        {cardContent}
-                    </Link>
-                ) : (
-                    <a href={resource.link} target="_blank" rel="noopener noreferrer" className="block p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                        {cardContent}
-                    </a>
-                )}
-            </SignedIn>
-            <SignedOut>
-                <div className="block p-4 bg-gray-100 rounded-lg shadow-inner cursor-not-allowed">
-                    <h3 dir='ltr' className="text-lg font-bold text-gray-500">{resource.title}</h3>
-                    <p dir='ltr' className="text-gray-500 mt-1">{resource.description}</p>
-                    <p className="text-sm text-gray-400 mt-2">{t.authoredBy}: {resource.author}</p>
-                    <p className="text-sm font-semibold text-red-500 mt-3">{t.signInToView}</p>
-                </div>
-            </SignedOut>
-        </>
+        <div className="block p-4 bg-gray-100 rounded-lg shadow-inner cursor-not-allowed">
+            <h3 dir='ltr' className="text-lg font-bold text-gray-500">{resource.title}</h3>
+            <p dir='ltr' className="text-gray-500 mt-1">{resource.description}</p>
+            <p className="text-sm text-gray-400 mt-2">{t.authoredBy}: {resource.author}</p>
+            {requiredPlan && <p className="text-sm font-semibold text-red-500 mt-3">{requiredPlan}</p>}
+        </div>
     );
 };
 

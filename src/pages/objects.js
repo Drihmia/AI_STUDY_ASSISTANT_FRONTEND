@@ -11,50 +11,44 @@ export const categoryIcons = {
 export const resourcesData = {
   'TC': {
     lessons: [
-      { title: 'Introduction to Chemistry', description: 'A comprehensive overview of basic chemistry principles.', author: 'Prof. Ahmed', link: '#' },
-      { title: 'Physics Fundamentals', description: 'Exploring the core concepts of motion and energy.', author: 'Mme. Fatima', link: '#' },
+      { title: 'Introduction to Chemistry', description: 'A comprehensive overview of basic chemistry principles.', author: 'Prof. Ahmed', link: '#', access: 'public' },
+      { title: 'Physics Fundamentals', description: 'Exploring the core concepts of motion and energy.', author: 'Mme. Fatima', link: '#', access: 'public' },
     ],
     exercises: [
-      { title: 'Chemistry Practice Problems', description: 'A set of problems to test your knowledge.', author: 'Prof. Ahmed', link: '#' },
+      { title: 'Chemistry Practice Problems', description: 'A set of problems to test your knowledge.', author: 'Prof. Ahmed', link: '#', access: 'public' },
     ],
     experiences: [],
     more: [
-        { title: 'Video: The World of Atoms', description: 'A short documentary on atomic structures.', author: 'Science Channel', link: '#' },
+        { title: 'Video: The World of Atoms', description: 'A short documentary on atomic structures.', author: 'Science Channel', link: '#', access: 'public' },
     ],
   },
   '1BAC': {
     lessons: [
-        { title: 'Advanced Organic Chemistry', description: 'Delving into complex carbon compounds.', author: 'Prof. Youssef', link: '#' },
+        { title: 'Advanced Organic Chemistry', description: 'Delving into complex carbon compounds.', author: 'Prof. Youssef', link: '#', access: 'public' },
     ],
     exercises: [],
     experiences: [
-        { title: 'Lab Simulation: Titration', description: 'An interactive lab to practice titration techniques.', author: 'ChemSims', link: '#' },
+        { title: 'Lab Simulation: Titration', description: 'An interactive lab to practice titration techniques.', author: 'ChemSims', link: '#', access: 'public' },
     ],
     more: [],
   },
   '2BAC': {
-    lessons: [
-        {
-            title: "Chimie: L'équilibre - Révision Express",
-            description: "Une fiche de révision express pour le chapitre sur l'équilibre chimique.",
-            author: "Prof. DRIHMIA",
-            link: "/pdf/Chimie_Lequilibre_Revision_Express.pdf"
-        }
-    ],
+    lessons: [],
     exercises: [
-      { title: "Correction d'exercices 1 et 2 de CH2", description: "Corrigé des exercices 1 et 2 de la lecon CH2 de la suivi temporel pour la 2BAC PC.", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1rh5kUnzMAat8LQGWIuWlmHhqeD-dgXae/view?usp=drivesdk' },
-      { title: "Correction d'exercice 5 de CH3", description: "Correction d'exercice 5 de la lecon CH3 des transformations chimiques s'efuctuant dans les deux sens - page 185", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1BC0OVKEt2z9stBBIXiS_IL4HLqJMICPD/view?usp=drivesdk' }
+      { title: "Correction d'exercices 1 et 2 de CH2", description: "Corrigé des exercices 1 et 2 de la lecon CH2 de la suivi temporel pour la 2BAC PC.", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1rh5kUnzMAat8LQGWIuWlmHhqeD-dgXae/view?usp=drivesdk', access: 'plan1' },
+      { title: "Correction d'exercice 5 de CH3", description: "Correction d'exercice 5 de la lecon CH3 des transformations chimiques s'efuctuant dans les deux sens - page 185", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1BC0OVKEt2z9stBBIXiS_IL4HLqJMICPD/view?usp=drivesdk', access: 'plan1' }
     ],
     experiences: [
         {
             title: "Diagramme de Segrè Interactif",
             description: "Une animation Flash du diagramme de Segrè où les élèves peuvent le manipuler librement, en faisant défiler vers le haut et sur le côté en N (axe horizontal) et Z (axe vertical) grâce à un bouton de défilement dans l'animation flash, et les élèves peuvent voir en zoomant sur la zone si elle est de type alpha ou bêta+ ou - radioactif.",
             author: "web-labosims.org",
-            link: "https://segreee.web-labosims.org/index.html"
+            link: "https://segreee.web-labosims.org/index.html",
+            access: "loggedIn"
         }
     ],
     more: [
-      { title: "Rappel de chimie", description: "Contient les relations nécessaires et les définitions indispensables.", author: "Prof. AYOUB MARDI", link: "https://drive.google.com/file/d/12CSEGSFy5hS6A_UnRpRd-IJj7fPL9ntH/view?usp=drivesdk" }
+      { title: "Rappel de chimie", description: "Contient les relations nécessaires et les définitions indispensables.", author: "Prof. AYOUB MARDI", link: "https://drive.google.com/file/d/12CSEGSFy5hS6A_UnRpRd-IJj7fPL9ntH/view?usp=drivesdk", access: 'loggedIn' }
     ],
   },
 };
