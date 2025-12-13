@@ -36,6 +36,7 @@ const useChat = () => {
   const messagesEndRef = useRef(null);
   const retryTimerRef = useRef(null);
   const textAreaRef = useRef(null);
+  const loadingMoreRef = useRef(false); // Ref to track loading state without causing re-renders
 
   const loadChatHistory = useCallback(async (pageNum = 1) => {
     try {
@@ -102,8 +103,9 @@ const useChat = () => {
   }, [user_id, isSignedIn, t, firstName, lastName, emailAdresses, language]);
 
   const loadMoreHistory = useCallback(async () => {
-    if (loadingMore || page >= maxPage) return;
+    if (loadingMoreRef.current || page >= maxPage) return;
 
+    loadingMoreRef.current = true;
     setLoadingMore(true);
     setShouldScrollToBottom(false);
     setError(null);
@@ -142,8 +144,9 @@ const useChat = () => {
       console.error('Error loading more chat history:', error.message);
     } finally {
       setLoadingMore(false);
+      loadingMoreRef.current = false;
     }
-  }, [user_id, page, maxPage, t, ]);
+  }, [user_id, page, maxPage, t]); // loadingMore is removed from here
 
   const handleScroll = useCallback(() => {
     if (chatContainerRef.current) {
