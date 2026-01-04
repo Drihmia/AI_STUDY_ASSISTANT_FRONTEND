@@ -1,57 +1,60 @@
 // --- SVG Icons for Categories ---
 export const categoryIcons = {
-    all: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>,
-    lessons: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v11.494m-9-5.747h18" /></svg>,
-    exercises: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L15.232 5.232z" /></svg>,
-    experiences: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>,
-    more: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" /></svg>,
+  all: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>,
+  lessons: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v11.494m-9-5.747h18" /></svg>,
+  exercises: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L15.232 5.232z" /></svg>,
+  experiences: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>,
+  more: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" /></svg>,
 };
 
 // --- Data Structure for Resources ---
 export const resourcesData = {
-  'TC': {
-    lessons: [
-      { title: 'Introduction to Chemistry', description: 'A comprehensive overview of basic chemistry principles.', author: 'Prof. Ahmed', link: '#', access: 'public' },
-      { title: 'Physics Fundamentals', description: 'Exploring the core concepts of motion and energy.', author: 'Mme. Fatima', link: '#', access: 'public' },
-    ],
-    exercises: [
-      { title: 'Chemistry Practice Problems', description: 'A set of problems to test your knowledge.', author: 'Prof. Ahmed', link: '#', access: 'public' },
-    ],
-    experiences: [],
-    more: [
-        { title: 'Video: The World of Atoms', description: 'A short documentary on atomic structures.', author: 'Science Channel', link: '#', access: 'public' },
-    ],
-  },
-  '1BAC': {
-    lessons: [
-        { title: 'Advanced Organic Chemistry', description: 'Delving into complex carbon compounds.', author: 'Prof. Youssef', link: '#', access: 'public' },
-    ],
-    exercises: [
-        { title: "Correction: Exercice 1 - Énergie Cinétique (PH3)", description: "Correction de l'exercice 1 de la leçon PH3 Énergie cinétique pour la 1BAC.", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/14_vhJkt7gFDNDF9H5OaCQpR-STRh6YTm/view?usp=sharing', access: 'plan2' },
-        { title: "Correction: Exercice 2 - Énergie Cinétique (PH3)", description: "Correction de l'exercice 2 de la leçon PH3 Énergie cinétique pour la 1BAC.", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1USoBh0oGY_5D1F7Khj_qI_pltL8le1S_/view?usp=sharing', access: 'plan2' },
-    ],
-    experiences: [
-        { title: 'Lab Simulation: Titration', description: 'An interactive lab to practice titration techniques.', author: 'ChemSims', link: '#', access: 'public' },
-    ],
-    more: [],
-  },
-  '2BAC': {
-    lessons: [],
-    exercises: [
-      { title: "Correction d'exercices 1 et 2 de CH2", description: "Corrigé des exercices 1 et 2 de la lecon CH2 de la suivi temporel pour la 2BAC PC.", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1rh5kUnzMAat8LQGWIuWlmHhqeD-dgXae/view?usp=drivesdk', access: 'plan1' },
-      { title: "Correction d'exercice 5 de CH3", description: "Correction d'exercice 5 de la lecon CH3 des transformations chimiques s'efuctuant dans les deux sens - page 185", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1BC0OVKEt2z9stBBIXiS_IL4HLqJMICPD/view?usp=drivesdk', access: 'plan1' }
-    ],
-    experiences: [
-        {
-            title: "Diagramme de Segrè Interactif",
-            description: "Une animation Flash du diagramme de Segrè où les élèves peuvent le manipuler librement, en faisant défiler vers le haut et sur le côté en N (axe horizontal) et Z (axe vertical) grâce à un bouton de défilement dans l'animation flash, et les élèves peuvent voir en zoomant sur la zone si elle est de type alpha ou bêta+ ou - radioactif.",
-            author: "web-labosims.org",
-            link: "https://segreee.web-labosims.org/index.html",
-            access: "loggedIn"
-        }
-    ],
-    more: [
-      { title: "Rappel de chimie", description: "Contient les relations nécessaires et les définitions indispensables.", author: "Prof. AYOUB MARDI", link: "https://drive.google.com/file/d/12CSEGSFy5hS6A_UnRpRd-IJj7fPL9ntH/view?usp=drivesdk", access: 'public' }
-    ],
-  },
+'TC': {
+  lessons: [
+    { title: 'Introduction to Chemistry', description: 'A comprehensive overview of basic chemistry principles.', author: 'Prof. Ahmed', link: '#', access: 'public' },
+    { title: 'Physics Fundamentals', description: 'Exploring the core concepts of motion and energy.', author: 'Mme. Fatima', link: '#', access: 'public' },
+  ],
+  exercises: [
+    { title: 'Chemistry Practice Problems', description: 'A set of problems to test your knowledge.', author: 'Prof. Ahmed', link: '#', access: 'public' },
+  ],
+  experiences: [],
+  more: [
+      { title: 'Video: The World of Atoms', description: 'A short documentary on atomic structures.', author: 'Science Channel', link: '#', access: 'public' },
+  ],
+},
+'1BAC': {
+  lessons: [
+      { title: 'Advanced Organic Chemistry', description: 'Delving into complex carbon compounds.', author: 'Prof. Youssef', link: '#', access: 'public' },
+  ],
+  exercises: [
+      { title: "Correction: Exercice 1 - Énergie Cinétique (PH3)", description: "Correction de l'exercice 1 de la leçon PH3 Énergie cinétique pour la 1BAC.", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/14_vhJkt7gFDNDF9H5OaCQpR-STRh6YTm/view?usp=sharing', access: 'plan2' },
+      { title: "Correction: Exercice 2 - Énergie Cinétique (PH3)", description: "Correction de l'exercice 2 de la leçon PH3 Énergie cinétique pour la 1BAC.", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1USoBh0oGY_5D1F7Khj_qI_pltL8le1S_/view?usp=sharing', access: 'plan2' },
+  ],
+  experiences: [
+      { title: 'Lab Simulation: Titration', description: 'An interactive lab to practice titration techniques.', author: 'ChemSims', link: '#', access: 'public' },
+  ],
+  more: [],
+},
+'2BAC': {
+  lessons: [],
+  exercises: [
+    { title: "Correction d'exercices 1 et 2 de CH2", description: "Corrigé des exercices 1 et 2 de la lecon CH2 de la suivi temporel pour la 2BAC PC.", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1rh5kUnzMAat8LQGWIuWlmHhqeD-dgXae/view?usp=drivesdk', access: 'loggedIn' },
+    { title: "Correction d'exercice 5 de CH3", description: "Correction d'exercice 5 de la lecon CH3 des transformations chimiques s'efuctuant dans les deux sens - page 185", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1BC0OVKEt2z9stBBIXiS_IL4HLqJMICPD/view?usp=drivesdk', access: 'loggedIn' },
+    { title: "Le dipole RC dans les examens nationaux PC (filier sciences physique)", description: "Examens nationaux du Maroc de 2016 à 2024, circuit RC, avec corrections proposées par le professeur BADRY HASSAN.", author: 'Prof. BADRY HASSAN', link: 'https://drive.google.com/file/d/1jGtg1bYejs6vUPt1uktRi31w4MXEvZvA/view?usp=sharing', access: 'loggedIn' },
+    { title: "Le dipole RL dans les examens nationaux PC (filier sciences physique)", description: "Examens nationaux du Maroc de 2016 à 2024, circuit RL, avec corrections proposées par le professeur BADRY HASSAN.", author: 'Prof. BADRY HASSAN', link: 'https://drive.google.com/file/d/1cotRqSoleJuBYzExYOGOPFS3_T7Vhk0i/view?usp=sharing', access: 'loggedIn' },
+    { title: "Le dipole RLC dans les examens nationaux PC (filier sciences physique)", description: "Examens nationaux du Maroc de 2016 à 2025, circuit RLC, avec corrections proposées par le professeur BADRY HASSAN.", author: 'Prof. BADRY HASSAN', link: 'https://drive.google.com/file/d/1rLWaZNKpsSiQKlH_9sV2hQ7WPoSZq_5S/view?usp=sharing', access: 'loggedIn' },
+  ],
+  experiences: [
+      {
+          title: "Diagramme de Segrè Interactif",
+          description: "Une animation Flash du diagramme de Segrè où les élèves peuvent le manipuler librement, en faisant défiler vers le haut et sur le côté en N (axe horizontal) et Z (axe vertical) grâce à un bouton de défilement dans l'animation flash, et les élèves peuvent voir en zoomant sur la zone si elle est de type alpha ou bêta+ ou - radioactif.",
+          author: "web-labosims.org",
+          link: "https://segreee.web-labosims.org/index.html",
+          access: "loggedIn"
+      }
+  ],
+  more: [
+    { title: "Rappel de chimie", description: "Contient les relations nécessaires et les définitions indispensables.", author: "Prof. AYOUB MARDI", link: "https://drive.google.com/file/d/12CSEGSFy5hS6A_UnRpRd-IJj7fPL9ntH/view?usp=drivesdk", access: 'public' }
+  ],
+},
 };
