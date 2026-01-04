@@ -8,6 +8,8 @@ const translations = {
     lessons: "Available Lessons",
     ai_button: "🚀 Start Learning with AI",
     sign_in: "Sign In",
+    pricing_title: "Unlock More Features",
+    pricing_button: "View Plans",
     new_feature_list: [
       "📸 **Visual AI Support**: Don't just type! Upload images of diagrams, charts, or handwritten notes directly in chat for instant analysis.",
       "📂 **Rich Resource Library**: We are no longer just a chatbot. Access a structured collection of lessons, exercises, and secure PDFs.",
@@ -72,6 +74,8 @@ const translations = {
     lessons: "Cours Disponibles",
     ai_button: "🚀 Commencez l'Apprentissage avec l'IA",
     sign_in: "Se Connecter",
+    pricing_title: "Débloquez plus de fonctionnalités",
+    pricing_button: "Voir les plans",
     new_feature_list: [
       "📸 **Support Visuel IA** : Ne faites pas qu'écrire ! Envoyez des images de diagrammes ou de notes manuscrites dans le chat pour une analyse instantanée.",
       "📂 **Bibliothèque de Ressources** : Nous ne sommes plus seulement un chatbot. Accédez à une collection structurée de leçons, d'exercices et de PDF sécurisés.",
@@ -136,6 +140,8 @@ const translations = {
     lessons: "الدروس المتاحة",
     ai_button: "🚀 ابدأ التعلم مع الذكاء الاصطناعي",
     sign_in: "تسجيل الدخول",
+    pricing_title: "ปลดล็อก المزيد من الميزات",
+    pricing_button: "عرض الخطط",
     new_feature_list: [
       "📸 **دعم الذكاء الاصطناعي البصري**: لا تكتفِ بالكتابة! حمل صور الرسوم البيانية أو الملاحظات المكتوبة بخط اليد مباشرة في الدردشة لتحليل فوري.",
       "📂 **مكتبة موارد غنية**: لم نعد مجرد روبوت دردشة. يمكنك الوصول إلى مجموعة منظمة من الدروس والتمارين وملفات PDF الآمنة.",

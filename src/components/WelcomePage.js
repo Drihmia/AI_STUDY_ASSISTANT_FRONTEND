@@ -119,6 +119,17 @@ const WelcomePage = () => {
             </SignInButton>
           </SignedOut>
         </div>
+
+        {/* Pricing Section */}
+        <div className="mt-12 text-center p-6 bg-gray-50 rounded-lg border border-gray-200">
+            <h2 className="text-2xl font-semibold text-gray-800">{t.pricing_title}</h2>
+            <Link to="/pricing">
+                <button className="mt-4 px-8 py-3 text-lg font-semibold text-white bg-orange-500 rounded-lg hover:bg-orange-600 transition-colors duration-300">
+                    {t.pricing_button}
+                </button>
+            </Link>
+        </div>
+
       </div>
     </div>
   );
