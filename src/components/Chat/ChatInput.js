@@ -1,7 +1,10 @@
 import React, { forwardRef, memo } from 'react';
 import ChatInputFile from './ChatInputFile';
+import { useUser } from '@clerk/clerk-react';
 
 const ChatInput = memo(forwardRef(({ handleMessageSubmit, isButtonDisabled, sendingMessage, placeholderText }, ref) => {
+  const { user } = useUser();
+  const userPlan = user?.publicMetadata?.plan;
 
   //const { file, setFile } = useContext(GlobalContext);
   return (
@@ -23,8 +26,8 @@ const ChatInput = memo(forwardRef(({ handleMessageSubmit, isButtonDisabled, send
         required
       />
       
-      {/* File Upload Component */}
-      <ChatInputFile />
+      {/* File Upload Component - Conditionally rendered */}
+      {(userPlan === 'plan 1' || userPlan === 'plan 2') && <ChatInputFile />}
 
       {/* Submit Button */}
       <button

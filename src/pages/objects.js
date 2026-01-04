@@ -51,7 +51,7 @@ export const resourcesData = {
         }
     ],
     more: [
-      { title: "Rappel de chimie", description: "Contient les relations nécessaires et les définitions indispensables.", author: "Prof. AYOUB MARDI", link: "https://drive.google.com/file/d/12CSEGSFy5hS6A_UnRpRd-IJj7fPL9ntH/view?usp=drivesdk", access: 'loggedIn' }
+      { title: "Rappel de chimie", description: "Contient les relations nécessaires et les définitions indispensables.", author: "Prof. AYOUB MARDI", link: "https://drive.google.com/file/d/12CSEGSFy5hS6A_UnRpRd-IJj7fPL9ntH/view?usp=drivesdk", access: 'public' }
     ],
   },
 };
