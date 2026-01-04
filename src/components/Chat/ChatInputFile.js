@@ -10,11 +10,11 @@ const ChatInputFile = () => {
   const [tooltipText, setTooltipText] = useState('');
   const [isUploadDisabled, setIsUploadDisabled] = useState(false);
 
-  const getUploadCount = () => {
+  const getUploadCount = useCallback(() => {
     const today = new Date().toLocaleDateString();
     const { uploadCount = 0, lastUploadDate } = user?.publicMetadata || {};
     return lastUploadDate === today ? uploadCount : 0;
-  };
+  }, [user]);
 
   useEffect(() => {
     const userPlan = user?.publicMetadata?.plan;
@@ -32,18 +32,31 @@ const ChatInputFile = () => {
     } else {
       setTooltipText('Log in to upload images.');
     }
-  }, [user]);
+  }, [user, getUploadCount]);
 
   const handleFileChange = useCallback(async (event) => {
     if (isUploadDisabled) return;
 
     const file = event.target.files[0];
     if (file) {
-      const currentUploadCount = getUploadCount();
-      const newUploadCount = currentUploadCount + 1;
-      const today = new Date().toLocaleDateString();
+      // First, update the local state with the selected file.
+      const formImageData = new FormData();
+      formImageData.append('image', file);
+      setFile(formImageData);
 
+      setSelectedFile(prev => {
+        if (prev) {
+          URL.revokeObjectURL(prev);
+        }
+        return URL.createObjectURL(file);
+      });
+
+      // Only after successfully updating the local state, update the user's upload count.
       try {
+        const currentUploadCount = getUploadCount();
+        const newUploadCount = currentUploadCount + 1;
+        const today = new Date().toLocaleDateString();
+
         await user.update({
           publicMetadata: {
             ...user.publicMetadata,
@@ -53,21 +66,12 @@ const ChatInputFile = () => {
         });
       } catch (error) {
         console.error('Error updating user metadata:', error);
-        return; 
+        // Note: If this update fails, the user's UI will still show the selected file,
+        // but their upload count won't be incremented. This is a reasonable trade-off
+        // to prevent penalizing the user for a backend error.
       }
-
-      const formImageData = new FormData();
-      formImageData.append('image', file);
-      setFile(formImageData);
-      
-      setSelectedFile(prev => {
-        if (prev) {
-          URL.revokeObjectURL(prev);
-        }
-        return URL.createObjectURL(file);
-      });
     }
-  }, [setFile, isUploadDisabled, user]);
+  }, [setFile, isUploadDisabled, user, getUploadCount]);
 
   useEffect(() => {
     const fileInput = document.getElementById('fileInput');
