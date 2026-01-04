@@ -73,11 +73,13 @@ const PricingPage = () => {
               <ul className="mt-8 space-y-4 text-lg text-gray-600 flex-grow">
                 {features.map(feature => {
                   const featureValue = feature[planKey];
+                  const featureText = typeof featureValue === 'string' ? `${feature.name}: <strong>${featureValue}</strong>` : feature.name;
+
                   if (featureValue) {
                     return (
                       <li key={feature.name} className="flex items-start">
                         <svg className="flex-shrink-0 h-6 w-6 text-green-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
-                        <span>{feature.name}{typeof featureValue === 'string' && `: <strong>${featureValue}</strong>`}</span>
+                        <span dangerouslySetInnerHTML={{ __html: featureText }} />
                       </li>
                     );
                   } else {
