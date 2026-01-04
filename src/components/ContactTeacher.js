@@ -1,4 +1,5 @@
-import React, { useState, useContext, useMemo, useRef, memo } from "react";
+import React, { useState, useContext, useMemo, useRef, memo, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
 import { SignedOut, SignInButton } from "@clerk/clerk-react";
 import { GlobalContext } from "../context/GlobalContext";
@@ -10,19 +11,29 @@ const ContactTeacher = () => {
   const t = useMemo(() => translations[language || "fr"], [language]);
   const { user, isSignedIn } = useUser();
   const formRef = useRef(null);
+  const location = useLocation();
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
-  const [plan, setPlan] = useState('standard');
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const plan = searchParams.get("plan");
+    const billing = searchParams.get("billing");
+
+    if (plan && billing) {
+      setSubject(t.subscriptionSubject);
+      setMessage(`I would like to inquire about the ${plan} plan on a ${billing} basis.`);
+    }
+  }, [location, t]);
 
   document.title = t.title;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(formRef.current);
-    const subject = formData.get("subject");
-    const message = formData.get("message");
 
     if (!subject.trim() || !message.trim()) return;
 
@@ -41,7 +52,6 @@ const ContactTeacher = () => {
         body: JSON.stringify({
           subject: subject.trim(),
           message: message.trim(),
-          plan,
           fullName: `${firstName || ""} ${lastName || ""}`.trim(),
           emailAddress: emailAdresses?.emailAddress || "",
           userId: id || "",
@@ -54,7 +64,8 @@ const ContactTeacher = () => {
       }
 
       setSuccess(true);
-      formRef.current.reset();
+      setSubject("");
+      setMessage("");
       
       setTimeout(() => setSuccess(false), 5000);
     } catch (err) {
@@ -94,15 +105,6 @@ const ContactTeacher = () => {
             </div>
 
             <form ref={formRef} onSubmit={handleSubmit}>
-            <div className="mb-4">
-                <label className="block text-gray-700 font-medium mb-2">
-                  {t.plan}
-                </label>
-                <select value={plan} onChange={(e) => setPlan(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
-                  <option value="standard">Standard</option>
-                  <option value="premium">Premium</option>
-                </select>
-              </div>
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium mb-2">
                   {t.subjectLabel}
@@ -113,6 +115,8 @@ const ContactTeacher = () => {
                   maxLength="200"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                   placeholder={t.subjectPlaceholder}
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
                   required
                 />
               </div>
@@ -127,6 +131,8 @@ const ContactTeacher = () => {
                   maxLength="2000"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
                   placeholder={t.messagePlaceholder}
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
                   required
                 />
               </div>

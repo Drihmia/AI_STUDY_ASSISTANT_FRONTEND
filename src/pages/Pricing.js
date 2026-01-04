@@ -78,7 +78,7 @@ const PricingPage = () => {
                   </ul>
                   <div className="mt-8">
                     {isSignedIn ? (
-                      <Link to="/contact" className={`w-full text-lg font-semibold py-3 rounded-lg text-center ${isPremium ? 'bg-orange-500 text-white hover:bg-orange-600' : 'bg-gray-800 text-white hover:bg-gray-900'}`}>
+                      <Link to={`/contact?plan=${plan.name}&billing=${billingCycle}`} className={`w-full text-lg font-semibold py-3 rounded-lg text-center ${isPremium ? 'bg-orange-500 text-white hover:bg-orange-600' : 'bg-gray-800 text-white hover:bg-gray-900'}`}>
                         {t.contact}
                       </Link>
                     ) : (
