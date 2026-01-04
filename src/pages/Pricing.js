@@ -44,8 +44,9 @@ const PricingPage = () => {
             </div>
         </div>
 
-        <div className="flex flex-col lg:items-stretch lg:space-x-8 lg:flex-row">
-          {!isSignedIn && language !== 'ar' && <Benefits t={t} />}
+        <div className={`flex flex-col lg:items-stretch lg:space-x-8 ${language === 'ar' ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}>
+          {/* Benefits for non-logged-in users */}
+          {!isSignedIn && <Benefits t={t} />}
 
           {/* Pricing Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 flex-grow">
@@ -85,8 +86,6 @@ const PricingPage = () => {
               );
             })}
           </div>
-
-          {!isSignedIn && language === 'ar' && <Benefits t={t} />}
         </div>
       </div>
     </div>
