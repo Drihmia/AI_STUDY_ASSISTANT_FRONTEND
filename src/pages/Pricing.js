@@ -4,6 +4,7 @@ import { useUser, SignUpButton } from "@clerk/clerk-react";
 import { GlobalContext } from '../context/GlobalContext';
 import { translations } from '../locales/translations_pricing';
 import Benefits from '../components/Pricing/Benefits';
+import { Link } from 'react-router-dom';
 
 const PricingPage = () => {
   const [billingCycle, setBillingCycle] = useState('monthly');
@@ -76,11 +77,17 @@ const PricingPage = () => {
                       })}
                   </ul>
                   <div className="mt-8">
+                    {isSignedIn ? (
+                      <Link to="/contact" className={`w-full text-lg font-semibold py-3 rounded-lg text-center ${isPremium ? 'bg-orange-500 text-white hover:bg-orange-600' : 'bg-gray-800 text-white hover:bg-gray-900'}`}>
+                        {t.contact}
+                      </Link>
+                    ) : (
                       <SignUpButton mode="modal">
                         <button className={`w-full text-lg font-semibold py-3 rounded-lg ${isPremium ? 'bg-orange-500 text-white hover:bg-orange-600' : 'bg-gray-800 text-white hover:bg-gray-900'}`}>
                             {t.getStarted}
                         </button>
                       </SignUpButton>
+                    )}
                   </div>
                 </div>
               );

@@ -14,6 +14,7 @@ const ContactTeacher = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [plan, setPlan] = useState('standard');
 
   document.title = t.title;
 
@@ -40,6 +41,7 @@ const ContactTeacher = () => {
         body: JSON.stringify({
           subject: subject.trim(),
           message: message.trim(),
+          plan,
           fullName: `${firstName || ""} ${lastName || ""}`.trim(),
           emailAddress: emailAdresses?.emailAddress || "",
           userId: id || "",
@@ -92,6 +94,15 @@ const ContactTeacher = () => {
             </div>
 
             <form ref={formRef} onSubmit={handleSubmit}>
+            <div className="mb-4">
+                <label className="block text-gray-700 font-medium mb-2">
+                  {t.plan}
+                </label>
+                <select value={plan} onChange={(e) => setPlan(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                  <option value="standard">Standard</option>
+                  <option value="premium">Premium</option>
+                </select>
+              </div>
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium mb-2">
                   {t.subjectLabel}
