@@ -4,11 +4,13 @@ import { useUser } from "@clerk/clerk-react";
 import { SignedOut, SignInButton } from "@clerk/clerk-react";
 import { GlobalContext } from "../context/GlobalContext";
 import { translations }  from "../locales/translations_contact";
+import { translations as pricingTranslations } from '../locales/translations_pricing';
 
 const ContactTeacher = () => {
   const BACKEND_URL = process.env.REACT_APP_FRONTEND_URL || "https://ai-study-assistant-w29f.onrender.com";
   const { language } = useContext(GlobalContext);
   const t = useMemo(() => translations[language || "fr"], [language]);
+  const tp = useMemo(() => pricingTranslations[language || "fr"].pricing, [language]);
   const { user, isSignedIn } = useUser();
   const formRef = useRef(null);
   const location = useLocation();
@@ -32,12 +34,12 @@ const ContactTeacher = () => {
       setMessage(
         t.subscriptionMessage
           .replace("{plan}", plan)
-          .replace("{billing}", billing)
+          .replace("{billing}", tp[billing])
           .replace("{fullName}", fullName)
           .replace("{email}", email)
       );
     }
-  }, [location, t, user]);
+  }, [location, t, user, tp]);
 
   document.title = t.title;
 
