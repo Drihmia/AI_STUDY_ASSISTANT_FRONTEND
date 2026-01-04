@@ -19,8 +19,8 @@ const ChatInputFile = () => {
   useEffect(() => {
     const userPlan = user?.publicMetadata?.plan;
     let maxUploads = 0;
-    if (userPlan === 'plan 2') maxUploads = 15;
-    else if (userPlan === 'plan 1') maxUploads = 5;
+    if (userPlan === 'plan 1') maxUploads = 15;
+    else if (userPlan === 'plan 2') maxUploads = 5;
     else if (user) maxUploads = 1;
 
     const currentUploadCount = getUploadCount();
