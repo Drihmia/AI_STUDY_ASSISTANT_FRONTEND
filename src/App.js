@@ -19,6 +19,7 @@ const FeedbackPage = lazy(() => import('./components/FeedbackPage'));
 const ContactTeacher = lazy(() => import('./components/ContactTeacher'));
 const Resources = lazy(() => import('./pages/Resources'));
 const PDFViewer = lazy(() => import('./pages/PDFViewer'));
+const PricingPage = lazy(() => import('./pages/Pricing'));
 
 const localizationMap = {
   en: enUS,
@@ -60,7 +61,8 @@ const App = ({ publishableKey }) => {
     { to: "/chat", label: "chat" },
     { to: "/feedback", label: "feedback" },
     { to: "/contact", label: "contact" },
-    { to: "/resources", label: "resources" }
+    { to: "/resources", label: "resources" },
+    { to: "/pricing", label: "pricing" }
   ], []);
 
   const globalContextValue = useMemo(() => ({
@@ -97,6 +99,7 @@ const App = ({ publishableKey }) => {
                   <Route path="/contact" element={<ContactTeacher />} />
                   <Route path="/resources" element={<Resources />} />
                   <Route path="/pdf/*" element={<PDFViewer />} />
+                  <Route path="/pricing" element={<PricingPage />} />
                 </Routes>
               </Suspense>
             </main>

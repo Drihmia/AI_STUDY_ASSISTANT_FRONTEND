@@ -7,6 +7,7 @@ export const translations = {
       contact: "Contact",
       chat: "Chat",
       resources: "Resources",
+      pricing: "Pricing",
     },
     footer: {
       poweredBy: "Crafted by DRIHMIA | Your Personal Study Assistant",
@@ -20,6 +21,7 @@ export const translations = {
       contact: "Contacter",
       chat: "Discution",
       resources: "Ressources",
+      pricing: "Tarifs",
     },
     footer: {
       poweredBy: "Conçu par DRIHMIA | Votre assistant d'étude personnel",
@@ -33,6 +35,7 @@ export const translations = {
       contact: "اتصل بالمعلم",
       chat: "الدردشة",
       resources: "المصادر",
+      pricing: "الأسعار",
     },
     footer: {
       poweredBy: "مصنوع من قبل دريهمية | مساعدك الشخصي للدراسة",
