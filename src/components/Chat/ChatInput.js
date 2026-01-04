@@ -27,7 +27,7 @@ const ChatInput = memo(forwardRef(({ handleMessageSubmit, isButtonDisabled, send
       />
       
       {/* File Upload Component - Conditionally rendered */}
-      {(userPlan === 'plan 1' || userPlan === 'plan 2') && <ChatInputFile />}
+      {(userPlan === 'plan1' || userPlan === 'plan2') && <ChatInputFile />}
 
       {/* Submit Button */}
       <button

@@ -38,8 +38,8 @@ export const resourcesData = {
   '2BAC': {
     lessons: [],
     exercises: [
-      { title: "Correction d'exercices 1 et 2 de CH2", description: "Corrigé des exercices 1 et 2 de la lecon CH2 de la suivi temporel pour la 2BAC PC.", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1rh5kUnzMAat8LQGWIuWlmHhqeD-dgXae/view?usp=drivesdk', access: 'plan1' },
-      { title: "Correction d'exercice 5 de CH3", description: "Correction d'exercice 5 de la lecon CH3 des transformations chimiques s'efuctuant dans les deux sens - page 185", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1BC0OVKEt2z9stBBIXiS_IL4HLqJMICPD/view?usp=drivesdk', access: 'plan1' }
+      { title: "Correction d'exercices 1 et 2 de CH2", description: "Corrigé des exercices 1 et 2 de la lecon CH2 de la suivi temporel pour la 2BAC PC.", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1rh5kUnzMAat8LQGWIuWlmHhqeD-dgXae/view?usp=drivesdk', access: 'loggedIn' },
+      { title: "Correction d'exercice 5 de CH3", description: "Correction d'exercice 5 de la lecon CH3 des transformations chimiques s'efuctuant dans les deux sens - page 185", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1BC0OVKEt2z9stBBIXiS_IL4HLqJMICPD/view?usp=drivesdk', access: 'loggedIn' }
     ],
     experiences: [
         {
