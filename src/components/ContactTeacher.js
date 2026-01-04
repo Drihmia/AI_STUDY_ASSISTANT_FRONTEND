@@ -24,11 +24,20 @@ const ContactTeacher = () => {
     const plan = searchParams.get("plan");
     const billing = searchParams.get("billing");
 
-    if (plan && billing) {
+    if (plan && billing && user) {
+      const fullName = `${user.firstName || ""} ${user.lastName || ""}`.trim();
+      const email = user.primaryEmailAddress?.emailAddress || "";
+      
       setSubject(t.subscriptionSubject);
-      setMessage(`I would like to inquire about the ${plan} plan on a ${billing} basis.`);
+      setMessage(
+        t.subscriptionMessage
+          .replace("{plan}", plan)
+          .replace("{billing}", billing)
+          .replace("{fullName}", fullName)
+          .replace("{email}", email)
+      );
     }
-  }, [location, t]);
+  }, [location, t, user]);
 
   document.title = t.title;
 
@@ -127,7 +136,7 @@ const ContactTeacher = () => {
                 </label>
                 <textarea
                   name="message"
-                  rows="8"
+                  rows="12"
                   maxLength="2000"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
                   placeholder={t.messagePlaceholder}
