@@ -26,7 +26,10 @@ export const resourcesData = {
     lessons: [
         { title: 'Advanced Organic Chemistry', description: 'Delving into complex carbon compounds.', author: 'Prof. Youssef', link: '#', access: 'public' },
     ],
-    exercises: [],
+    exercises: [
+        { title: "Correction: Exercice 1 - Énergie Cinétique (PH3)", description: "Correction de l'exercice 1 de la leçon PH3 Énergie cinétique pour la 1BAC.", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/14_vhJkt7gFDNDF9H5OaCQpR-STRh6YTm/view?usp=sharing', access: 'plan2' },
+        { title: "Correction: Exercice 2 - Énergie Cinétique (PH3)", description: "Correction de l'exercice 2 de la leçon PH3 Énergie cinétique pour la 1BAC.", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1USoBh0oGY_5D1F7Khj_qI_pltL8le1S_/view?usp=sharing', access: 'plan2' },
+    ],
     experiences: [
         { title: 'Lab Simulation: Titration', description: 'An interactive lab to practice titration techniques.', author: 'ChemSims', link: '#', access: 'public' },
     ],
