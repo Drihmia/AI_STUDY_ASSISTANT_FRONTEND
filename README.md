@@ -27,6 +27,24 @@ This project follows a microservices-like architecture with a separate frontend 
 *   **Community Feedback Wall:** A transparent space for users to share their thoughts, support the project, and see what others are saying.
 *   **Tiered Access Control:** Content visibility is managed based on user subscription plans (Plan 1, Plan 2) and authentication status.
 
+### Subscription Plan Hierarchy
+
+To ensure clarity and consistent logic throughout the application, the following access hierarchy is enforced:
+
+*   **`plan1` (Higher Tier):**
+    *   Has access to all content available to `plan1` and `plan2`.
+    *   Receives a higher limit of 15 daily image uploads.
+*   **`plan2` (Lower Tier):**
+    *   Has access only to content designated for `plan2`.
+    *   Receives a limit of 5 daily image uploads.
+*   **Logged-in Users (No Plan):**
+    *   Have access to `loggedIn` content.
+    *   Receive a limit of 1 daily image upload.
+*   **Public:**
+    *   Content is accessible to all users, regardless of login status.
+
+This hierarchy ensures that our subscription model is predictable and that users receive the correct level of access based on their plan.
+
 ## Getting Started
 
 To get this project running, you will need to set up both the frontend and the backend services.
