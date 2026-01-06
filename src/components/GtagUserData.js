@@ -9,10 +9,9 @@ const GtagUserData = () => {
         if (user && window.gtag) {
             window.gtag('set', 'user_data', {
                 "email": user.primaryEmailAddress?.emailAddress,
-                "address": {
-                    "first_name": user.firstName,
-                    "last_name": user.lastName,
-                }
+                "phone_number": user.primaryPhoneNumber?.phoneNumber,
+                "first_name": user.firstName,
+                "last_name": user.lastName,
             });
         }
     }, [user]);
