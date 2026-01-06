@@ -8,10 +8,10 @@ import { GlobalContext } from './context/GlobalContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Loading from './components/Loading';
+import GtagUserData from './components/GtagUserData';
 
 const GoogleTagManager = lazy(() => import('./components/GoogleTagManager'));
 const ConsentBanner = lazy(() => import("./components/ConsentBanner"));
-
 
 const WelcomePage = lazy(() => import('./components/WelcomePage'));
 const Chat = lazy(() => import('./components/Chat'));
@@ -87,6 +87,7 @@ const App = ({ publishableKey }) => {
               <GoogleTagManager />
               <ConsentBanner />
             </Suspense>
+            <GtagUserData />
             <Header buttons={headerButtons} />
             <main className="flex-grow overflow-y-auto">
               <Suspense fallback={<LocationFallback />}>
