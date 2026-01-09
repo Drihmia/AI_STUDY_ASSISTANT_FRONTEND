@@ -77,6 +77,7 @@ const App = ({ publishableKey }) => {
   useEffect(() => {
     const wakeUpServer = async () => {
       try {
+        setServerStatus('starting');
         const response = await fetch(`${BACK_END_URL}/api/test/ok`);
         if (response.ok) {
           setServerStatus('online');
