@@ -15,7 +15,9 @@ export const translations = {
     sendButton: "Send Message",
     sending: "Sending...",
     successMessage: "Your message has been sent successfully! Your teacher will reply to your email.",
-    errorSending: "Failed to send message. Please try again later."
+    errorSending: "Failed to send message. Please try again later.",
+    serverOffline: "The contact form is unavailable offline. Please check your connection.",
+    serverStarting: "The contact form is loading. Please wait..."
   },
   fr: {
     title: "Contacter le Professeur - Assistant d'étude IA",
@@ -33,7 +35,9 @@ export const translations = {
     sendButton: "Envoyer le Message",
     sending: "Envoi en cours...",
     successMessage: "Votre message a été envoyé avec succès! Votre professeur répondra à votre email.",
-    errorSending: "Échec de l'envoi du message. Veuillez réessayer plus tard."
+    errorSending: "Échec de l'envoi du message. Veuillez réessayer plus tard.",
+    serverOffline: "Le formulaire de contact est indisponible hors ligne. Veuillez vérifier votre connexion.",
+    serverStarting: "Le formulaire de contact est en cours de chargement. Veuillez patienter..."
   },
   ar: {
     title: "الاتصال بالمعلم - مساعد الدراسة الذكي",
@@ -51,6 +55,8 @@ export const translations = {
     sendButton: "إرسال الرسالة",
     sending: "جاري الإرسال...",
     successMessage: "تم إرسال رسالتك بنجاح! سيرد معلمك على بريدك الإلكتروني.",
-    errorSending: "فشل إرسال الرسالة. يرجى المحاولة مرة أخرى لاحقاً."
+    errorSending: "فشل إرسال الرسالة. يرجى المحاولة مرة أخرى لاحقاً.",
+    serverOffline: "نموذج الاتصال غير متوفر في وضع عدم الاتصال. يرجى التحقق من اتصالك.",
+    serverStarting: "يجري تحميل نموذج الاتصال. يرجى الانتظار..."
   }
 };
