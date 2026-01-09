@@ -39,7 +39,11 @@ self.addEventListener('activate', event => {
 // Fetch event: handle network requests
 self.addEventListener('fetch', event => {
   const requestUrl = new URL(event.request.url);
-
+  
+  // Don't cache requests to Clerk's authentication services.
+  if (requestUrl.origin.includes('clerk.')) {
+    return; // Let the browser handle the request directly.
+  }
   // For third-party scripts (like Clerk), use a Network First strategy.
   if (requestUrl.origin !== self.location.origin) {
     event.respondWith(

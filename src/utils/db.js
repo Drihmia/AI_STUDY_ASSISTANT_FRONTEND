@@ -1,7 +1,6 @@
 
 const DB_NAME = 'ai-study-assistant-db';
-const DB_VERSION = 2; // Incremented version
-const CHAT_HISTORY_STORE_NAME = 'chat-history';
+const DB_VERSION = 3;
 const FEEDBACK_STORE_NAME = 'feedback';
 
 let db;
@@ -21,55 +20,12 @@ export const initDB = () => {
 
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
-      if (!db.objectStoreNames.contains(CHAT_HISTORY_STORE_NAME)) {
-        db.createObjectStore(CHAT_HISTORY_STORE_NAME, { keyPath: 'id', autoIncrement: true });
+      if (db.objectStoreNames.contains('chat-history')) {
+        db.deleteObjectStore('chat-history');
       }
       if (!db.objectStoreNames.contains(FEEDBACK_STORE_NAME)) {
         db.createObjectStore(FEEDBACK_STORE_NAME, { keyPath: '_id' });
       }
-    };
-  });
-};
-
-export const addMessages = (messages) => {
-  return new Promise((resolve, reject) => {
-    if (!db) {
-      reject('Database not initialized');
-      return;
-    }
-    const transaction = db.transaction([CHAT_HISTORY_STORE_NAME], 'readwrite');
-    const objectStore = transaction.objectStore(CHAT_HISTORY_STORE_NAME);
-
-    messages.forEach(message => {
-      objectStore.add(message);
-    });
-
-    transaction.oncomplete = () => {
-      resolve();
-    };
-
-    transaction.onerror = () => {
-      reject('Error adding messages to the database');
-    };
-  });
-};
-
-export const getMessages = () => {
-  return new Promise((resolve, reject) => {
-    if (!db) {
-      reject('Database not initialized');
-      return;
-    }
-    const transaction = db.transaction([CHAT_HISTORY_STORE_NAME], 'readonly');
-    const objectStore = transaction.objectStore(CHAT_HISTORY_STORE_NAME);
-    const request = objectStore.getAll();
-
-    request.onsuccess = (event) => {
-      resolve(event.target.result);
-    };
-
-    request.onerror = () => {
-      reject('Error getting messages from the database');
     };
   });
 };
