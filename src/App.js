@@ -1,6 +1,6 @@
 
-import { React, lazy, Suspense, useState, useEffect, useCallback, useMemo, memo } from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { React, lazy, Suspense, useState, useEffect, useCallback, useMemo, memo, useContext } from 'react';
+import { BrowserRouter as Router, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { ClerkProvider } from '@clerk/clerk-react';
 import { frFR, arSA, enUS } from "@clerk/localizations";
 
@@ -27,6 +27,47 @@ const localizationMap = {
 };
 
 const BACK_END_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+
+const LocationFallback = memo(() => {
+  const location = useLocation();
+  return <Loading location={location.pathname} />;
+});
+
+const AppContent = memo(({ language, headerButtons }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { serverStatus } = useContext(GlobalContext);
+
+  useEffect(() => {
+    if (serverStatus === 'offline' && location.pathname === '/') {
+      navigate('/resources', { replace: true });
+    }
+  }, [serverStatus, location.pathname, navigate]);
+
+  return (
+    <div className="flex flex-col h-screen bg-gray-100">
+      <Suspense fallback={null}>
+        <GoogleTagManager />
+        <ConsentBanner />
+      </Suspense>
+      <GtagUserData />
+      <Header buttons={headerButtons} />
+      <main className="flex-grow overflow-y-auto">
+        <Suspense fallback={<LocationFallback />}>
+          <Routes>
+            <Route path="/" element={<WelcomePage />} />
+            <Route path="/chat" element={<Chat language={language} />} />
+            <Route path="/feedback" element={<FeedbackPage />} />
+            <Route path="/contact" element={<ContactTeacher />} />
+            <Route path="/resources" element={<Resources />} />
+            <Route path="/pdf/*" element={<PDFViewer />} />
+          </Routes>
+        </Suspense>
+      </main>
+      <Footer />
+    </div>
+  );
+});
 
 const App = ({ publishableKey }) => {
   const [language, setLanguage] = useState(localStorage.getItem("lang") || navigator.language.split("-")[0] || "fr");
@@ -82,36 +123,11 @@ const App = ({ publishableKey }) => {
         localization={localizationMap[language] || localizationMap.fr}
       >
         <Router>
-          <div className="flex flex-col h-screen bg-gray-100">
-            <Suspense fallback={null}>
-              <GoogleTagManager />
-              <ConsentBanner />
-            </Suspense>
-            <GtagUserData />
-            <Header buttons={headerButtons} />
-            <main className="flex-grow overflow-y-auto">
-              <Suspense fallback={<LocationFallback />}>
-                <Routes>
-                  <Route path="/" element={<WelcomePage />} />
-                  <Route path="/chat" element={<Chat language={language} />} />
-                  <Route path="/feedback" element={<FeedbackPage />} />
-                  <Route path="/contact" element={<ContactTeacher />} />
-                  <Route path="/resources" element={<Resources />} />
-                  <Route path="/pdf/*" element={<PDFViewer />} />
-                </Routes>
-              </Suspense>
-            </main>
-            <Footer />
-          </div>
+          <AppContent language={language} headerButtons={headerButtons} />
         </Router>
       </ClerkProvider>
     </GlobalContext.Provider>
   );
 };
-
-const LocationFallback = memo(() => {
-  const location = useLocation();
-  return <Loading location={location.pathname} />;
-});
 
 export default App;
