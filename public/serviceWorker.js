@@ -1,17 +1,15 @@
 
-const CACHE_NAME = 'ai-study-assistant-cache-v1';
+const CACHE_NAME = 'ai-study-assistant-cache-v2'; // Incremented version
 const urlsToCache = [
   '/',
   '/index.html',
-  '/static/js/bundle.js',
-  '/static/css/main.chunk.css',
-  '/static/css/main.css',
   '/manifest.json',
   '/favicon.ico',
   '/logo192.png',
   '/logo512.png'
 ];
 
+// Install event: cache the application shell
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -22,18 +20,7 @@ self.addEventListener('install', event => {
   );
 });
 
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      })
-  );
-});
-
+// Activate event: remove old caches
 self.addEventListener('activate', event => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
@@ -45,6 +32,42 @@ self.addEventListener('activate', event => {
           }
         })
       );
+    })
+  );
+});
+
+// Fetch event: handle network requests
+self.addEventListener('fetch', event => {
+  const requestUrl = new URL(event.request.url);
+
+  // For third-party scripts (like Clerk), use a Network First strategy.
+  if (requestUrl.origin !== self.location.origin) {
+    event.respondWith(
+      caches.open(CACHE_NAME).then(cache => {
+        return fetch(event.request).then(response => {
+          // If we get a valid response, cache it for offline use and return it.
+          if(response && response.status === 200) {
+            cache.put(event.request, response.clone());
+          }
+          return response;
+        }).catch(() => {
+          // If the network fails, try the cache.
+          return cache.match(event.request);
+        });
+      })
+    );
+    return;
+  }
+
+  // For your own assets, use a Cache First, then Network strategy.
+  event.respondWith(
+    caches.match(event.request).then(response => {
+      // Return from cache if found
+      if (response) {
+        return response;
+      }
+      // Otherwise, fetch from network
+      return fetch(event.request);
     })
   );
 });
