@@ -3,6 +3,7 @@ import { useUser } from "@clerk/clerk-react";
 import { SignedOut, SignInButton } from "@clerk/clerk-react";
 import { GlobalContext } from "../context/GlobalContext";
 import { translations } from "../locales/translations_feedback";
+import { initDB, addFeedback, getFeedback } from "../utils/db";
 
 const FeedbackPage = () => {
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
@@ -22,27 +23,38 @@ const FeedbackPage = () => {
 
   document.title = t.title;
 
+  useEffect(() => {
+    initDB();
+  }, []);
+
   const fetchFeedback = useCallback(async (cursorParam = null) => {
     try {
       setLoading(true);
       setError(null);
-      const url = cursorParam
-        ? `${BACKEND_URL}/api/feedback?limit=10&cursor=${cursorParam}`
-        : `${BACKEND_URL}/api/feedback?limit=10`;
 
-      const response = await fetch(url);
-      if (!response.ok) throw new Error(t.errorLoadingFeedback);
+      if (navigator.onLine) {
+        const url = cursorParam
+          ? `${BACKEND_URL}/api/feedback?limit=10&cursor=${cursorParam}`
+          : `${BACKEND_URL}/api/feedback?limit=10`;
 
-      const data = await response.json();
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(t.errorLoadingFeedback);
 
-      if (cursorParam) {
-        setFeedbackList(prev => [...prev, ...data.items]);
+        const data = await response.json();
+
+        if (cursorParam) {
+          setFeedbackList(prev => [...prev, ...data.items]);
+        } else {
+          setFeedbackList(data.items);
+        }
+
+        addFeedback(data.items);
+        setCursor(data.nextCursor || null);
+        setHasMore(!!data.nextCursor);
       } else {
-        setFeedbackList(data.items);
+        const dbFeedback = await getFeedback();
+        setFeedbackList(dbFeedback);
       }
-
-      setCursor(data.nextCursor || null);
-      setHasMore(!!data.nextCursor);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -73,29 +85,38 @@ const FeedbackPage = () => {
       console.table(user);
       const { firstName, lastName, primaryEmailAddress: emailAdresses } = user || {};
 
-      const response = await fetch(`${BACKEND_URL}/api/feedback`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          text: feedbackText.trim(),
-          rating,
-          fullName: firstName && lastName ? `${firstName} ${lastName}` : "Anonymous",
-          emailAdress: emailAdresses ? emailAdresses.toString() : "",
-          userId: user.id,
-        })
-      });
+      const newFeedback = {
+        _id: new Date().toISOString(), // Temporary ID for offline use
+        text: feedbackText.trim(),
+        rating,
+        displayName: firstName && lastName ? `${firstName} ${lastName}` : "Anonymous",
+        emailAdress: emailAdresses ? emailAdresses.toString() : "",
+        userId: user.id,
+        createdAt: new Date().toISOString(),
+      };
 
-      if (!response.ok) throw new Error(t.errorSubmittingFeedback);
+      if (navigator.onLine) {
+        const response = await fetch(`${BACKEND_URL}/api/feedback`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newFeedback)
+        });
+
+        if (!response.ok) throw new Error(t.errorSubmittingFeedback);
+        const savedFeedback = await response.json();
+        addFeedback([savedFeedback]);
+        setFeedbackList(prev => [savedFeedback, ...prev]);
+
+      } else {
+        addFeedback([newFeedback]);
+        setFeedbackList(prev => [newFeedback, ...prev]);
+      }
 
       setSuccess(true);
       formRef.current.reset();
       setRating(5);
-
-      setTimeout(() => {
-        fetchFeedback();
-      }, 500);
 
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {

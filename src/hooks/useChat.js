@@ -4,6 +4,7 @@ import { useUser } from '@clerk/clerk-react';
 import formatMessage from '../components/messageformated';
 import { GlobalContext } from '../context/GlobalContext';
 import { translations } from '../locales/translations_chat';
+import { initDB, addMessages, getMessages } from '../utils/db';
 
 const BACK_END_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
 const LIMIT = 20;
@@ -38,57 +39,68 @@ const useChat = () => {
   const textAreaRef = useRef(null);
   const loadingMoreRef = useRef(false); // Ref to track loading state without causing re-renders
 
+  useEffect(() => {
+    initDB();
+  }, []);
+
   const loadChatHistory = useCallback(async (pageNum = 1) => {
     try {
       if (!isSignedIn) return;
       setError(null);
       setIsLoading(true);
-      const response = await fetch(`${BACK_END_URL}/api/history?user_id=${user_id}&page=${pageNum}&limit=${LIMIT}`, {credentials: 'include',});
 
-      if (response.status >= 500) {
-        throw new Error(t.FailedToLoadHistory);
-      }
+      if (navigator.onLine) {
+        const response = await fetch(`${BACK_END_URL}/api/history?user_id=${user_id}&page=${pageNum}&limit=${LIMIT}`, {credentials: 'include',});
 
-      const data = await response.json();
-      if ('error' in data) {
-        //throw new Error(data.error);
-      }
-      if (!response.ok) throw new Error(t.FailedToLoadHistory);
-
-      let history = data.history;
-
-      if (!history.length) {
-        const initResponse = await fetch(`${BACK_END_URL}/api/chat?user_id=${user_id}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: t.greeting(firstName, lastName, emailAdresses, language ) }),
-          credentials: 'include',
-        });
-
-        if (initResponse.status >= 500) {
+        if (response.status >= 500) {
           throw new Error(t.FailedToLoadHistory);
         }
 
-        const initData = await initResponse.json();
-        if ('error' in initData) {
-          throw new Error(initData.error);
+        const data = await response.json();
+        if ('error' in data) {
+          //throw new Error(data.error);
         }
-        if (!initResponse.ok) throw new Error(t.FailedToInitializeChat);
+        if (!response.ok) throw new Error(t.FailedToLoadHistory);
 
-        history = [
-          { role: 'user', parts: t.greeting(firstName, lastName, emailAdresses, language ) },
-          { role: 'model', parts: formatMessage({ parts: initData.response, role: 'model' }) },
-        ];
+        let history = data.history;
+
+        if (!history.length) {
+          const initResponse = await fetch(`${BACK_END_URL}/api/chat?user_id=${user_id}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: t.greeting(firstName, lastName, emailAdresses, language ) }),
+            credentials: 'include',
+          });
+
+          if (initResponse.status >= 500) {
+            throw new Error(t.FailedToLoadHistory);
+          }
+
+          const initData = await initResponse.json();
+          if ('error' in initData) {
+            throw new Error(initData.error);
+          }
+          if (!initResponse.ok) throw new Error(t.FailedToInitializeChat);
+
+          history = [
+            { role: 'user', parts: t.greeting(firstName, lastName, emailAdresses, language ) },
+            { role: 'model', parts: formatMessage({ parts: initData.response, role: 'model' }) },
+          ];
+        }
+
+        const formattedHistory = history.map((msg) => ({
+          role: msg.role,
+          parts: formatMessage(msg),
+        }));
+
+        setPage(data.page);
+        setMaxPage(data.max_page);
+        setMessages(formattedHistory);
+        addMessages(formattedHistory);
+      } else {
+        const dbMessages = await getMessages();
+        setMessages(dbMessages);
       }
-
-      const formattedHistory = history.map((msg) => ({
-        role: msg.role,
-        parts: formatMessage(msg),
-      }));
-
-      setPage(data.page);
-      setMaxPage(data.max_page);
-      setMessages(formattedHistory);
     } catch (error) {
       setError(error.message);
       console.error('Error loading chat history:', error.message);
@@ -132,6 +144,7 @@ const useChat = () => {
       }));
 
       setMessages((prevMessages) => [...formattedHistory, ...prevMessages]);
+      addMessages(formattedHistory);
       setPage(data.page);
       setMaxPage(data.max_page);
 
@@ -164,9 +177,11 @@ const useChat = () => {
     setSendingMessage(true);
     setShouldScrollToBottom(true);
 
+    const userMessage = { role: 'user', parts: formatMessage({ parts: textAreaRef.current?.value, role: 'user' }) };
+
     setMessages((prevMessages) => [
       ...prevMessages,
-      { role: 'user', parts: formatMessage({ parts: textAreaRef.current?.value, role: 'user' }) },
+      userMessage,
     ]);
 
     if (retryTimerRef.current) {
@@ -205,11 +220,15 @@ const useChat = () => {
 
       if (!response.ok) throw new Error(t.errorMessage);
       setShouldScrollToBottom(true);
+      const modelMessage = { role: 'model', parts: formatMessage({ parts: data.response, role: 'model' }) };
+
       setMessages((prevMes) => [
         ...prevMes.slice(0, -1),
         { role: 'user', parts: formatMessage({ parts: data.user_message, role: 'user' }) },
-        { role: 'model', parts: formatMessage({ parts: data.response, role: 'model' }) },
+        modelMessage,
       ]);
+
+      addMessages([userMessage, modelMessage]);
 
       setIsButtonDisabled(false);
       setSendingMessage(false);
