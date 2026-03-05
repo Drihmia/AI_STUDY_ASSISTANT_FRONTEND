@@ -27,8 +27,8 @@ export const resourcesData = {
       { title: 'Advanced Organic Chemistry', description: 'Delving into complex carbon compounds.', author: 'Prof. Youssef', link: '#', access: 'public' },
   ],
   exercises: [
-      { title: "Correction: Exercice 1 - Énergie Cinétique (PH3)", description: "Correction de l'exercice 1 de la leçon PH3 Énergie cinétique pour la 1BAC.", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/14_vhJkt7gFDNDF9H5OaCQpR-STRh6YTm/view?usp=sharing', access: 'plan2' },
-      { title: "Correction: Exercice 2 - Énergie Cinétique (PH3)", description: "Correction de l'exercice 2 de la leçon PH3 Énergie cinétique pour la 1BAC.", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1USoBh0oGY_5D1F7Khj_qI_pltL8le1S_/view?usp=sharing', access: 'plan2' },
+      { title: "Correction: Exercice 1 - Énergie Cinétique (PH3)", description: "Correction de l'exercice 1 de la leçon PH3 Énergie cinétique pour la 1BAC.", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/14_vhJkt7gFDNDF9H5OaCQpR-STRh6YTm/view?usp=sharing', access: 'public' },
+      { title: "Correction: Exercice 2 - Énergie Cinétique (PH3)", description: "Correction de l'exercice 2 de la leçon PH3 Énergie cinétique pour la 1BAC.", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1USoBh0oGY_5D1F7Khj_qI_pltL8le1S_/view?usp=sharing', access: 'public' },
   ],
   experiences: [
       { title: 'Lab Simulation: Titration', description: 'An interactive lab to practice titration techniques.', author: 'ChemSims', link: '#', access: 'public' },
@@ -38,19 +38,19 @@ export const resourcesData = {
 '2BAC': {
   lessons: [],
   exercises: [
-    { title: "Correction d'exercices 1 et 2 de CH2", description: "Corrigé des exercices 1 et 2 de la lecon CH2 de la suivi temporel pour la 2BAC PC.", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1rh5kUnzMAat8LQGWIuWlmHhqeD-dgXae/view?usp=drivesdk', access: 'loggedIn' },
-    { title: "Correction d'exercice 5 de CH3", description: "Correction d'exercice 5 de la lecon CH3 des transformations chimiques s'efuctuant dans les deux sens - page 185", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1BC0OVKEt2z9stBBIXiS_IL4HLqJMICPD/view?usp=drivesdk', access: 'loggedIn' },
-    { title: "Le dipole RC dans les examens nationaux PC (filier sciences physique)", description: "Examens nationaux du Maroc de 2016 à 2024, circuit RC, avec corrections proposées par le professeur BADRY HASSAN.", author: 'Prof. BADRY HASSAN', link: 'https://drive.google.com/file/d/1jGtg1bYejs6vUPt1uktRi31w4MXEvZvA/view?usp=sharing', access: 'loggedIn' },
-    { title: "Le dipole RL dans les examens nationaux PC (filier sciences physique)", description: "Examens nationaux du Maroc de 2016 à 2024, circuit RL, avec corrections proposées par le professeur BADRY HASSAN.", author: 'Prof. BADRY HASSAN', link: 'https://drive.google.com/file/d/1cotRqSoleJuBYzExYOGOPFS3_T7Vhk0i/view?usp=sharing', access: 'loggedIn' },
-    { title: "Le dipole RLC dans les examens nationaux PC (filier sciences physique)", description: "Examens nationaux du Maroc de 2016 à 2025, circuit RLC, avec corrections proposées par le professeur BADRY HASSAN.", author: 'Prof. BADRY HASSAN', link: 'https://drive.google.com/file/d/1rLWaZNKpsSiQKlH_9sV2hQ7WPoSZq_5S/view?usp=sharing', access: 'loggedIn' },
+    { title: "Correction d\'exercices 1 et 2 de CH2", description: "Corrigé des exercices 1 et 2 de la lecon CH2 de la suivi temporel pour la 2BAC PC.", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1rh5kUnzMAat8LQGWIuWlmHhqeD-dgXae/view?usp=drivesdk', access: 'public' },
+    { title: "Correction d\'exercice 5 de CH3", description: "Correction d\'exercice 5 de la lecon CH3 des transformations chimiques s\'efuctuant dans les deux sens - page 185", author: 'Prof. DRIHMIA', link: 'https://drive.google.com/file/d/1BC0OVKEt2z9stBBIXiS_IL4HLqJMICPD/view?usp=drivesdk', access: 'public' },
+    { title: "Le dipole RC dans les examens nationaux PC (filier sciences physique)", description: "Examens nationaux du Maroc de 2016 à 2024, circuit RC, avec corrections proposées par le professeur BADRY HASSAN.", author: 'Prof. BADRY HASSAN', link: 'https://drive.google.com/file/d/1jGtg1bYejs6vUPt1uktRi31w4MXEvZvA/view?usp=sharing', access: 'public' },
+    { title: "Le dipole RL dans les examens nationaux PC (filier sciences physique)", description: "Examens nationaux du Maroc de 2016 à 2024, circuit RL, avec corrections proposées par le professeur BADRY HASSAN.", author: 'Prof. BADRY HASSAN', link: 'https://drive.google.com/file/d/1cotRqSoleJuBYzExYOGOPFS3_T7Vhk0i/view?usp=sharing', access: 'public' },
+    { title: "Le dipole RLC dans les examens nationaux PC (filier sciences physique)", description: "Examens nationaux du Maroc de 2016 à 2025, circuit RLC, avec corrections proposées par le professeur BADRY HASSAN.", author: 'Prof. BADRY HASSAN', link: 'https://drive.google.com/file/d/1rLWaZNKpsSiQKlH_9sV2hQ7WPoSZq_5S/view?usp=sharing', access: 'public' },
   ],
   experiences: [
       {
           title: "Diagramme de Segrè Interactif",
-          description: "Une animation Flash du diagramme de Segrè où les élèves peuvent le manipuler librement, en faisant défiler vers le haut et sur le côté en N (axe horizontal) et Z (axe vertical) grâce à un bouton de défilement dans l'animation flash, et les élèves peuvent voir en zoomant sur la zone si elle est de type alpha ou bêta+ ou - radioactif.",
+          description: "Une animation Flash du diagramme de Segrè où les élèves peuvent le manipuler librement, en faisant défiler vers le haut et sur le côté en N (axe horizontal) et Z (axe vertical) grâce à un bouton de défilement dans l\'animation flash, et les élèves peuvent voir en zoomant sur la zone si elle est de type alpha ou bêta+ ou - radioactif.",
           author: "web-labosims.org",
           link: "https://segreee.web-labosims.org/index.html",
-          access: "loggedIn"
+          access: "public"
       }
   ],
   more: [
